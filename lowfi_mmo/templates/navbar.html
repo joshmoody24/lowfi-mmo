@@ -1,0 +1,24 @@
+<nav class="container-fluid">
+    <ul>
+        <li>
+            <a href="/">VentureVerse</a>
+        </li>
+    </ul>
+    <ul>
+        {% if user.is_authenticated %}
+        <li>
+            <details role="list" dir="rtl">
+                <summary aria-haspopup="listbox" role="link">{{ user }}</summary>
+                <ul role="listbox">
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </details>
+        </li>
+        {% else %}
+        <li>
+            <a href="{% url 'login' %}">Login</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
