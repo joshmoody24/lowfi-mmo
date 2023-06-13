@@ -30,7 +30,7 @@ def populate_database(apps, schema_editor):
     
     castle = Location.objects.create(area=overworld, name='Central Earth Castle', x=0, y=0, description='A huge, imposing castle')
     mogus_village = Location.objects.create(area=overworld, name='Mogus Village', x=2, y=1, description='A small village')
-    castle_town = Location.objects.create(area=overworld, name='Central Earth Castle Town', x=0, y=-0.5, description='A bustling metropolis just south of Central Earth Castle')
+    castle_town = Location.objects.create(area=overworld, name='Castle Town', x=0, y=-0.5, description='A bustling metropolis just south of Central Earth Castle')
     deathville = Location.objects.create(area=overworld, name='Deathville', x=-1, y=-2, description='A ghost town on the way to Boardoor')
     boardoor = Location.objects.create(area=overworld, name='Boardoor', x=-10, y=-20, description='An evil nation with a big eyeball tower')
 
