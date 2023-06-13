@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hgroup>
+    <h1>{{ player_character.entity.name }}</h1>
+    <h2>HP: {{ hp.hp }}/{{ hp.max_hp }}</h2>
+</hgroup>
+<p>Your location is <strong>{{ location }}</strong></p>
+
+<p>
+    Nearby locations:
+    <ul>
+        {% for path in paths %}
+            <li>{{ path.end.name }}</li>
+        {% endfor %}
+    </ul>
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    <input id="command" name="command" type="text" placeholder="Enter command..." />
+    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+    <input type="submit" />
+</form>
+
+<h2>
+    Command Help
+</h2>
+<p>
+    Go to &lt;location&gt;
+</p>
+
+<script>
+    let input = document.getElementById("command");
+    input.focus();
+    input.select();
+</script>
+{% endblock %}

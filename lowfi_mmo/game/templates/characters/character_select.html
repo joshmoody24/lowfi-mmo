@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Select Character</h1>
+<ul>
+    {% for character in user_characters %}
+        <li><a role="button" href="{% url 'play' character_id=character.id %}">{{ character }} - {{ character.location.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

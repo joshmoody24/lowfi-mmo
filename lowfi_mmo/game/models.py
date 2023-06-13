@@ -40,7 +40,7 @@ class Location(models.Model):
     y = models.FloatField()
     description = models.TextField(blank=True)
     def __str__(self):
-        return self.name + f" ({self.area})"
+        return self.name
     
 class Path(models.Model):
     start = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="start_paths")

@@ -1,5 +1,10 @@
 {% extends "Base.html" %}
 {% block content %}
 <h1>VentureVerse</h1>
-This is the future site of a MMO you can play over email
+{% if not request.user.is_authenticated %}
+This is the future site of a MMO you can play over email.
+{% else %}
+<a role="button" href="{% url 'world_list' %}">View Worlds</a>
+<a role="button" href="{% url 'world_copy' %}">New World</a>
+{% endif %}
 {% endblock %}
