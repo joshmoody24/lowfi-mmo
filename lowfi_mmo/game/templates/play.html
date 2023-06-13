@@ -24,7 +24,7 @@
 
 <form method="post">
     {% csrf_token %}
-    <input id="command" name="command" type="text" placeholder="Enter command..." />
+    <input id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" />
     {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
     <input type="submit" />
 </form>
