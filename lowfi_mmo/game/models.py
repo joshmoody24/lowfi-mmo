@@ -13,6 +13,7 @@ class World(models.Model):
     spawn_point = models.OneToOneField("Location", null=True, blank=True, on_delete=models.RESTRICT) # must be null when copying
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, validators=[alphanumeric_validator])
+    description = models.TextField(max_length=200, null=True, blank=True)
     template = models.BooleanField(default=False)
     def __str__(self):
         return self.name
@@ -61,6 +62,7 @@ class Path(models.Model):
 class Species(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, validators=[alphanumeric_validator])
+    description = models.TextField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.name
     class Meta:
@@ -74,10 +76,10 @@ class Item(models.Model):
     weight_kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
     # item capabilities
     # (could refactor using something like ECS down the road, if necessary)
-    attack = models.IntegerField(null=True, blank=True)
-    defense = models.IntegerField(null=True, blank=True)
-    healing = models.IntegerField(null=True, blank=True)
-    magic_cost = models.IntegerField(null=True, blank=True)
+    attack = models.PositiveIntegerField(null=True, blank=True)
+    defense = models.PositiveIntegerField(null=True, blank=True)
+    healing = models.PositiveIntegerField(null=True, blank=True)
+    magic_cost = models.PositiveIntegerField(null=True, blank=True)
     def __str__(self):
         return self.name
     class Meta:
@@ -89,6 +91,8 @@ class Entity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, validators=[alphanumeric_validator])
+    def __str__(self):
+        return self.name
     class Meta:
         unique_together = [["world", "name"]]
 
@@ -105,6 +109,8 @@ class Position(Component):
 class Character(Component):
     species = models.ForeignKey(Species, on_delete=models.RESTRICT)
     player = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL) # NPC if player is None
+    appearance = models.TextField(max_length=100, null=True, blank=True)
+    personality = models.TextField(max_length=100, null=True, blank=True)
 
 class CharacterKnowledge(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
@@ -113,22 +119,25 @@ class CharacterKnowledge(models.Model):
     knowledge = models.TextField()
 
 class Killable(Component):
-    max_hp = models.IntegerField(validators=[MinValueValidator(1)], default=10)
-    hp = models.IntegerField(validators=[MinValueValidator(0)], default=10)
+    max_hp = models.PositiveIntegerField(validators=[MinValueValidator(1)], default=10)
+    hp = models.PositiveIntegerField(default=10)
+    @property
+    def dead(self):
+        return self.hp <= 0
     # TODO: constrain hp to < max_hp (clean method?)
 
 class MagicWielder(Component):
-    max_mp = models.IntegerField(validators=[MinValueValidator(0)], default=10)
-    mp = models.IntegerField(validators=[MinValueValidator(0)], default=10)
+    max_mp = models.PositiveIntegerField(default=10)
+    mp = models.PositiveIntegerField(default=10)
 
 class Traveler(Component):
     path = models.ForeignKey(Path, null=True, blank=True, on_delete=models.SET_NULL)
     
 class Inventory(Component):
-    capacity = models.IntegerField(default=10.0, validators=[MinValueValidator(0)]) # max total item size
+    capacity = models.PositiveIntegerField(default=10.0) # max total item size
 
 class Readable(Component):
-    message = models.TextField()
+    message = models.TextField(max_length=500)
 
 class ItemInstance(Component):
     item = models.ForeignKey(Item, on_delete=models.RESTRICT)

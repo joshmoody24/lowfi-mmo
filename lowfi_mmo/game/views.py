@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 from game import models, forms
+from .commands import handle_command
+from django.db.models import Subquery
 
 def index(request):
     return render(request, "index.html")
@@ -10,32 +12,27 @@ def index(request):
 def play(request, world_id, character_id):
 
     character = models.Character.objects.get(entity__world__id=world_id, entity__id=character_id)
-    position = models.Position.objects.get(entity=character.entity)
-    paths = models.Path.objects.filter(start=position.location)
-    error = None
+
+    command_result = ""
+    error = ""
 
     if(request.method=="POST"):
         command = request.POST.get('command')
-        go_to = "go to"
-        if(command.startswith(go_to)):
-            location_str = command[len(go_to):].strip()
-            target_path = paths.filter(end__name__iexact=location_str).first()
-            if(target_path):
-                position.location = target_path.end
-                position.save()
-                paths = models.Path.objects.filter(start=position.location) # refresh
-            else:
-                error = f"No nearby location named \"{location_str}\""
-        else:
-            error = "Command not recognized"
+        command_result, error = handle_command(character, command)
 
+    position = models.Position.objects.get(entity=character.entity)
+    paths = models.Path.objects.filter(start=position.location)
+    entity_ids = models.Position.objects.filter(location=position.location).values('entity_id')
+    nearby_characters = models.Character.objects.filter(entity_id__in=Subquery(entity_ids)).exclude(id=character.id)
 
     context = {
         "player_character": character,
         "hp": models.Killable.objects.get(entity=character.entity),
         "location": position.location,
+        "nearby_characters": nearby_characters,
         "paths": paths,
-        "error": error,
+        'message': command_result if command_result else None,
+        "error": error if error else None,
     }
     return render(request, "play.html", context)
 
