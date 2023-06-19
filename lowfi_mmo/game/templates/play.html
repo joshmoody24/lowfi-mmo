@@ -10,11 +10,12 @@
 <p>
     <strong>{{ location }}</strong> - <small>{{ location.area }}</small>
 </p>
+<p>{{ location.description }}.</p>
 
-{% if nearby_characters|length > 0 %}
+{% if nearby_npcs|length > 0 %}
 <strong>Nearby Characters:</strong>
 <ul>
-    {% for character in nearby_characters %}
+    {% for character in nearby_npcs %}
         <li>{{ character }}</li>
     {% endfor %}
 </ul>

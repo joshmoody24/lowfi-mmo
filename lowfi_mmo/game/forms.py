@@ -22,11 +22,3 @@ class CharacterForm(ModelForm):
         model = models.Character
         fields = "__all__"
         exclude = ["user"]
-
-class WorldCopyForm(forms.Form):
-    name = forms.CharField(min_length=1, max_length=50)
-    world = forms.ModelChoiceField(queryset=models.World.objects.filter(template=True))
-    # force an option
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['world'].empty_label = None

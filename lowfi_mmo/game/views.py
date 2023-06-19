@@ -11,7 +11,7 @@ def index(request):
 @login_required
 def play(request, world_id, character_id):
 
-    character = models.Character.objects.get(entity__world__id=world_id, entity__id=character_id)
+    character = models.Player.objects.get(entity__world__id=world_id, entity__id=character_id)
 
     command_result = ""
     error = ""
@@ -23,13 +23,15 @@ def play(request, world_id, character_id):
     position = models.Position.objects.get(entity=character.entity)
     paths = models.Path.objects.filter(start=position.location)
     entity_ids = models.Position.objects.filter(location=position.location).values('entity_id')
-    nearby_characters = models.Character.objects.filter(entity_id__in=Subquery(entity_ids)).exclude(id=character.id)
+    nearby_npcs = models.Npc.objects.filter(entity_id__in=Subquery(entity_ids))
+    nearby_players = models.Player.objects.filter(entity_id__in=Subquery(entity_ids)).exclude(id=character.id)
 
     context = {
         "player_character": character,
-        "hp": models.Killable.objects.get(entity=character.entity),
+        "hp": models.Health.objects.filter(entity=character.entity).first(),
         "location": position.location,
-        "nearby_characters": nearby_characters,
+        "nearby_npcs": nearby_npcs,
+        "nearby_players": nearby_players,
         "paths": paths,
         'message': command_result if command_result else None,
         "error": error if error else None,
@@ -86,8 +88,8 @@ def world_details(request, world_id):
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
         return HttpResponseNotFound("World not found.")
     
-    # imperative due to location hierarchy. Could improve if this becomes bottleneck
-    player_character = models.Character.objects.get(player=request.user)
+    # imperative due to locaftion hierarchy. Could improve if this becomes bottleneck
+    player_character = models.Player.objects.get(user=request.user)
     print(player_character.entity.id)
     
     context = {
@@ -114,7 +116,7 @@ def world_delete(request, world_id):
 
 @login_required
 def character_list(request):
-    user_characters = models.Character.objects.filter(user=request.user)
+    user_characters = models.Player.objects.filter(user=request.user)
     return render(request, "characteers/character_select.html", {"user_characters": user_characters})
 
 @login_required

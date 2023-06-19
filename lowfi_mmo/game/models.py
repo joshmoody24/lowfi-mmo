@@ -10,11 +10,9 @@ alphanumeric_validator = RegexValidator(
 )
 
 class World(models.Model):
-    spawn_point = models.OneToOneField("Location", null=True, blank=True, on_delete=models.RESTRICT) # must be null when copying
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, validators=[alphanumeric_validator])
+    name = models.CharField(max_length=50)
     description = models.TextField(max_length=200, null=True, blank=True)
-    template = models.BooleanField(default=False)
     def __str__(self):
         return self.name
     
@@ -33,10 +31,10 @@ class Area(models.Model):
     elevation = models.FloatField(default=0.0)
     def __str__(self):
         return self.name
-
+    
 class Location(models.Model):
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, validators=[alphanumeric_validator])
+    name = models.CharField(max_length=100, validators=[alphanumeric_validator], unique=True)
     x = models.FloatField()
     y = models.FloatField()
     description = models.TextField(blank=True)
@@ -57,40 +55,32 @@ class Path(models.Model):
     class Meta:
         unique_together = [["start", "end"]]
 
-# world-specific data (i.e. ScriptableObjects)
-
-class Species(models.Model):
-    world = models.ForeignKey(World, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30, validators=[alphanumeric_validator])
-    description = models.TextField(max_length=100, null=True, blank=True)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name_plural = "species"
-        unique_together = [["world", "name"]]
-
 class Item(models.Model):
-    world = models.ForeignKey(World, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30, validators=[alphanumeric_validator])
+    DEFAULT = "default"
+    CLOTHING_TOP = "clothing_top"
+    CLOTHING_BOTTOM = "clothing_bottom"
+    CLOTHING_ACCESSORY = "clothing_accessory"
+    name = models.CharField(max_length=30, validators=[alphanumeric_validator], unique=True)
     description = models.TextField(blank=True)
     weight_kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
-    # item capabilities
-    # (could refactor using something like ECS down the road, if necessary)
     attack = models.PositiveIntegerField(null=True, blank=True)
     defense = models.PositiveIntegerField(null=True, blank=True)
-    healing = models.PositiveIntegerField(null=True, blank=True)
-    magic_cost = models.PositiveIntegerField(null=True, blank=True)
+    item_type_choices = (
+        (DEFAULT, DEFAULT),
+        (CLOTHING_TOP, CLOTHING_TOP),
+        (CLOTHING_BOTTOM, CLOTHING_BOTTOM),
+        (CLOTHING_ACCESSORY, CLOTHING_ACCESSORY),
+    )
+    item_type = models.CharField(max_length=20, choices=item_type_choices)
     def __str__(self):
         return self.name
-    class Meta:
-        unique_together = [["world", "name"]]
 
 # entities + components (i.e. GameObjects)
 
 class Entity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     world = models.ForeignKey(World, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, validators=[alphanumeric_validator])
+    name = models.CharField(max_length=100, validators=[alphanumeric_validator]) # could be broken out
     def __str__(self):
         return self.name
     class Meta:
@@ -103,32 +93,47 @@ class Component(models.Model):
     class Meta:
         abstract = True
 
+class Character(Component):
+    appearance = models.TextField(max_length=100)
+    personality = models.TextField(max_length=100)
+    class Meta:
+        abstract = True
+
+class Clothing(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.TextField()
+    appearance = models.CharField(max_length=100)
+    class Meta:
+        abstract = True
+
+class ClothingTop(Clothing):
+    pass
+
+class ClothingBottom(Clothing):
+    pass
+
+class ClothingAccessory(Clothing):
+    pass
+
+class Player(Character):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    clothing_top = models.ForeignKey(ClothingTop, null=True, blank=True, on_delete=models.SET_NULL)
+    clothing_bottom = models.ForeignKey(ClothingBottom, null=True, blank=True, on_delete=models.SET_NULL)
+    clothing_accessory = models.ForeignKey(ClothingAccessory, null=True, blank=True, on_delete=models.SET_NULL)
+
+class Npc(Character):
+    description = models.TextField(max_length=200)
+
 class Position(Component):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
-class Character(Component):
-    species = models.ForeignKey(Species, on_delete=models.RESTRICT)
-    player = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL) # NPC if player is None
-    appearance = models.TextField(max_length=100, null=True, blank=True)
-    personality = models.TextField(max_length=100, null=True, blank=True)
-
-class CharacterKnowledge(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    KNOWLEDGE_TYPES = (("location", "location"), ("character", "character"), ("item_instance", "item_instance"))
-    knowledge_type = models.CharField(max_length=20, choices=KNOWLEDGE_TYPES)
-    knowledge = models.TextField()
-
-class Killable(Component):
+class Health(Component):
     max_hp = models.PositiveIntegerField(validators=[MinValueValidator(1)], default=10)
     hp = models.PositiveIntegerField(default=10)
     @property
     def dead(self):
         return self.hp <= 0
     # TODO: constrain hp to < max_hp (clean method?)
-
-class MagicWielder(Component):
-    max_mp = models.PositiveIntegerField(default=10)
-    mp = models.PositiveIntegerField(default=10)
 
 class Traveler(Component):
     path = models.ForeignKey(Path, null=True, blank=True, on_delete=models.SET_NULL)
@@ -141,5 +146,6 @@ class Readable(Component):
 
 class ItemInstance(Component):
     item = models.ForeignKey(Item, on_delete=models.RESTRICT)
-    inventory = models.ForeignKey(Inventory, null=True, on_delete=models.SET_NULL)
+    inventory = models.ForeignKey(Inventory, null=True, blank=True, on_delete=models.SET_NULL)
     dropped_location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(0)], default=1)

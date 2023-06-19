@@ -10,9 +10,9 @@ def handle_command(character, raw_input):
     command, variable = parse_command(character, raw_input)
     if command is None:
         return "", "Command not recognized"
-    if(command.lower() == 'move'):
+    if(command == 'move'):
         return systems.move(character.entity, variable)
-    elif(command.lower() == 'attack'):
+    elif(command == 'attack'):
         return systems.attack(character.entity, variable)
     else:
         return "", "Command not recognized."
@@ -21,5 +21,5 @@ def parse_command(character, raw_input):
     for command, regex in commands.items():
         match = re.match(regex, raw_input, re.IGNORECASE)
         if match:
-            return command, match.group(1).strip()
+            return command.lower(), match.group(1).strip()
     return None, None

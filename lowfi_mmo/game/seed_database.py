@@ -2,15 +2,17 @@ import os
 import sys
 import django
 
-sys.path.append(os.path.abspath('..'))  # Adjust the path if needed
+sys.path.append(os.path.abspath('...'))  # Adjust the path if needed
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lowfi_mmo.settings")
 django.setup()
 
 from django.db import migrations
-from model_helpers import create_character, create_path, create_location, create_item_type, instantiate_item
-from game.models import World, Area, Location, Species, Item, ItemInstance, Entity
+from model_helpers import *
+from game.models import World, Area, Location, Item, ItemInstance, Entity, ClothingTop, ClothingBottom, ClothingAccessory
 from django.contrib.auth.models import User
 from django.db import transaction
+
+import itertools
 
 @transaction.atomic
 def seed_database():
@@ -18,92 +20,119 @@ def seed_database():
     existing_world = len(World.objects.all()) > 0
     if(existing_world):
         print("Existing data detected. Delete the database, run migrations, and then try again.")
+        return
 
     # Create an initial superuser
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'admin@fake.com', 'password')
+    if not User.objects.filter(username='admin.').exists():
+        user = User.objects.create_superuser('admin', 'admin@fake.com', 'password.')
 
     # Create world
-    central_earth = World.objects.create(name='Central Earth', owner=User.objects.first())
+    world = World.objects.create(name='Bungerville', owner=User.objects.first())
 
-    # Create overworld area
-    overworld = Area.objects.create(world=central_earth, name='Overworld', meters_per_unit = 1000)
+    # Create town area
+    town = Area.objects.create(world=world, name='Bungerville', meters_per_unit = 10)
 
-    castle = create_location(overworld, 'Central Earth Castle', 0, 0, 'A magnificent, regal, awe-inspiring castle in the center of the world')
-    mogus_village = create_location(overworld, 'Mogus Village', 2, 1, 'A small village near the heartland')
-    castle_town = create_location(overworld, 'Castle Town', 0, 0.5, 'A bustling metropolis just south of Central Earth Castle.')
-    deathville = create_location(overworld, 'Deathville', -1, -2, 'A ghost town on the way to Boardoor. Evil spirits are rumored to haunt this land.')
-    boardoor = create_location(overworld, 'Boardoor', -10, -20, 'An evil nation ruled by Earl: a giant glowing eyeball atop a menacing tower')
+    # main street
+    grubbers = create_location(town, "Grubbers", -50, 0, 'A hole-in-the-wall burger joint.')
+    wild_kingdom = create_location(town, 'Wild Kingdom', -40, 0, 'A wacky pet shop filled with many pungent odors.')
+    flannel_tastic = create_location(town, 'Flanneltastic', -30, 0, 'A down-to-earth clothing store primarily known for its flannel shirts.')
+    forgotten_pages = create_location(town, "Forgotten Pages", -20, 0, 'A store that collects and sells rare books.')
+    big_jim_pizza = create_location(town, "Big Jim Pizza", -10, 0, 'The most popular pizza restaurant in town.')
+    library = create_location(town, 'Library', 0, 0, 'The city library. It is fairly small, but packed to the rafters with books.')
+    iced_creams = create_location(town, 'Iced Creams', 10, 0, 'A run-down ice cream shop.')
 
-    create_path(castle, castle_town)
-    create_path(mogus_village, deathville)
-    create_path(deathville, boardoor)
-    create_path(castle_town, mogus_village)
+    # 100 S
+    curiosity_corner = create_location(town, 'Curiosity Corner', -50, -10, 'A pawn shop that dabbles in just about everything.')
+    astral_aura = create_location(town, 'Astral Aura', -40, -10, 'A spiritual shop for dedicated to improving people\'s auras through spirituality, meditation, and gemstones.')
+    second_chances = create_location(town, 'Second Chances', -30, -10, 'A pawn shop that has an intense rivalry with Curiosity Corner, another pawn shop.')
+    stockton_bank = create_location(town, 'Stockton Bank', -20, -10, 'A local bank that takes pride in serving farmers.')
+    cineplex = create_location(town, 'The Cineplex', -10, -10, 'A run-down movie theater that is never sold out.')
+    city_hall = create_location(town, 'City Hall', 0, -10, 'The political center of town.')
+    unity_chapel = create_location(town, 'Unity Chapel', 10, -10, 'The largest church in town. It is made of pale yellow bricks and has a large steeple.')
 
-    central_earth.spawn_point = mogus_village
-    mogus_village.save()
+    # main st paths
+    create_path(grubbers, wild_kingdom)
+    create_path(wild_kingdom, flannel_tastic)
+    create_path(flannel_tastic, forgotten_pages)
+    create_path(forgotten_pages, big_jim_pizza)
+    create_path(big_jim_pizza, library)
+    create_path(library, iced_creams)
+    
+    # 100 s paths
+    create_path(curiosity_corner, astral_aura)
+    create_path(astral_aura, second_chances)
+    create_path(second_chances, stockton_bank)
+    create_path(stockton_bank, cineplex)
+    create_path(cineplex, city_hall)
+    create_path(city_hall, unity_chapel)
 
-    # Create castle area and link to overworld
-    castle_interior = Area.objects.create(world=central_earth, name='Central Earth Castle Interior', meters_per_unit=1)
-    entrance = create_location(castle_interior, 'Castle Entrance', 0, 0)
-    create_path(entrance, castle)
+    # cross-street paths
+    create_path(grubbers, curiosity_corner)
+    create_path(wild_kingdom, astral_aura)
+    create_path(flannel_tastic, second_chances)
+    create_path(forgotten_pages, stockton_bank)
+    create_path(big_jim_pizza, cineplex)
+    create_path(library, city_hall)
 
-    armory = create_location(castle_interior, 'Armory', 50, 5)
-    armory_trash_chute = create_location(castle_interior, 'Armory Trash Chute', 50, 0)
-    throne_room = create_location(castle_interior, 'Throne Room', 0, 100)
-    kitchen = create_location(castle_interior, 'Kitchen', -25, 25)
-    library = create_location(castle_interior, 'Library', -50, 10)
-    library_closet = create_location(castle_interior, 'Library Closet', -50, 12)
+    # center street
+    highway_39 = create_location(town, 'Highway 39', 0, 120, 'A highway that leads to Turtle Mountain.')
+    game_haven = create_location(town, 'Game Haven', 0, 90, 'A game store that deals in card, board, and video games.')
+    speedy_mart = create_location(town, 'Speedy Mart', 0, 80, 'A seedy convenience store with a single, run-down gas pump outside.')
+    trendsetter_emporium = create_location(town, 'Trendsetter Emporium', 0, 70, 'A high-class fashion store.')
+    high_school = create_location(town, 'High School', 0, 40, 'The town high school.')
+    city_park = create_location(town, 'City Park', 0, 10, 'The city park, just north of the library.')
+    market_masters = create_location(town, 'Market Masters', 0, -20, 'An advertising startup that has grown rapidly in recent years.')
 
-    create_path(entrance, armory)
-    create_path(armory, armory_trash_chute, False)
-    create_path(entrance, throne_room)
-    create_path(entrance, library)
-    create_path(library, library_closet)
+    create_path(game_haven, speedy_mart)
+    create_path(speedy_mart, trendsetter_emporium)
+    create_path(trendsetter_emporium, city_park)
+    create_path(city_park, library)
+    create_path(library, market_masters)
 
-    # Create dungeon area and link it to castle
-    dungeon = Area.objects.create(world=central_earth, name='Central Earth Castle Dungeon', meters_per_unit=1, elevation=-20)
-    trash_pile = create_location(dungeon, 'Trash Pile', -50, 10)
-    prison_cells = create_location(dungeon, 'Prison Cells', 0, 0)
-    create_path(armory_trash_chute, trash_pile)
-    create_path(throne_room, prison_cells, name='Mysterious Trapdoor')
+    # where players live
+    apartments = create_location(town, "Apartment Complex", -30, 30)
+    create_path(apartments, library)
+    create_path(apartments, city_park)
+    create_path(apartments, high_school)
 
-    execution_chamber = create_location(dungeon, 'Execution Chamber', 50, 0)
-    evacuation_tunnel = create_location(dungeon, 'Secret Evacuation Tunnel', 50, -100)
-
-    create_path(trash_pile, prison_cells)
-    create_path(prison_cells, execution_chamber)
-    create_path(execution_chamber, evacuation_tunnel)
-    create_path(evacuation_tunnel, castle_town, False)
-
-    # Species
-    human = Species.objects.create(world=central_earth, name='Human')
-    dwarf = Species.objects.create(world=central_earth, name='Dwarf')
-    elf = Species.objects.create(world=central_earth, name='Elf')
+    # Create mountain area and link to town
+    turtle_mountain = Area.objects.create(world=world, name='Turtle Mountain', meters_per_unit=1000)
+    trailhead = create_location(turtle_mountain, 'Turtle Mountain Trailhead', 0, 0)
+    water_treatment_plant = create_location(turtle_mountain, 'Water Treatment Plant', 0.25, 0.4)
+    turtle_switchbacks = create_location(turtle_mountain, 'Switchbacks', 0.5, 0.5)
+    turtle_falls = create_location(turtle_mountain, 'Turtle Falls', 1.25, 0.75)
+    turtle_summit = create_location(turtle_mountain, 'Turtle Summit', 2, 0.8)
+    turtle_cave = create_location(turtle_mountain, 'Turtle Cave', 2.5, 0.75)
+    secret_bunker_entrance = create_location(turtle_mountain, 'Secret Bunker', 2.5, 0.75) # TODO: turn this into a path
+    
+    create_path(highway_39, trailhead)
+    create_path(trailhead, water_treatment_plant)
+    create_path(water_treatment_plant, turtle_switchbacks)
+    create_path(turtle_switchbacks, turtle_falls)
+    create_path(turtle_falls, turtle_summit)
+    create_path(turtle_summit, turtle_cave)
+    create_path(turtle_cave, secret_bunker_entrance)
 
     # Items
-    broadsword = create_item_type(central_earth, 'Broadsword', description='A broadsword', attack=3)
-    soup_ladel = create_item_type(central_earth, 'Soup Ladel', description='A large scooper for soup', attack=2)
-    sharp_stone = create_item_type(central_earth, 'Sharp Stone', description='A stone with numerous sharp edges', attack=2)
-    pitchfork = create_item_type(central_earth, 'Pitchfork', description='A large tool used by farmers', attack=3)
-    longbow = create_item_type(central_earth, 'Longbow', description='A large bow with a seemingly infinite amount of arrows', attack=2)
-    buckler = create_item_type(central_earth, 'Buckler', description='A simple shield', defense=1)
-    chain_mail = create_item_type(central_earth, 'Chain Mail', description='Chain-linked defensive clothing', defense=1)
-    apple = create_item_type(central_earth, 'Apple', description='A tasty snack', healing=1, weight_kg=0.1)
-    big_gun = create_item_type(central_earth, 'MASSIVE *#@#%#^&* GUN', description='A huge freaking gun', attack=8)
-    zombie_claws = create_item_type(central_earth, 'Zombie Claws', description='Zombie claws', attack=1)
+    t_shirt = create_item_type(ClothingTop, 'White T-Shirt.')
+    jeans = create_item_type(ClothingBottom, 'Blue Jeans.')
+    
+    create_npc(
+        world,
+        name="Grubby",
+        location=grubbers,
+        description="The owner of Grubster's Diner. Works long hours and is always willing to talk.",
+        appearance="A short, stout middle aged man with a grease-stained apron and hair net",
+        personality="Seems grumpy at first but quickly warms up to you. Very hardworking and focused.",
+    )
 
-    instantiate_item(central_earth, apple, dropped_location=trash_pile)
-
-    create_character(central_earth, "Urist", dwarf, mogus_village, User.objects.first(), items=[broadsword, buckler])
-    create_character(central_earth, "The Monarch", dwarf, throne_room, items=[chain_mail])
-    create_character(central_earth, "Feetless", elf, prison_cells, items=[longbow])
-    create_character(central_earth, "Farmer Joe", human, castle_town, items=[apple, apple, pitchfork])
-    create_character(central_earth, "Boris", human, castle_town, items=[apple])
-    create_character(central_earth, "Rabid Inmate", human, prison_cells, items=[sharp_stone])
-    create_character(central_earth, "Carl the Cook", human, kitchen, items=[soup_ladel])
-    create_character(central_earth, "Jimbo Swaggins", human, mogus_village, items=[apple])
-    create_character(central_earth, "Fat Zombie", human, deathville, items=[zombie_claws, sharp_stone])
-    create_character(central_earth, "Musculous Earl", human, boardoor, items=[big_gun, buckler])
+    create_player(
+        world,
+        name="Josh",
+        user=user,
+        location=apartments,
+        appearance="Blond hair",
+        personality="A total jerk",
+    )
 
 seed_database()

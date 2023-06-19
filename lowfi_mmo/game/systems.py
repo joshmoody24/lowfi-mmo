@@ -10,8 +10,10 @@ def move(entity, target_location): # todo: make this a traveler
     if(target_path):
         position.location = target_path.end
         position.save()
-        return f"{entity.name} moved to {target_location}", ""
+        return f"{entity.name} moved to {target_path.end}", ""
     else:
+        if(target_location.lower() == position.location.name.lower()):
+            return "", f"You are already at {position.location.name}"
         return "", f"No nearby location named \"{target_location}\""
 
 @transaction.atomic
@@ -26,14 +28,11 @@ def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
         return f"{attacker_entity.name} looked around for {defender_name}, but couldn't find anyone by that name to attack.", ""
     
     # make sure defender is not already dead
-    defender_health = models.Killable.objects.filter(entity=defender_entity).first()
+    defender_health = models.Health.objects.filter(entity=defender_entity).first()
     if(defender_health and defender_health.hp <= 0):
         return f"{defender_entity.name} is already dead, but {attacker_entity.name} kicked them a few times just to be sure.", ""
 
-    # make sure the attacker is capable of attacking
-    attacker_character = models.Character.objects.filter(entity=attacker_entity).first()
-    if(not attacker_entity):
-        return battle_so_far, f"{attacker_entity.name} is not capable of attacking."
+    # TODO: make sure the attacker is capable of attacking
 
     # attack calculation
     attacker_inventory = models.Inventory.objects.filter(entity=attacker_entity).first()
@@ -65,9 +64,9 @@ def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
         defender_health.save()
 
     battle_so_far += f"""
-    {attacker_entity.name} {'attacked' if retaliation == False else 'retaliated'} with {', '.join(list(*weapons.values_list('item__name'))) or 'their fists'}.
-    {defender_entity.name} defended with {', '.join(list(*defenses.values_list('item__name'))) or 'their fists'}.
-    {defender_entity.name} took {damage} damage{' and died' if defender_health.dead else ''}.
+    {attacker_entity.name} {'attacked' if retaliation == False else 'retaliated'} with {', '.join(list([x[0] for x in weapons.values_list('item__name')])) or 'their fists'}.
+    {defender_entity.name} defended with {', '.join(list([x[0] for x in defenses.values_list('item__name')])) or 'their fists'}.
+    {defender_entity.name} took {damage} damage{' and died' if defender_health and defender_health.dead else ''}.
     """
 
     if(not retaliation):
