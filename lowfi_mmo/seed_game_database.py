@@ -2,12 +2,11 @@ import os
 import sys
 import django
 
-sys.path.append(os.path.abspath('...'))  # Adjust the path if needed
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lowfi_mmo.settings")
 django.setup()
 
 from django.db import migrations
-from model_helpers import *
+from game.model_helpers import *
 from game.models import World, Area, Location, Item, ItemInstance, Entity, ClothingTop, ClothingBottom, ClothingAccessory
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -23,8 +22,11 @@ def seed_database():
         return
 
     # Create an initial superuser
-    if not User.objects.filter(username='admin.').exists():
-        user = User.objects.create_superuser('admin', 'admin@fake.com', 'password.')
+    if not User.objects.filter(username='admin').exists():
+        user = User.objects.create_superuser('admin', 'admin@fake.com', 'password')
+        print("New admin user created")
+    else:
+        print("Admin already exists")
 
     # Create world
     world = World.objects.create(name='Bungerville', owner=User.objects.first())
@@ -113,9 +115,9 @@ def seed_database():
     create_path(turtle_summit, turtle_cave)
     create_path(turtle_cave, secret_bunker_entrance)
 
-    # Items
-    t_shirt = create_item_type(ClothingTop, 'White T-Shirt.')
-    jeans = create_item_type(ClothingBottom, 'Blue Jeans.')
+    # Clothing
+    t_shirt = ClothingTop.objects.create(name="White T-Shirt", appearance="A plain white T-shirt")
+    jeans = ClothingBottom.objects.create(name="Blue Jeans", appearance="A worn-down pair of blue jeans")
     
     create_npc(
         world,
@@ -133,6 +135,8 @@ def seed_database():
         location=apartments,
         appearance="Blond hair",
         personality="A total jerk",
+        clothing_top=t_shirt,
+        clothing_bottom=jeans,
     )
 
 seed_database()
