@@ -1,27 +1,23 @@
 {% extends "base.html" %}
 
-{% block content %}
-<h1>Worlds</h1>
+{% block title %}Worlds{% endblock %}
+{% block header %}Worlds{% endblock %}
 
-{% if world_count > 0 %}
+{% block content %}
 <h2>Owned Worlds</h2>
-<ul>
-    {% for world in owned_worlds %}
-        <li>
-            <a role="button" href="{% url 'world_details' world_id=world.id %}">{{ world }}</a>
-        </li>
-    {% endfor %}
-</ul>
-<h2>Other Worlds</h2>
-<ul>
-    {% for world in participant_worlds %}
-        <li>
-            <a role="button" href="{% url 'world_details' world_id=world.id %}">{{ world }}</a>
-        </li>
-    {% endfor %}
-</ul>
-</li>
-{% else %}
+{% for world in owned_worlds %}
+<p>
+    <a class="button" href="{% url 'world_details' world_id=world.id %}">{{ world }}</a>
+</p>
+{% empty %}
 <p>No worlds found.</p>
-{% endif %}
+{% endfor %}
+<h2>Other Worlds</h2>
+{% for world in participant_worlds %}
+<p>
+    <a class="button" href="{% url 'world_details' world_id=world.id %}">{{ world }}</a>
+</p>
+{% empty %}
+<p>No worlds found.</p>
+{% endfor %}
 {% endblock %}

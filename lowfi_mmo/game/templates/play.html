@@ -1,57 +1,60 @@
 {% extends "base.html" %}
 
+{% block title %}{{ player }}{% endblock %}
+{% block header %}{{ player }}{% endblock %}
+
 {% block content %}
 
-<hgroup>
-    <h1>{{ player_character.entity.name }}</h1>
-    <h2>HP: {{ hp.hp }}/{{ hp.max_hp }}</h2>
-</hgroup>
-
-<p>
-    <strong>{{ location }}</strong> - <small>{{ location.area }}</small>
-</p>
-<p>{{ location.description }}.</p>
-
-{% if nearby_npcs|length > 0 %}
-<strong>Nearby Characters:</strong>
-<ul>
-    {% for character in nearby_npcs %}
-        <li>{{ character }}</li>
-    {% endfor %}
-</ul>
+{% if message %}
+<p>{{ message | linebreaksbr }}</p>
 {% endif %}
 
-<strong>Nearby Locations:</strong>
-<ul>
+<details>
+    <summary>{{ player.location }}</summary>
+    <p>{{ player.location.description | linebreaks }}</p>
+    <p>{{ player.location }} is a location in {{ player.location.area }}</p>
+</details>
+
+{% if nearby_npcs|length > 0 %}
+<details>
+    <summary>Nearby characters</summary>
+    <ul>
+        {% for character in nearby_npcs %}
+        <li>{{ character }}</li>
+        {% endfor %}
+    </ul>
+</details>
+{% endif %}
+
+<details>
+    <summary>Nearby locations</summary>
+    <ul>
     {% for path in paths %}
         <li>
             {{ path.end.name }}
-            {% if path.end.area != location.area %}
+            {% if path.end.area != player.location.area %}
             <em>- {{ path.end.area }}</em>
             {% endif %}
         </li>
     {% endfor %}
-</ul>
+    </ul>
+</details>
 
-{% if message %}
-<p><ins>{{ message | linebreaksbr }}</ins></p>
-{% endif %}
+<article>
+    <form method="post">
+        {% csrf_token %}
+        <label for="command">What will you do next?</label>
+        <input id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" />
+        {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+        <input type="submit" />
+    </form>
+</article>
 
-
-<form method="post">
-    {% csrf_token %}
-    <input id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" />
-    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-    <input type="submit" />
-</form>
-
-<h2>
-    Command Help
-</h2>
-<ul>
-    <li>Go to <em>location</em>
-    <li>Attack <em>character</em>
-</ul>
+<details>
+    <summary>Command Help</summary>
+    <p>Go to <em>location</em></p>
+    <p>Attack <em>character</em></p>
+</details>
 
 <script>
     let input = document.getElementById("command");

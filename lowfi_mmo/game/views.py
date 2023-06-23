@@ -11,25 +11,21 @@ def index(request):
 @login_required
 def play(request, world_id, character_id):
 
-    character = models.Player.objects.get(entity__world__id=world_id, entity__id=character_id)
+    player = models.Player.objects.get(world__id=world_id, id=character_id)
 
     command_result = ""
     error = ""
 
     if(request.method=="POST"):
         command = request.POST.get('command')
-        command_result, error = handle_command(character, command)
+        command_result, error = handle_command(player, command)
 
-    position = models.Position.objects.get(entity=character.entity)
-    paths = models.Path.objects.filter(start=position.location)
-    entity_ids = models.Position.objects.filter(location=position.location).values('entity_id')
-    nearby_npcs = models.Npc.objects.filter(entity_id__in=Subquery(entity_ids))
-    nearby_players = models.Player.objects.filter(entity_id__in=Subquery(entity_ids)).exclude(id=character.id)
+    paths = models.Path.objects.filter(start=player.location)
+    nearby_npcs = models.Npc.objects.filter(location=player.location)
+    nearby_players = models.Player.objects.filter(location=player.location)
 
     context = {
-        "player_character": character,
-        "hp": models.Health.objects.filter(entity=character.entity).first(),
-        "location": position.location,
+        "player": player,
         "nearby_npcs": nearby_npcs,
         "nearby_players": nearby_players,
         "paths": paths,
@@ -88,9 +84,7 @@ def world_details(request, world_id):
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
         return HttpResponseNotFound("World not found.")
     
-    # imperative due to locaftion hierarchy. Could improve if this becomes bottleneck
     player_character = models.Player.objects.get(user=request.user)
-    print(player_character.entity.id)
     
     context = {
         "world": world,
@@ -136,6 +130,3 @@ def character_create(request, world_id):
         "form_submit": "Create Character",
     }
     return render(request, "form.html", context)
-
-def example(request):
-    return render(request, "pico_example.html")

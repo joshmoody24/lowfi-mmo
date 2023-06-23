@@ -11,9 +11,9 @@ def handle_command(character, raw_input):
     if command is None:
         return "", "Command not recognized"
     if(command == 'move'):
-        return systems.move(character.entity, variable)
+        return systems.move(character, variable)
     elif(command == 'attack'):
-        return systems.attack(character.entity, variable)
+        return systems.attack(character, variable)
     else:
         return "", "Command not recognized."
 

@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
+{% block title %}Profile{% endblock %}
+{% block header %}Profile{% endblock %}
+
 {% block content %}
-<h1>Profile</h1>
+<p>
+    <a class="button" href="{% url 'world_list' %}">View Worlds</a>
+    <a class="button" href="{% url 'world_copy' %}">New World</a>
+</p>
 <form method="post">
     {% csrf_token %}
     <label for="email">Email</label>
@@ -17,9 +23,12 @@
     <input type="last-name" name="last-name" id="last-name" placeholder="Last Name" value="{{ user.last_name }}" required {% if not edit_mode %}disabled{% endif %}>
 
     {% if edit_mode %}
+    <br>
     <input type="submit" value="Save Changes">
     {% else %}
-    <a role="button" style="width:100%;" href="{% url 'profile_edit' %}">Edit Profile</a>
+    <p>
+        <a class="button" style="width:100%;" href="{% url 'profile_edit' %}">Edit Profile</a>
+    </p>
     {% endif %}
 </form>
 

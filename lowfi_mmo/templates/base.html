@@ -4,11 +4,24 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="A low-fi fantasy MMO that can be played over email">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-        <title>VentureVerse</title>
+        <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+        <!-- alternative styling: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"> -->
+        <title>{% block title %}Home{% endblock %} | VentureVerse</title>
+        <style>
+            :root {
+                --accent: #00b3ff;
+                --bg: #212125;
+                --accent-bg: #2b2b2f;
+            }
+        </style>
     </head>
     <body>
-        {% include "navbar.html" %}
+        <header>
+            <nav>
+                {% include "nav_links.html" %}
+                <h1>{% block header %}VentureVerse{% endblock %}</h1>
+            </nav>
+        </header>
         <main class="container">
             {% block content %}{% endblock %}
         </main>

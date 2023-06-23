@@ -4,7 +4,7 @@ from django.shortcuts import reverse
 from django.contrib.auth.models import User
 
 def profile(request):
-    return render(request, "profile.html")
+    return render(request, "profile.html", {"title": "Profile"})
 
 def profile_edit(request):
     if(request.method == "POST"):
@@ -14,4 +14,4 @@ def profile_edit(request):
         request.user.save()
         return redirect("profile")
         
-    return render(request, "profile.html", {"edit_mode": True})
+    return render(request, "profile.html", {"edit_mode": True, "title": "Edit Profile"})

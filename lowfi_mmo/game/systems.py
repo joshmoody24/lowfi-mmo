@@ -3,17 +3,16 @@ from django.db.models import Sum, Max
 from django.db import transaction
 
 @transaction.atomic
-def move(entity, target_location): # todo: make this a traveler
-    position = models.Position.objects.get(entity=entity)
-    paths = models.Path.objects.filter(start=position.location)
+def move(character, target_location): # todo: make this a traveler
+    paths = models.Path.objects.filter(start=character.location)
     target_path = paths.filter(end__name__iexact=target_location).first()
     if(target_path):
-        position.location = target_path.end
-        position.save()
-        return f"{entity.name} moved to {target_path.end}", ""
+        character.location = target_path.end
+        character.save()
+        return f"{character.name} moved to {target_path.end}", ""
     else:
-        if(target_location.lower() == position.location.name.lower()):
-            return "", f"You are already at {position.location.name}"
+        if(target_location.lower() == character.location.name.lower()):
+            return "", f"You are already at {character.location.name}"
         return "", f"No nearby location named \"{target_location}\""
 
 @transaction.atomic
