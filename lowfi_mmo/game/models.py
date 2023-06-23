@@ -89,7 +89,8 @@ class ClothingBottom(Clothing):
     pass
 
 class ClothingAccessory(Clothing):
-    pass
+    class Meta:
+        verbose_name_plural = "clothing accessories"
 
 # entities + components (i.e. GameObjects)
 
@@ -178,6 +179,7 @@ class TopicConnection(models.Model):
     
 class TopicContext(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    relationship = models.TextField(blank=True)
     class Meta:
         abstract = True
 
