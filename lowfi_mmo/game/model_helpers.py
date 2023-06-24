@@ -1,35 +1,7 @@
 from game import models
 import uuid
 
-def create_player(
-        world,
-        name,
-        user,
-        appearance,
-        personality,
-        location,
-        items=[],
-        clothing_top=None,
-        clothing_bottom=None,
-        clothing_accessory=None
-    ):
-    player = models.Player.objects.create(
-        world=world,
-        name=name,
-        user=user,
-        location=location,
-        clothing_top=clothing_top,
-        clothing_bottom=clothing_bottom,
-        clothing_accessory=clothing_accessory,
-        appearance=appearance, 
-        personality=personality,
-    )
-    for item in items:
-        player.items.add(item)
-    return player
-    
-
-def create_npc(
+def create_character(
         world,
         name,
         appearance,
@@ -37,27 +9,29 @@ def create_npc(
         description,
         location,
         items=[],
+        user=None,
     ):
-    npc = models.Npc.objects.create(
+    character = models.Character.objects.create(
         world=world,
         name=name,
-        appearance=appearance, 
+        user=user,
         location=location,
+        description=description,
+        appearance=appearance, 
         personality=personality,
-        description=description
     )
     for item in items:
-        npc.items.add(item)
-    return npc
+        character.items.add(item)
+    return character
 
-def create_path(start, end, two_way=True, name=""):
+def create_path(world, start, end, two_way=True, name=""):
     paths = []
-    paths.append(models.Path.objects.create(start=start, end=end, name=name))
-    if(two_way): paths.append(models.Path.objects.create(start=end, end=start, name=name))
+    paths.append(models.Path.objects.create(world=world, start=start, end=end, name=name))
+    if(two_way): paths.append(models.Path.objects.create(world=world, start=end, end=start, name=name))
     return paths
 
-def create_location(area, name, x, y, description=""):
-    return models.Location.objects.create(area=area, name=name, x=x, y=y, description=description)
+def create_location(world, area, name, x, y, description=""):
+    return models.Location.objects.create(world=world, area=area, name=name, x=x, y=y, description=description)
 
-def create_item_type(name, description="", weight_kg=1.0, attack=None, defense=None):
-    return models.Item.objects.create(name=name, description=description, weight_kg=weight_kg, attack=attack, defense=defense)
+def create_item_type(world, name, description="", weight_kg=1.0, attack=None, defense=None):
+    return models.ItemPrefab.objects.create(world=world, name=name, description=description, weight_kg=weight_kg, attack=attack, defense=defense)

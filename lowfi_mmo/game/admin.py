@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.forms import TextInput, Textarea
 from game import models
 import django.db.models as django_models
+from django.contrib.contenttypes.admin import GenericTabularInline
+from django.contrib.contenttypes.models import ContentType
 
 class CollapsibleTabularInline(admin.TabularInline):
     classes = ["collapse"]
@@ -41,12 +43,6 @@ class LocationAdmin(admin.ModelAdmin):
     inlines = [StartPathAdmin, EndPathAdmin, ItemInstanceInline]
     search_fields = ["name", "description"]
 
-class PlayerInline(admin.StackedInline):
-    model = models.Player
-
-class NpcInline(admin.StackedInline):
-    model = models.Npc
-
 class InventoryItemInline(CollapsibleTabularInline):
     model = models.InventoryItem
     autocomplete_fields = ["item"]
@@ -61,9 +57,6 @@ class NpcAdmin(CharacterAdmin):
         (None, {"fields": ["world", "name", "location", "appearance", "personality", "description"]}),
         ("Advanced options", {"fields": ["carry_limit"], "classes": ["collapse"]})
     ]
-
-class PlayerAdmin(CharacterAdmin):
-    autocomplete_fields = CharacterAdmin.autocomplete_fields + ["user", "clothing_top", "clothing_bottom", "clothing_accessory"]
 
 class ConversationParticipantInline(CollapsibleTabularInline):
     model = models.ConversationParticipant
@@ -81,31 +74,16 @@ class ToTopicConnectionInline(CollapsibleTabularInline):
     model = models.TopicConnection
     fk_name = "to_topic"
 
-class ContextInline(CollapsibleTabularInline):
-    formfield_overrides = {django_models.TextField: {'widget': Textarea(attrs={'rows':3, 'cols':40})}}
-
-class AreaContextInline(ContextInline):
-    model = models.AreaContext
-    autocomplete_fields = ["area"]
-
-class LocationContextInline(ContextInline):
-    model = models.LocationContext
-    autocomplete_fields = ["location"]
-
-class NpcContextInline(ContextInline):
-    model = models.NpcContext
-    autocomplete_fields = ["npc"]
-
-class ItemContextInline(ContextInline):
-    model = models.ItemContext
-    autocomplete_fields = ["item"]
+class ContextInline(GenericTabularInline):
+    model = models.TopicContext
+    ct_field = "context_type"
+    ct_fk_field = "context_object_id"
+    extra = 1
+    # formfield_overrides = {django_models.TextField: {'widget': Textarea(attrs={'rows':3, 'cols':40})}}
 
 class TopicAdmin(admin.ModelAdmin):
     inlines = [
-        AreaContextInline,
-        LocationContextInline,
-        NpcContextInline,
-        ItemContextInline,
+        ContextInline,
         FromTopicConnectionInline,
         ToTopicConnectionInline,
     ]
@@ -119,23 +97,15 @@ class ItemAdmin(admin.ModelAdmin):
 
 class ItemInstanceAdmin(admin.ModelAdmin):
     autocomplete_fields = ["item", "location"]
-
-class ClothingAdmin(admin.ModelAdmin):
-    search_fields = ["name", "appearance"]
     
 # base models
 
 admin.site.register(models.World, WorldAdmin)
 admin.site.register(models.Area, AreaAdmin)
 admin.site.register(models.Location, LocationAdmin)
-admin.site.register(models.Player, PlayerAdmin)
-admin.site.register(models.Npc, NpcAdmin)
 admin.site.register(models.Character, CharacterAdmin)
-admin.site.register(models.Item, ItemAdmin)
+admin.site.register(models.ItemPrefab, ItemAdmin)
 admin.site.register(models.ItemInstance, ItemInstanceAdmin)
-admin.site.register(models.ClothingTop, ClothingAdmin)
-admin.site.register(models.ClothingBottom, ClothingAdmin)
-admin.site.register(models.ClothingAccessory, ClothingAdmin)
 
 
 # conversation models

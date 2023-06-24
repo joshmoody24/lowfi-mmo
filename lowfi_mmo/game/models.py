@@ -4,6 +4,8 @@ import uuid
 from django.core.validators import RegexValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 
 alphanumeric_validator = RegexValidator(
     r'^[a-zA-Z0-9\s\']*$',
@@ -26,11 +28,18 @@ class WorldMember(models.Model):
     def __str__(self):
         return f"{self.user} - {self.world}"
     
-# high-level geographical info for high-level gameplay (i.e. Scenes)
-
-class Area(models.Model):
+class Entity(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     world = models.ForeignKey(World, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, validators=[alphanumeric_validator])
+    name = models.CharField(max_length=30, validators=[alphanumeric_validator]) # could be broken out
+    def __str__(self):
+        return self.name
+    class Meta:
+        abstract = True
+        ordering = ['name']
+        unique_together = [["world", "name"]]
+
+class Area(Entity):
     meters_per_unit = models.FloatField(validators=[MinValueValidator(0.0)])
     elevation = models.FloatField(default=0.0)
     def __str__(self):
@@ -38,9 +47,8 @@ class Area(models.Model):
     class Meta:
         ordering = ['name']
     
-class Location(models.Model):
+class Location(Entity):
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, validators=[alphanumeric_validator], unique=True)
     x = models.FloatField()
     y = models.FloatField()
     description = models.TextField(blank=True)
@@ -49,12 +57,11 @@ class Location(models.Model):
     class Meta:
         ordering = ['name']
     
-class Path(models.Model):
+class Path(Entity):
     start = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="start_paths")
     end = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="end_paths")
     custom_distance = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)])
     movement_cost_multiplier = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
-    name = models.CharField(max_length=30, blank=True)
     description = models.CharField(max_length=100, blank=True)
     def clean(self):
         if self.start == self.end:
@@ -64,87 +71,30 @@ class Path(models.Model):
     class Meta:
         unique_together = [["start", "end"]]
 
-class Item(models.Model):
-    name = models.CharField(max_length=30, validators=[alphanumeric_validator], unique=True)
+class ItemPrefab(Entity):
     description = models.TextField(blank=True)
     weight_kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
     value = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
     readable_message = models.TextField(max_length=500, null=True, blank=True)
     def __str__(self):
         return self.name
-    
-class Clothing(models.Model):
-    name = models.CharField(max_length=30)
-    appearance = models.TextField(max_length=100)
-    value = models.DecimalField(max_digits=5, decimal_places=2, default=10.00, validators=[MinValueValidator(0.00)])
-    def __str__(self):
-        return self.name
-    class Meta:
-        abstract = True
-
-class ClothingTop(Clothing):
-    pass
-
-class ClothingBottom(Clothing):
-    pass
-
-class ClothingAccessory(Clothing):
-    class Meta:
-        verbose_name_plural = "clothing accessories"
-
-# entities + components (i.e. GameObjects)
-
-class Entity(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    world = models.ForeignKey(World, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30, validators=[alphanumeric_validator], unique=True) # could be broken out
-    def __str__(self):
-        return self.name
-    class Meta:
-        abstract = True
-        ordering = ['name']
 
 class Character(Entity):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    items = models.ManyToManyField(Item, through="InventoryItem")
-    appearance = models.TextField(max_length=100)
-    personality = models.TextField(max_length=100)
+    appearance = models.TextField(max_length=200)
+    personality = models.TextField(max_length=200)
+    description = models.TextField(max_length=200)
+    items = models.ManyToManyField(ItemPrefab, through="InventoryItem")
     carry_limit = models.PositiveIntegerField(default=10)
 
-class Player(Character):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    clothing_top = models.ForeignKey(ClothingTop, null=True, blank=True, on_delete=models.SET_NULL)
-    clothing_bottom = models.ForeignKey(ClothingBottom, null=True, blank=True, on_delete=models.SET_NULL)
-    clothing_accessory = models.ForeignKey(ClothingAccessory, null=True, blank=True, on_delete=models.SET_NULL)
-
-class ClothingInstance(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    clothing = "Abstract Clothing"
-    def __str__(self):
-        return self.clothing
-    class Meta:
-        abstract = True
-        unique_together=[["player", "clothing"]]
-
-class ClothingTopInstance(ClothingInstance):
-    clothing = models.ForeignKey(ClothingTop, on_delete=models.CASCADE)
-
-class ClothingBottomInstance(ClothingInstance):
-    clothing = models.ForeignKey(ClothingBottom, on_delete=models.CASCADE)
-    
-class ClothingAccessoryInstance(ClothingInstance):
-    clothing = models.ForeignKey(ClothingAccessory, on_delete=models.CASCADE)
-
-class Npc(Character):
-    description = models.TextField(max_length=200)
-
 class InventoryItem(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemPrefab, on_delete=models.CASCADE)
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)], default=1)
 
 class ItemInstance(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.RESTRICT)
+    item = models.ForeignKey(ItemPrefab, on_delete=models.RESTRICT)
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(0)], default=1)
     class Meta:
@@ -166,7 +116,7 @@ class ConversationParticipant(models.Model):
     class Meta:
         unique_together = [["conversation", "character"]]
 
-class Topic(models.Model):
+class Topic(Entity):
     name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
@@ -180,25 +130,8 @@ class TopicConnection(models.Model):
 class TopicContext(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     relationship = models.TextField(blank=True)
+    context_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    context_object_id = models.UUIDField()
+    context_object = GenericForeignKey("context_type", "context_object_id")
     class Meta:
-        abstract = True
-
-class AreaContext(TopicContext):
-    area = models.ForeignKey(Area, on_delete=models.CASCADE)
-    def __str__(self):
-        return f"Area context for {self.topic} ({self.area})"
-    
-class LocationContext(TopicContext):
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    def __str__(self):
-        return f"Location context for {self.topic} ({self.location})"
-    
-class NpcContext(TopicContext):
-    npc = models.ForeignKey(Npc, on_delete=models.CASCADE)
-    def __str__(self):
-        return f"Npc context for {self.topic} ({self.npc})"
-    
-class ItemContext(TopicContext):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    def __str__(self):
-        return f"Location context for {self.topic} ({self.item})"
+        indexes = [models.Index(fields=["context_type", "context_object_id"])]
