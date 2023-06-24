@@ -18,6 +18,7 @@ class WorldAdmin(admin.ModelAdmin):
 
 class LocationInline(CollapsibleTabularInline):
     model = models.Location
+    formfield_overrides = {django_models.TextField: {'widget': Textarea(attrs={'rows':1, 'cols':40})}}
 
 class AreaAdmin(admin.ModelAdmin):
     inlines = [LocationInline]
@@ -36,27 +37,31 @@ class EndPathAdmin(CollapsibleTabularInline):
     verbose_name_plural = "Paths that lead here"
 
 class ItemInstanceInline(CollapsibleTabularInline):
-    model = models.ItemInstance
+    model = models.DroppedItem
     autocomplete_fields = ['item', 'location']
     
 class LocationAdmin(admin.ModelAdmin):
     inlines = [StartPathAdmin, EndPathAdmin, ItemInstanceInline]
     search_fields = ["name", "description"]
+    list_filter = ["area"]
 
 class InventoryItemInline(CollapsibleTabularInline):
     model = models.InventoryItem
     autocomplete_fields = ["item"]
 
+class PlayerTraitsInline(admin.StackedInline):
+    model = models.PlayerTraits
+
+class PlayerAdmin(admin.ModelAdmin):
+    inlines = [PlayerTraitsInline]
+
+class NpcTraitsInline(CollapsibleTabularInline):
+    model = models.NpcPrefab
+
 class CharacterAdmin(admin.ModelAdmin):
     inlines = [InventoryItemInline]
-    search_fields = ["name", "appearance", "personality"]
+    search_fields = ["traits__name", "traits__appearance", "traits__personality"]
     autocomplete_fields = ["world", "location"]
-
-class NpcAdmin(CharacterAdmin):
-    fieldsets = [
-        (None, {"fields": ["world", "name", "location", "appearance", "personality", "description"]}),
-        ("Advanced options", {"fields": ["carry_limit"], "classes": ["collapse"]})
-    ]
 
 class ConversationParticipantInline(CollapsibleTabularInline):
     model = models.ConversationParticipant
@@ -66,27 +71,27 @@ class ConversationAdmin(admin.ModelAdmin):
     inlines = [ConversationParticipantInline]
     autocomplete_fields = ["setting"]
 
-class FromTopicConnectionInline(CollapsibleTabularInline):
-    model = models.TopicConnection
-    fk_name = "from_topic"
+# class FromTopicConnectionInline(CollapsibleTabularInline):
+#     model = models.TopicConnection
+#     fk_name = "from_topic"
 
-class ToTopicConnectionInline(CollapsibleTabularInline):
-    model = models.TopicConnection
-    fk_name = "to_topic"
+# class ToTopicConnectionInline(CollapsibleTabularInline):
+#     model = models.TopicConnection
+#     fk_name = "to_topic"
 
-class ContextInline(GenericTabularInline):
-    model = models.TopicContext
-    ct_field = "context_type"
-    ct_fk_field = "context_object_id"
-    extra = 1
-    # formfield_overrides = {django_models.TextField: {'widget': Textarea(attrs={'rows':3, 'cols':40})}}
+# class ContextInline(GenericTabularInline):
+#     model = models.TopicContext
+#     ct_field = "context_type"
+#     ct_fk_field = "context_object_id"
+#     extra = 1
+#     # formfield_overrides = {django_models.TextField: {'widget': Textarea(attrs={'rows':3, 'cols':40})}}
 
-class TopicAdmin(admin.ModelAdmin):
-    inlines = [
-        ContextInline,
-        FromTopicConnectionInline,
-        ToTopicConnectionInline,
-    ]
+# class TopicAdmin(admin.ModelAdmin):
+#     inlines = [
+#         ContextInline,
+#         FromTopicConnectionInline,
+#         ToTopicConnectionInline,
+#     ]
 
 class ItemAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -103,12 +108,14 @@ class ItemInstanceAdmin(admin.ModelAdmin):
 admin.site.register(models.World, WorldAdmin)
 admin.site.register(models.Area, AreaAdmin)
 admin.site.register(models.Location, LocationAdmin)
-admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ItemPrefab, ItemAdmin)
-admin.site.register(models.ItemInstance, ItemInstanceAdmin)
+admin.site.register(models.DroppedItem, ItemInstanceAdmin)
+admin.site.register(models.NpcPrefab)
+admin.site.register(models.Player, PlayerAdmin)
+admin.site.register(models.NpcInstance)
 
 
 # conversation models
 
-admin.site.register(models.Conversation, ConversationAdmin)
-admin.site.register(models.Topic, TopicAdmin)
+# admin.site.register(models.Conversation, ConversationAdmin)
+# admin.site.register(models.Topic, TopicAdmin)

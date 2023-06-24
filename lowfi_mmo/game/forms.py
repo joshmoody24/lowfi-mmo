@@ -19,6 +19,6 @@ class CharacterForm(ModelForm):
         if(map is not None):
             self.fields['location'].queryset = models.Location.objects.filter(map=map)
     class Meta:
-        model = models.Character
+        model = models.CharacterInstance
         fields = "__all__"
         exclude = ["user"]

@@ -39,7 +39,7 @@ def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
         weapons = []
         total_attack = 1
     else:
-        weapons = models.ItemInstance.objects.filter(inventory=attacker_inventory, item__attack__isnull=False)
+        weapons = models.DroppedItem.objects.filter(inventory=attacker_inventory, item__attack__isnull=False)
         total_attack = weapons.aggregate(Sum('item__attack'))['item__attack__sum']
         if(total_attack is None): total_attack = 1
 
@@ -49,7 +49,7 @@ def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
         defenses = []
         total_defense = 0
     else:
-        defenses = models.ItemInstance.objects.filter(inventory=defender_inventory, item__defense__isnull=False)
+        defenses = models.DroppedItem.objects.filter(inventory=defender_inventory, item__defense__isnull=False)
         total_defense = defenses.aggregate(Sum('item__defense'))['item__defense__sum']
         if(total_defense is None): total_defense = 0
 

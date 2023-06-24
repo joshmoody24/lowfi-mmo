@@ -21,7 +21,7 @@ def play(request, world_id, character_id):
         command_result, error = handle_command(player, command)
 
     paths = models.Path.objects.filter(start=player.location)
-    nearby_npcs = models.Npc.objects.filter(location=player.location)
+    nearby_npcs = models.NpcInstance.objects.filter(location=player.location)
     nearby_players = models.Player.objects.filter(location=player.location)
 
     context = {

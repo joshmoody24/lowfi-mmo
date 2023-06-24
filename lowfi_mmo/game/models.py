@@ -21,6 +21,7 @@ class World(models.Model):
         return self.name
     class Meta:
         ordering = ['name']
+        unique_together = [["owner", "name"]]
     
 class WorldMember(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
@@ -29,7 +30,6 @@ class WorldMember(models.Model):
         return f"{self.user} - {self.world}"
     
 class Entity(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, validators=[alphanumeric_validator]) # could be broken out
     def __str__(self):
@@ -39,7 +39,8 @@ class Entity(models.Model):
         ordering = ['name']
         unique_together = [["world", "name"]]
 
-class Area(Entity):
+class Area(models.Model):
+    name = models.CharField(max_length=30, validators=[alphanumeric_validator])
     meters_per_unit = models.FloatField(validators=[MinValueValidator(0.0)])
     elevation = models.FloatField(default=0.0)
     def __str__(self):
@@ -47,7 +48,8 @@ class Area(Entity):
     class Meta:
         ordering = ['name']
     
-class Location(Entity):
+class Location(models.Model):
+    name = models.CharField(max_length=30, validators=[alphanumeric_validator])
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     x = models.FloatField()
     y = models.FloatField()
@@ -56,51 +58,104 @@ class Location(Entity):
         return self.name
     class Meta:
         ordering = ['name']
+        unique_together = [["name", "area"]]
     
-class Path(Entity):
+class Path(models.Model):
+    name = models.CharField(max_length=30, blank=True, validators=[alphanumeric_validator])
     start = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="start_paths")
     end = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="end_paths")
     custom_distance = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)])
     movement_cost_multiplier = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
     description = models.CharField(max_length=100, blank=True)
     def clean(self):
-        if self.start == self.end:
+        if self.start_id == self.end_id:
             raise ValidationError("Path start and end cannot be equal.")
     def __str__(self):
         return f"{(self.name + ': ') if self.name else ''}{self.start.name} -> {self.end.name}"
     class Meta:
         unique_together = [["start", "end"]]
 
-class ItemPrefab(Entity):
+class ItemPrefab(models.Model):
+    name = models.CharField(max_length=30, validators=[alphanumeric_validator])
     description = models.TextField(blank=True)
     weight_kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
     value = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
     readable_message = models.TextField(max_length=500, null=True, blank=True)
     def __str__(self):
         return self.name
-
-class Character(Entity):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    
+class CharacterPrefab(models.Model):
+    name = models.CharField(max_length=30, validators=[alphanumeric_validator])
     appearance = models.TextField(max_length=200)
     personality = models.TextField(max_length=200)
     description = models.TextField(max_length=200)
-    items = models.ManyToManyField(ItemPrefab, through="InventoryItem")
     carry_limit = models.PositiveIntegerField(default=10)
+    def __str__(self):
+        return self.name
+    class Meta:
+        abstract = True
 
-class InventoryItem(models.Model):
+class NpcPrefab(CharacterPrefab):
+    # override name to be unique
+    name = models.CharField(unique=True, max_length=30, validators=[alphanumeric_validator])
+
+class CharacterInstance(models.Model):
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    items = models.ManyToManyField(ItemPrefab, through="InventoryItem")
+    def __str__(self):
+        maybe_player = Player.objects.filter(characterinstance_ptr=self.id).first()
+        maybe_npc = NpcInstance.objects.filter(characterinstance_ptr=self.id).first()
+        if(maybe_player):
+            return str(maybe_player)
+        elif(maybe_npc):
+            return str(maybe_npc)
+        else: return "unknown character instance"
+
+class Player(CharacterInstance):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.traits.name
+    def clean(self):
+        if(not hasattr(self, 'traits') is None):
+            raise ValidationError("Traits must be defined")
+    class Meta:
+        unique_together = [] # necessary due to weird Django inheritance rules
+
+class PlayerTraits(CharacterPrefab): # invert the dependency: npc instance depends on traits, but player traits depends on player instance
+    player = models.OneToOneField(Player, on_delete=models.CASCADE, related_name="traits")
+    
+class NpcInstance(CharacterInstance):
+    prefab = models.ForeignKey(NpcPrefab, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.prefab.name
+    # business logic unique constraint due to Django limitations
+    def clean(self):
+        if(NpcInstance.objects.filter(world=self.world, traits_id=self.traits_id).exclude(id=self.id).first() is not None):
+            raise ValidationError("World can not have multiple NPCs with same prefab.")
+    class Meta:
+        # can't enforce unique traits per world due to Django inheritance rules
+        unique_together = []
+
+class DroppedItem(models.Model):
     item = models.ForeignKey(ItemPrefab, on_delete=models.CASCADE)
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)], default=1)
-
-class ItemInstance(models.Model):
-    item = models.ForeignKey(ItemPrefab, on_delete=models.RESTRICT)
-    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(0)], default=1)
+    class Meta:
+        abstract = True
+
+class InventoryItem(DroppedItem):
+    character = models.ForeignKey(CharacterInstance, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = [["item", "character"]]
+
+class DroppedItem(DroppedItem):
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     class Meta:
         unique_together = [["item", "location"]]
 
 class Conversation(models.Model):
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
     setting = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     start_time = models.DateTimeField(default=timezone.now)
     duration = models.DurationField()
@@ -109,14 +164,16 @@ class Conversation(models.Model):
 
 class ConversationParticipant(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="participants")
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    character = models.ForeignKey(CharacterInstance, on_delete=models.CASCADE)
     join_delay = models.DurationField()
     def __str__(self):
         return str(self.character)
     class Meta:
         unique_together = [["conversation", "character"]]
 
-class Topic(Entity):
+
+''' TODO: inspect this structure more before implemented it (is a topic always 1:1 with another model?)
+class Topic(models.Model):
     name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
@@ -135,3 +192,4 @@ class TopicContext(models.Model):
     context_object = GenericForeignKey("context_type", "context_object_id")
     class Meta:
         indexes = [models.Index(fields=["context_type", "context_object_id"])]
+'''
