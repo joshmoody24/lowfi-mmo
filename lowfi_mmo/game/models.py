@@ -112,18 +112,17 @@ class CharacterInstance(models.Model):
             return str(maybe_npc)
         else: return "unknown character instance"
 
-class Player(CharacterInstance):
+class Player(CharacterPrefab):
+    pass
+
+class PlayerInstance(CharacterInstance):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    base = models.OneToOneField(Player, on_delete=models.CASCADE, related_name="traits")
     def __str__(self):
-        return self.traits.name
-    def clean(self):
-        if(not hasattr(self, 'traits') is None):
-            raise ValidationError("Traits must be defined")
+        return self.base.name
     class Meta:
         unique_together = [] # necessary due to weird Django inheritance rules
 
-class PlayerTraits(CharacterPrefab): # invert the dependency: npc instance depends on traits, but player traits depends on player instance
-    player = models.OneToOneField(Player, on_delete=models.CASCADE, related_name="traits")
     
 class NpcInstance(CharacterInstance):
     prefab = models.ForeignKey(NpcPrefab, on_delete=models.CASCADE)

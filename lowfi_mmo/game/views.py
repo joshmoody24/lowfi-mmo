@@ -11,7 +11,7 @@ def index(request):
 @login_required
 def play(request, world_id, character_id):
 
-    player = models.Player.objects.get(world__id=world_id, id=character_id)
+    player = models.PlayerInstance.objects.get(world__id=world_id, id=character_id)
 
     command_result = ""
     error = ""
@@ -22,7 +22,7 @@ def play(request, world_id, character_id):
 
     paths = models.Path.objects.filter(start=player.location)
     nearby_npcs = models.NpcInstance.objects.filter(location=player.location)
-    nearby_players = models.Player.objects.filter(location=player.location)
+    nearby_players = models.PlayerInstance.objects.filter(location=player.location)
 
     context = {
         "player": player,
@@ -84,7 +84,7 @@ def world_details(request, world_id):
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
         return HttpResponseNotFound("World not found.")
     
-    player_character = models.Player.objects.get(user=request.user)
+    player_character = models.PlayerInstance.objects.get(user=request.user)
     
     context = {
         "world": world,
@@ -110,7 +110,7 @@ def world_delete(request, world_id):
 
 @login_required
 def character_list(request):
-    user_characters = models.Player.objects.filter(user=request.user)
+    user_characters = models.PlayerInstance.objects.filter(user=request.user)
     return render(request, "characteers/character_select.html", {"user_characters": user_characters})
 
 @login_required

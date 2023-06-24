@@ -9,7 +9,7 @@ def move(character, target_location): # todo: make this a traveler
     if(target_path):
         character.location = target_path.end
         character.save()
-        return f"{character.name} moved to {target_path.end}", ""
+        return f"{character.base.name} moved to {target_path.end}", ""
     else:
         if(target_location.lower() == character.location.name.lower()):
             return "", f"You are already at {character.location.name}"

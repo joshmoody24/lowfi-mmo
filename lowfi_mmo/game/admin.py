@@ -24,13 +24,13 @@ class AreaAdmin(admin.ModelAdmin):
     inlines = [LocationInline]
     search_fields = ["name"]
 
-class StartPathAdmin(CollapsibleTabularInline):
+class StartPathInline(CollapsibleTabularInline):
     model = models.Path
     autocomplete_fields = ["end"]
     fk_name = "start"
     verbose_name_plural = "Paths that start here"
 
-class EndPathAdmin(CollapsibleTabularInline):
+class EndPathInline(CollapsibleTabularInline):
     model = models.Path
     autocomplete_fields = ["start"]
     fk_name = "end"
@@ -41,7 +41,7 @@ class ItemInstanceInline(CollapsibleTabularInline):
     autocomplete_fields = ['item', 'location']
     
 class LocationAdmin(admin.ModelAdmin):
-    inlines = [StartPathAdmin, EndPathAdmin, ItemInstanceInline]
+    inlines = [StartPathInline, EndPathInline, ItemInstanceInline]
     search_fields = ["name", "description"]
     list_filter = ["area"]
 
@@ -49,11 +49,11 @@ class InventoryItemInline(CollapsibleTabularInline):
     model = models.InventoryItem
     autocomplete_fields = ["item"]
 
-class PlayerTraitsInline(admin.StackedInline):
-    model = models.PlayerTraits
+class PlayerInstanceInline(admin.StackedInline):
+    model = models.PlayerInstance
 
 class PlayerAdmin(admin.ModelAdmin):
-    inlines = [PlayerTraitsInline]
+    inlines = [PlayerInstanceInline]
 
 class NpcTraitsInline(CollapsibleTabularInline):
     model = models.NpcPrefab
@@ -113,7 +113,6 @@ admin.site.register(models.DroppedItem, ItemInstanceAdmin)
 admin.site.register(models.NpcPrefab)
 admin.site.register(models.Player, PlayerAdmin)
 admin.site.register(models.NpcInstance)
-
 
 # conversation models
 
