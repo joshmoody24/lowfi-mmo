@@ -83,20 +83,23 @@ def world_details(request, world_id):
     return render(request, "worlds/world_details.html", context)
 
 @login_required
+@transaction.atomic
 def world_delete(request, world_id):
+    print(request.method)
     world = get_object_or_404(models.World, id=world_id)
     if(world.owner != request.user):
         return HttpResponseForbidden("You are not allowed to delete this world.")
-    if(request.method=="DELETE"):
+    if(request.method == "POST"):
+        models.Player.objects.filter(world=world).delete()
         world.delete()
         return redirect("world_list")
     
     context = {
         "form_heading": f"Delete Confirmation",
         "form_subheading": f"Are you sure you want to delete {world}?",
-        "form_submit": "Yes, I'm sure"
+        "form_submit": "Yes, I'm sure",
     }
-    return render(request, "forms.py", context)
+    return render(request, "form.html", context)
 
 @login_required
 def character_list(request):
