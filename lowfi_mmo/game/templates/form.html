@@ -10,6 +10,7 @@
 <form method="{{ form_method|default:'post' }}">
     {% csrf_token %}
     {% if form %}{{ form.as_p }}{% endif %}
+    {% if related_form %}{{ related_form.as_p }}{% endif %}
     <input type="submit" value="{{ form_submit | default:'Submit' }}" />
 </form>
 {% endblock %}

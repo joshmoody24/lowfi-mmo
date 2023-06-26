@@ -4,6 +4,7 @@ from django.http import HttpResponseForbidden, HttpResponseNotFound
 from game import models, forms
 from .commands import handle_command
 from django.db.models import Subquery
+from django.db import transaction
 
 def index(request):
     return render(request, "index.html")
@@ -45,12 +46,18 @@ def world_list(request):
     return render(request, "worlds/world_list.html", context)
 
 @login_required
+@transaction.atomic
 def world_create(request):
     if(request.method=="POST"):
         world_form = forms.WorldForm(request.POST)
         if(world_form.is_valid()):
-            world_form.instance.user = request.user
-            world_form.save()
+            world_form.instance.owner = request.user
+            world = world_form.save()
+            # spawn in the NPCs
+            # TODO: flesh out the spawn point system
+            for npc in models.NpcPrefab.objects.all():
+                spawn_point = npc.owned_locations.first() if npc.owned_locations.count() > 0 else models.Location.objects.get(name__iexact="library")
+                models.NpcInstance.objects.create(prefab=npc, world=world, location=spawn_point)
             return redirect("world_list")
     else:
         world_form = forms.WorldForm()
@@ -62,29 +69,12 @@ def world_create(request):
     return render(request, "form.html", context)
 
 @login_required
-def world_copy(request):
-    if(request.method=="POST"):
-        form = forms.WorldCopyForm(request.POST)
-        if(form.is_valid()):
-            from game.game_management import copy_world
-            copy_world(form.cleaned_data['world'], form.cleaned_data["name"], request.user)
-            return redirect("world_list")
-    else:
-        form = forms.WorldCopyForm()
-    context = {
-        "form": form,
-        "form_heading": "Create World From Template",
-        "form_submit": "Create World",
-    }
-    return render(request, "form.html", context)
-
-@login_required
 def world_details(request, world_id):
     world = get_object_or_404(models.World, id=world_id)
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
         return HttpResponseNotFound("World not found.")
     
-    player_character = models.PlayerInstance.objects.get(user=request.user)
+    player_character = models.PlayerInstance.objects.filter(user=request.user).first()
     
     context = {
         "world": world,
@@ -114,18 +104,25 @@ def character_list(request):
     return render(request, "characteers/character_select.html", {"user_characters": user_characters})
 
 @login_required
+@transaction.atomic
 def character_create(request, world_id):
     world = get_object_or_404(models.World, id=world_id)
     if(request.method=="POST"):
-        form = forms.CharacterForm(request.POST, map=world.map)
-        if(form.is_valid()):
-            form.instance.user = request.user
-            form.save()
-            return redirect("characters/")
+        player_instance_form = forms.PlayerInstanceForm(request.POST)
+        player_form = forms.PlayerForm(request.POST)
+        if(player_instance_form.is_valid() and player_form.is_valid()):
+            player = player_form.save()
+            player_instance_form.instance.user = request.user
+            player_instance_form.instance.world_id = world_id
+            player_instance_form.instance.base_id = player.id
+            player_instance_form.save()
+            return redirect("world_details", world_id=world_id)
     else:
-        form = forms.CharacterForm(map=world.map)
+        player_instance_form = forms.PlayerInstanceForm()
+        player_form = forms.PlayerForm()
     context = {
-        "form": form,
+        "form": player_form,
+        "related_form": player_instance_form,
         "form_heading": f"Create character in {world}",
         "form_submit": "Create Character",
     }

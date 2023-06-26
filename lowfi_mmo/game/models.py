@@ -49,18 +49,20 @@ class Area(models.Model):
         ordering = ['name']
     
 class Location(models.Model):
+    LOCATION_TYPES = (("house", "house"), ("store", "store"))
     name = models.CharField(max_length=30, validators=[alphanumeric_validator])
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     x = models.FloatField()
     y = models.FloatField()
     description = models.TextField(blank=True)
     appearance = models.TextField(blank=True)
+    location_type = models.CharField(max_length=20, choices=LOCATION_TYPES, blank=True)
     def __str__(self):
         return self.name
     class Meta:
         ordering = ['name']
         unique_together = [["name", "area"]]
-    
+
 class Path(models.Model):
     name = models.CharField(max_length=30, blank=True, validators=[alphanumeric_validator])
     start = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="start_paths")
@@ -101,14 +103,15 @@ class CharacterPrefab(models.Model):
 class NpcPrefab(CharacterPrefab):
     # override name to be unique
     name = models.CharField(unique=True, max_length=30, validators=[alphanumeric_validator])
+    owned_locations = models.ManyToManyField(Location, blank=True)
 
 class CharacterInstance(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     items = models.ManyToManyField(ItemPrefab, through="InventoryItem")
     def __str__(self):
-        maybe_player = Player.objects.filter(characterinstance_ptr=self.id).first()
-        maybe_npc = NpcInstance.objects.filter(characterinstance_ptr=self.id).first()
+        maybe_player = Player.objects.filter(id=self.id).first()
+        maybe_npc = NpcInstance.objects.filter(id=self.id).first()
         if(maybe_player):
             return str(maybe_player)
         elif(maybe_npc):
@@ -129,7 +132,7 @@ class PlayerInstance(CharacterInstance):
 class NpcInstance(CharacterInstance):
     prefab = models.ForeignKey(NpcPrefab, on_delete=models.CASCADE)
     def __str__(self):
-        return self.prefab.name
+        return f"{self.prefab.name} - {self.world}" 
     # business logic unique constraint due to Django limitations
     def clean(self):
         if(NpcInstance.objects.filter(world=self.world, traits_id=self.traits_id).exclude(id=self.id).first() is not None):
@@ -138,18 +141,20 @@ class NpcInstance(CharacterInstance):
         # can't enforce unique traits per world due to Django inheritance rules
         unique_together = []
 
-class DroppedItem(models.Model):
+class ItemInstance(models.Model):
     item = models.ForeignKey(ItemPrefab, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(0)], default=1)
+    def __str__(self):
+        return f"{self.item.name} x{self.quantity} instance"
     class Meta:
         abstract = True
 
-class InventoryItem(DroppedItem):
+class InventoryItem(ItemInstance):
     character = models.ForeignKey(CharacterInstance, on_delete=models.CASCADE)
     class Meta:
         unique_together = [["item", "character"]]
 
-class DroppedItem(DroppedItem):
+class DroppedItem(ItemInstance):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     class Meta:

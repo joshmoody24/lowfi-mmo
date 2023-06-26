@@ -7,8 +7,7 @@ urlpatterns = [
     # worlds
     path('worlds/', views.world_list, name='world_list'),
     path('worlds/details/<int:world_id>', views.world_details, name='world_details'),
-    path('worlds/create/', views.world_copy, name='world_copy'),
-    path('worlds/create_from_scratch/', views.world_create, name='world_create'),
+    path('worlds/create/', views.world_create, name='world_create'),
     path('worlds/delete/<int:world_id>', views.world_delete, name='world_delete'),
 
     # characters

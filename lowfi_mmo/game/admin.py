@@ -59,7 +59,7 @@ class NpcPrefabAdmin(admin.ModelAdmin):
     model = models.NpcPrefab
     fieldsets = [
         (None, {"fields": ["name", "gender", "description", "appearance", "personality"]}),
-        ("Advanced options", {"fields": ["carry_limit"], "classes": ["collapse"]})
+        ("Advanced options", {"fields": ["owned_locations", "carry_limit"], "classes": ["collapse"]})
     ]
 
 class CharacterAdmin(admin.ModelAdmin):
@@ -117,6 +117,7 @@ admin.site.register(models.DroppedItem, ItemInstanceAdmin)
 admin.site.register(models.NpcPrefab, NpcPrefabAdmin)
 admin.site.register(models.Player, PlayerAdmin)
 admin.site.register(models.NpcInstance)
+admin.site.register(models.CharacterInstance)
 
 # conversation models
 

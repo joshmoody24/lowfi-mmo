@@ -12,13 +12,20 @@ class WorldForm(ModelForm):
         model = models.World
         fields = ["name"]
 
-class CharacterForm(ModelForm):
-    location = forms.ModelChoiceField(queryset=models.Location.objects.none())
-    def __init__(self, map=None, *args, **kwargs):
+class PlayerInstanceForm(ModelForm):
+    location = forms.ModelChoiceField(queryset=models.Location.objects.all())
+    ''' limit spawn points to area
+    def __init__(self, area=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if(map is not None):
-            self.fields['location'].queryset = models.Location.objects.filter(map=map)
+        if(area is not None):
+            self.fields['location'].queryset = models.Location.objects.filter(area=area)
+    '''
     class Meta:
-        model = models.CharacterInstance
+        model = models.PlayerInstance
         fields = "__all__"
-        exclude = ["user"]
+        exclude = ["user", "world", "base"]
+
+class PlayerForm(ModelForm):
+    class Meta:
+        model = models.Player
+        fields = "__all__"

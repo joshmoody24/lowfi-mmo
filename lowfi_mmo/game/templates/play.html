@@ -9,18 +9,17 @@
 <p>{{ message | linebreaksbr }}</p>
 {% endif %}
 
-<details>
+<details open>
     <summary>{{ player.location }}</summary>
     <p>{{ player.location.description | linebreaks }}</p>
-    <p>{{ player.location }} is a location in {{ player.location.area }}</p>
 </details>
 
 {% if nearby_npcs|length > 0 %}
-<details>
+<details open>
     <summary>Nearby characters</summary>
     <ul>
         {% for character in nearby_npcs %}
-        <li>{{ character }}</li>
+        <li>{{ character.prefab.name }}</li>
         {% endfor %}
     </ul>
 </details>
