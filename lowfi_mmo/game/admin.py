@@ -55,8 +55,12 @@ class PlayerInstanceInline(admin.StackedInline):
 class PlayerAdmin(admin.ModelAdmin):
     inlines = [PlayerInstanceInline]
 
-class NpcTraitsInline(CollapsibleTabularInline):
+class NpcPrefabAdmin(admin.ModelAdmin):
     model = models.NpcPrefab
+    fieldsets = [
+        (None, {"fields": ["name", "gender", "description", "appearance", "personality"]}),
+        ("Advanced options", {"fields": ["carry_limit"], "classes": ["collapse"]})
+    ]
 
 class CharacterAdmin(admin.ModelAdmin):
     inlines = [InventoryItemInline]
@@ -110,7 +114,7 @@ admin.site.register(models.Area, AreaAdmin)
 admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.ItemPrefab, ItemAdmin)
 admin.site.register(models.DroppedItem, ItemInstanceAdmin)
-admin.site.register(models.NpcPrefab)
+admin.site.register(models.NpcPrefab, NpcPrefabAdmin)
 admin.site.register(models.Player, PlayerAdmin)
 admin.site.register(models.NpcInstance)
 

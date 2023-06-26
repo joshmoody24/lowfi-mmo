@@ -54,6 +54,7 @@ class Location(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     description = models.TextField(blank=True)
+    appearance = models.TextField(blank=True)
     def __str__(self):
         return self.name
     class Meta:
@@ -86,6 +87,7 @@ class ItemPrefab(models.Model):
     
 class CharacterPrefab(models.Model):
     name = models.CharField(max_length=30, validators=[alphanumeric_validator])
+    gender = models.CharField(max_length=16, choices=(("M", "male"), ("F", "female"), ("nonbinary", "nonbinary")))
     appearance = models.TextField(max_length=200)
     personality = models.TextField(max_length=200)
     description = models.TextField(max_length=200)
@@ -94,6 +96,7 @@ class CharacterPrefab(models.Model):
         return self.name
     class Meta:
         abstract = True
+        ordering = ["name"]
 
 class NpcPrefab(CharacterPrefab):
     # override name to be unique
@@ -122,7 +125,6 @@ class PlayerInstance(CharacterInstance):
         return self.base.name
     class Meta:
         unique_together = [] # necessary due to weird Django inheritance rules
-
     
 class NpcInstance(CharacterInstance):
     prefab = models.ForeignKey(NpcPrefab, on_delete=models.CASCADE)
