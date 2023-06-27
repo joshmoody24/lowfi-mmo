@@ -43,11 +43,17 @@ class ItemInstanceInline(CollapsibleTabularInline):
 class LocationAdmin(admin.ModelAdmin):
     inlines = [StartPathInline, EndPathInline, ItemInstanceInline]
     search_fields = ["name", "description"]
-    list_filter = ["area"]
+    list_filter = ["area", "location_type"]
+    list_display = ["name", "location_type"]
+    list_editable = ["location_type"]
+    list_display_links = ["name"]
 
 class InventoryItemInline(CollapsibleTabularInline):
     model = models.InventoryItem
     autocomplete_fields = ["item"]
+
+class ScheduleItemInline(CollapsibleTabularInline):
+    model = models.ScheduleItem
 
 class PlayerInline(admin.StackedInline):
     model = models.Player
@@ -57,13 +63,15 @@ class PlayerAdmin(admin.ModelAdmin):
 
 class NpcPrefabAdmin(admin.ModelAdmin):
     model = models.NpcPrefab
+    inlines = [ScheduleItemInline]
     fieldsets = [
         (None, {"fields": ["name", "gender", "description", "appearance", "personality"]}),
         ("Advanced options", {"fields": ["owned_locations", "carry_limit"], "classes": ["collapse"]})
     ]
 
+
 class CharacterAdmin(admin.ModelAdmin):
-    inlines = [InventoryItemInline]
+    inlines = [InventoryItemInline, ScheduleItemInline]
     search_fields = ["traits__name", "traits__appearance", "traits__personality"]
     autocomplete_fields = ["world", "location"]
 

@@ -163,6 +163,12 @@ class DroppedItem(ItemInstance):
     class Meta:
         unique_together = [["item", "location"]]
 
+class ScheduleItem(models.Model):
+    npc = models.ForeignKey(NpcPrefab, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
 class Conversation(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     setting = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
