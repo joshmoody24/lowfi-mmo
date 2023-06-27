@@ -49,11 +49,11 @@ class InventoryItemInline(CollapsibleTabularInline):
     model = models.InventoryItem
     autocomplete_fields = ["item"]
 
-class PlayerInstanceInline(admin.StackedInline):
-    model = models.PlayerInstance
+class PlayerInline(admin.StackedInline):
+    model = models.Player
 
 class PlayerAdmin(admin.ModelAdmin):
-    inlines = [PlayerInstanceInline]
+    inlines = [PlayerInline]
 
 class NpcPrefabAdmin(admin.ModelAdmin):
     model = models.NpcPrefab
@@ -115,7 +115,7 @@ admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.ItemPrefab, ItemAdmin)
 admin.site.register(models.DroppedItem, ItemInstanceAdmin)
 admin.site.register(models.NpcPrefab, NpcPrefabAdmin)
-admin.site.register(models.Player, PlayerAdmin)
+admin.site.register(models.PlayerInstance, PlayerAdmin)
 admin.site.register(models.NpcInstance)
 admin.site.register(models.CharacterInstance)
 

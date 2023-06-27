@@ -23,9 +23,10 @@ class PlayerInstanceForm(ModelForm):
     class Meta:
         model = models.PlayerInstance
         fields = "__all__"
-        exclude = ["user", "world", "base"]
+        exclude = ["user", "world"]
 
 class PlayerForm(ModelForm):
     class Meta:
         model = models.Player
         fields = "__all__"
+        exclude = ["instance"]

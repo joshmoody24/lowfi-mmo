@@ -118,20 +118,19 @@ class CharacterInstance(models.Model):
             return str(maybe_npc)
         else: return "unknown character instance"
 
-# TODO: examine if the non-inverted dependency is the best route (needs world field)
-class Player(CharacterPrefab):
-    world = models.ForeignKey(World, on_delete=models.CASCADE)
-
 class PlayerInstance(CharacterInstance):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    base = models.OneToOneField(Player, on_delete=models.CASCADE, related_name="traits")
     def __str__(self):
-        return self.base.name
+        return self.prefab.name
     def delete(self, *args, **kwargs): # does not kick in when cascading, apparently
-        self.base.delete()
+        self.prefab.delete()
         super().delete(*args, **kwargs)
     class Meta:
         unique_together = [] # necessary due to weird Django inheritance rules
+
+# inverted dependency compared to npcs
+class Player(CharacterPrefab):
+    instance = models.OneToOneField(PlayerInstance, on_delete=models.CASCADE, related_name="prefab")
     
 class NpcInstance(CharacterInstance):
     prefab = models.ForeignKey(NpcPrefab, on_delete=models.CASCADE)

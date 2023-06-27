@@ -114,11 +114,11 @@ def character_create(request, world_id):
         player_instance_form = forms.PlayerInstanceForm(request.POST)
         player_form = forms.PlayerForm(request.POST)
         if(player_instance_form.is_valid() and player_form.is_valid()):
-            player = player_form.save()
             player_instance_form.instance.user = request.user
             player_instance_form.instance.world_id = world_id
-            player_instance_form.instance.base_id = player.id
-            player_instance_form.save()
+            instance = player_instance_form.save()
+            player_form.instance.instance_id = instance.id
+            player_form.save()
             return redirect("world_details", world_id=world_id)
     else:
         player_instance_form = forms.PlayerInstanceForm()
