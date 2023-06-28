@@ -1,0 +1,17 @@
+{% extends 'admin/base.html' %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+:root {
+  /*
+  Admin style overrides.
+  Currently all set to default values.
+  See https://github.com/django/django/blob/main/django/contrib/admin/static/admin/css/base.css for all variables
+  */
+  --primary: #79aec8;
+  --secondary: #417690;
+  --accent: #f5dd5d;
+  --primary-fg: #fff;
+}
+</style>
+{% endblock %}
