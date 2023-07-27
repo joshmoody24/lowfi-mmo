@@ -13,7 +13,6 @@ def index(request):
 
 @login_required
 def play(request, world_id, character_slug):
-
     player = models.Character.objects.get(world__id=world_id, slug=character_slug, user=request.user)
 
     command_result = ""

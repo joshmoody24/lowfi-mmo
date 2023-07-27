@@ -38,7 +38,13 @@
     <ul>
     {% for path in paths %}
         <li>
-            go {{ path.name }}
+            <form method="post">
+                {% csrf_token %}
+                <input id="command" name="command" type="hidden" value="go {{ path.name }}" />
+                <button type="submit">
+                    Go {{ path.name }}
+                </button>
+            </form>
         </li>
     {% endfor %}
     </ul>
@@ -55,7 +61,7 @@
 
 <details>
     <summary>Command Help</summary>
-    <p>Go to <em>location</em></p>
+    <p>Go <em>path</em></p>
     <p>Attack <em>character</em></p>
 </details>
 

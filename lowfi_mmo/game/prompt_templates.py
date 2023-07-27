@@ -1,0 +1,1 @@
+chatgpt_image_prompt_generator_artsy = "Generate a one-sentence artistic description of the following scene. Focus on visuals, not narrative."
