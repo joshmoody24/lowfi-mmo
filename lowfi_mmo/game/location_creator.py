@@ -36,40 +36,41 @@ class Key:
     unlocks: str
     unlock_description: str
 
+
 locations = [
     # Ruined Mansion
-    Location("Ruined Mansion Entrance", False, "Rural mansion in ruins, broken windows, rotting wood", ""),
-    Location("Ruined Mansion Living Room", True, "A decayed, rotting living room with plant overgrowth", ""),
-    Location("Secret Bunker", True, "Secret bunker", ""),
+    Location("Ruined Mansion Entrance", False, "Rural mansion in ruins, broken windows, rotting wood", "An eerie entrance to a crumbling mansion."),
+    Location("Ruined Mansion Living Room", True, "A decayed, rotting living room with plant overgrowth", "A once-grand living room now consumed by nature."),
+    Location("Secret Bunker", True, "Secret bunker", "A hidden underground bunker filled with mysterious treasures."),
 
     # Library
-    Location("Library Front Lawn", False, "Small town library"),
+    Location("Library Front Lawn", False, "Small town library", "The serene front lawn of a quaint little library."),
 
     # High School
-    Location("Havenbrook High Entrance", False, "A 1980s rural high school", ""),
+    Location("Havenbrook High Entrance", False, "A 1980s rural high school", "The entrance of an old rural high school."),
 
     # Mountains
-    Location("Havenbrook Peak Trailhead", False, "Mountain hiking trailhead"),
-    Location("Old Observatory Entrance", False, "Small abandoned observatory on mountaintop")
+    Location("Havenbrook Peak Trailhead", False, "Mountain hiking trailhead", "The starting point of a scenic mountain hiking trail."),
+    Location("Old Observatory Entrance", False, "Small abandoned observatory on mountaintop", "An abandoned observatory atop the mountains, offering panoramic views.")
 ]
 
 paths = [
-    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to ruined mansion", "to library"),
-    TwoWayPath("Ruined Mansion Entrance", "Ruined Mansion Living Room", "inside", "outside"),
-    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up ladder"),
+    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to ruined mansion", "to library", 10.0),
+    TwoWayPath("Ruined Mansion Entrance", "Ruined Mansion Living Room", "inside", "outside", 10.0),
+    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up ladder", 10.0),
     
-    TwoWayPath("Library Front Lawn", "Havenbrook High Entrance", "to high school", "to library"),
+    TwoWayPath("Library Front Lawn", "Havenbrook High Entrance", "to high school", "to library", 10.0),
 
-    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to mountains", "to library"),
-    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to observatory", "to trailhead")
+    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to mountains", "to library", 10.0),
+    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to observatory", "to trailhead", 10.0)
 ]
 
 blocks = [
-    Block("Ruined Mansion Living Room", "Secret Bunker", "Locked Trapdoor", "A large bronze padlock holds the trapdoor firmly in place. It won't budge.")
+    Block("Ruined Mansion Living Room", "Secret Bunker", "Locked Trapdoor", "A large bronze padlock holds the trapdoor firmly in place. It won't budge.", "A hidden trapdoor leading to the secret bunker.")
 ]
 
 keys = [
-    Key("Locked Trapdoor", "The key is a bit dented, but after some fiddling it slides into the keyhole. The padlock pops open with a satisfying click.")
+    Key("Locked Trapdoor", "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click.")
 ]
 
 def create_locations(world):
