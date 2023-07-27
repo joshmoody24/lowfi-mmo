@@ -2,7 +2,7 @@ import re
 from game import systems
 
 commands = {
-    'move': r"^go to ([a-zA-Z\ ]*)$",
+    'move': r"^go ([a-zA-Z\ ]*)$",
     'attack': r"^attack ([a-zA-Z\ ]*)$" # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
 }
 

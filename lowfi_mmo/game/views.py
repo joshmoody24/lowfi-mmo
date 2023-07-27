@@ -3,19 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 from game import models, forms
 from .commands import handle_command
-from django.db.models import Subquery
 from django.db import transaction
-import plotly.graph_objects as go
-from io import BytesIO
 from django.http import HttpResponse
+from .world_creator import populate_world
+from .world_visualizer import world_to_html
 
 def index(request):
     return render(request, "index.html")
 
 @login_required
-def play(request, world_id, character_id):
+def play(request, world_id, character_slug):
 
-    player = models.PlayerInstance.objects.get(world__id=world_id, id=character_id)
+    player = models.Character.objects.get(world__id=world_id, slug=character_slug, user=request.user)
 
     command_result = ""
     error = ""
@@ -24,9 +23,9 @@ def play(request, world_id, character_id):
         command = request.POST.get('command')
         command_result, error = handle_command(player, command)
 
-    paths = models.Path.objects.filter(start=player.location)
-    nearby_npcs = models.NpcInstance.objects.filter(location=player.location)
-    nearby_players = models.PlayerInstance.objects.filter(location=player.location)
+    paths = models.Path.objects.filter(start=player.position)
+    nearby_npcs = models.Character.objects.filter(position=player.position, user=None)
+    nearby_players = models.Character.objects.filter(position=player.position).exclude(id=player.id)
 
     context = {
         "player": player,
@@ -56,11 +55,7 @@ def world_create(request):
         if(world_form.is_valid()):
             world_form.instance.owner = request.user
             world = world_form.save()
-            # spawn in the NPCs
-            # TODO: flesh out the spawn point system
-            for npc in models.NpcPrefab.objects.all():
-                spawn_point = npc.owned_locations.first() if npc.owned_locations.count() > 0 else models.Location.objects.get(name__iexact="library")
-                models.NpcInstance.objects.create(prefab=npc, world=world, location=spawn_point)
+            populate_world(world)
             return redirect("world_list")
     else:
         world_form = forms.WorldForm()
@@ -77,7 +72,7 @@ def world_details(request, world_id):
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
         return HttpResponseNotFound("World not found.")
     
-    player_character = models.PlayerInstance.objects.filter(user=request.user).first()
+    player_character = models.Character.objects.filter(user=request.user).first()
     
     context = {
         "world": world,
@@ -93,7 +88,6 @@ def world_delete(request, world_id):
     if(world.owner != request.user):
         return HttpResponseForbidden("You are not allowed to delete this world.")
     if(request.method == "POST"):
-        models.Player.objects.filter(world=world).delete()
         world.delete()
         return redirect("world_list")
     
@@ -106,104 +100,33 @@ def world_delete(request, world_id):
 
 @login_required
 def character_list(request):
-    user_characters = models.PlayerInstance.objects.filter(user=request.user)
-    return render(request, "characteers/character_select.html", {"user_characters": user_characters})
+    user_characters = models.Character.objects.filter(user=request.user)
+    return render(request, "characters/character_select.html", {"user_characters": user_characters})
 
 @login_required
 @transaction.atomic
 def character_create(request, world_id):
     world = get_object_or_404(models.World, id=world_id)
     if(request.method=="POST"):
-        player_instance_form = forms.PlayerInstanceForm(request.POST)
-        player_form = forms.PlayerForm(request.POST)
-        if(player_instance_form.is_valid() and player_form.is_valid()):
-            player_instance_form.instance.user = request.user
-            player_instance_form.instance.world_id = world_id
-            instance = player_instance_form.save()
-            player_form.instance.instance_id = instance.id
-            player_form.save()
+        character_form = forms.CharacterForm(request.POST)
+        if(character_form.is_valid()):
+            character_form.instance.user = request.user
+            character_form.instance.world_id = world_id
+            character_form.save()
             return redirect("world_details", world_id=world_id)
     else:
-        player_instance_form = forms.PlayerInstanceForm()
-        player_form = forms.PlayerForm()
+        character_form = forms.CharacterForm()
     context = {
-        "form": player_form,
-        "related_form": player_instance_form,
+        "form": character_form,
         "form_heading": f"Create character in {world}",
         "form_submit": "Create Character",
     }
     return render(request, "form.html", context)
 
 
-def area_map(request, area_id):
-    # Fetch all instances of the Location model
-    area = get_object_or_404(models.Area, id=area_id)
-    kilometers_per_unit = area.meters_per_unit / 1000
-    locations = models.Location.objects.filter(area_id=area_id)
-    
-    # Extract x, y, and name values from each location
-    x_values = [location.x for location in locations]
-    y_values = [location.y for location in locations]
-    names = [location.name for location in locations]
-    types = [location.location_type for location in locations]
-    
-    # Map location types to colors
-    color_mapping = {'store': 'red', 'house': 'green'}
-    colors = [color_mapping.get(location_type, 'blue') for location_type in types]
-    
-    # Convert x and y values to kilometers
-    x_values = [x * kilometers_per_unit for x in x_values]
-    y_values = [y * kilometers_per_unit for y in y_values]
-
-    # Fetch all instances of the Path model
-    paths = models.Path.objects.filter(start__area_id=area_id, end__area_id=area_id)
-    
-    # Extract start and end locations for each path
-    start_locations = [path.start for path in paths]
-    end_locations = [path.end for path in paths]
-    
-    # Convert start and end locations to indices
-    start_indices = [names.index(start.name) for start in start_locations]
-    end_indices = [names.index(end.name) for end in end_locations]
-    
-    # Create a scatter plot of the locations using Plotly
-    fig = go.Figure(data=go.Scatter(x=x_values, y=y_values, mode='markers', marker=dict(color=colors)))
-    
-    # Add labels for each point
-    for i, name in enumerate(names):
-        fig.add_annotation(
-            x=x_values[i],
-            y=y_values[i],
-            text=name,
-            showarrow=False,
-            # font=dict(size=8),
-            xanchor='center',
-            yanchor='top',
-            # yshift=-10
-        )
-    
-    # Add lines between start and end locations
-    for start_idx, end_idx in zip(start_indices, end_indices):
-        fig.add_trace(go.Scatter(
-            x=[x_values[start_idx], x_values[end_idx]],
-            y=[y_values[start_idx], y_values[end_idx]],
-            mode='lines',
-            line=dict(color='rgba(128, 128, 128, 0.5)', width=1),
-            showlegend=False
-        ))
-
-    # Set axes labels and title
-    fig.update_layout(
-        xaxis=dict(showgrid=False),
-        yaxis=dict(showgrid=False),
-        title= area.name
-    )
-    
-    # Convert the figure to HTML
-    plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
-    
-    # Create the HTTP response with the plot HTML
+def area_map(request, world_id):
+    area = get_object_or_404(models.World, id=world_id)
+    plot_html = world_to_html(area)
     response = HttpResponse(content_type='text/html')
     response.write(plot_html)
-    
     return response

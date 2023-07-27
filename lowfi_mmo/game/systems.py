@@ -3,17 +3,19 @@ from django.db.models import Sum, Max
 from django.db import transaction
 
 @transaction.atomic
-def move(character, target_location): # todo: make this a traveler
-    paths = models.Path.objects.filter(start=character.location)
-    target_path = paths.filter(end__name__iexact=target_location).first()
+def move(character, target_path): # todo: make this a traveler
+    paths = models.Path.objects.filter(start=character.position)
+    target_path = paths.filter(name__iexact=target_path).first()
     if(target_path):
-        character.location = target_path.end
+        # check for locks
+        blocks = models.Block.objects.filter(path=target_path)
+        if(blocks.count() > 0):
+            return "", f"You could not go {target_path.name}. {' Additionally, '.join([block.description for block in blocks])}"
+        character.position = target_path.end
         character.save()
-        return f"{character.base.name} moved to {target_path.end}", ""
+        return f"{character.name} moved to {target_path.end}", ""
     else:
-        if(target_location.lower() == character.location.name.lower()):
-            return "", f"You are already at {character.location.name}"
-        return "", f"No nearby location named \"{target_location}\""
+        return "", f"No path leads \"{target_path}\""
 
 @transaction.atomic
 def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
@@ -23,7 +25,7 @@ def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
     defender_position = models.Position.objects.filter(entity=defender_entity).first()
     if(attacker_position == None):
         return f"{attacker_entity.name} does not exist in the material realm and thus cannot attack.", ""
-    if(defender_entity == None or defender_position.location_id != attacker_position.location_id):
+    if(defender_entity == None or defender_position.position_id != attacker_position.position_id):
         return f"{attacker_entity.name} looked around for {defender_name}, but couldn't find anyone by that name to attack.", ""
     
     # make sure defender is not already dead

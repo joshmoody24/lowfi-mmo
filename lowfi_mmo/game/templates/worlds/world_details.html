@@ -7,7 +7,7 @@
 
 {% if player_character %}
 <p>
-<a class="button" href="{% url 'play' world_id=world.id character_id=player_character.id %}">Play as {{ player_character }}</a>
+<a class="button" href="{% url 'play' world_id=world.id character_slug=player_character.slug %}">Play as {{ player_character }}</a>
 {% else %}
 <a class="button" href="{% url 'character_create' world_id=world.id %}">Create Character</a>
 </p>
