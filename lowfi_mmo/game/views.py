@@ -122,6 +122,24 @@ def character_create(request, world_id):
     }
     return render(request, "form.html", context)
 
+def character_edit(request, world_id, character_slug):
+    character = get_object_or_404(models.Character, world_id=world_id, slug=character_slug, user=request.user)
+    if(request.method=="POST"):
+        character_form = forms.CharacterForm(request.POST)
+        if(character_form.is_valid()):
+            character_form.instance.user = request.user
+            character_form.instance.world_id = world_id
+            character_form.save()
+            return redirect("world_details", world_id=world_id)
+    else:
+        character_form = forms.CharacterForm(instance=character)
+    context = {
+        "form": character_form,
+        "form_heading": f"Edit character in {character.world}",
+        "form_submit": "Save Changes",
+    }
+    return render(request, "form.html", context)
+
 
 def area_map(request, world_id):
     area = get_object_or_404(models.World, id=world_id)

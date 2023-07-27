@@ -13,7 +13,8 @@ urlpatterns = [
     # characters
     path('characters/', views.character_list, name='character_list'),
     path('worlds/<int:world_id>/characters/create/', views.character_create, name='character_create'),
-    path('play/<int:world_id>/<str:character_slug>/', views.play, name='play'),
+    path('worlds/<int:world_id>/characters/edit/<slug:character_slug>/', views.character_edit, name="character_edit"),
+    path('play/<int:world_id>/<slug:character_slug>/', views.play, name='play'),
 
     # other
     path('areas/<int:area_id>/map/', views.area_map, name='location_map')
