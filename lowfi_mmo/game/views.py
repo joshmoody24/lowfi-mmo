@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from .worldgen.world_creator import populate_world
 from .worldgen.world_visualizer import world_to_html
 from .commands import COMMANDS
+from datetime import datetime
 
 def index(request):
     return render(request, "index.html")
@@ -112,9 +113,16 @@ def character_create(request, world_id):
         if(character_form.is_valid()):
             character_form.instance.user = request.user
             character_form.instance.world_id = world_id
-            SPAWNPOINT = "Library Front Lawn"
-            character_form.instance.position = models.Location.objects.get(world_id=world_id, name=SPAWNPOINT)
-            character_form.save()
+            SPAWNPOINT_NAME = "Library Front Lawn"
+            spawnpoint = models.Location.objects.get(world_id=world_id, name=SPAWNPOINT_NAME)
+            character_form.instance.position = spawnpoint
+            character = character_form.save()
+            INITIAL_MESSAGE = """You are {name}. You check your phone: {time}. You get out of bed and look around. You are chilling in the {location}. You get ready to rumble."""
+            initial_log = models.CharacterLog.objects.create(
+                character=character,
+                command="start game",
+                result=INITIAL_MESSAGE.format(name=character.name, time=datetime.now().strftime("%I:%M %p").lstrip("0"), location=SPAWNPOINT_NAME)
+            )
             return redirect("world_details", world_id=world_id)
     else:
         character_form = forms.CharacterForm()

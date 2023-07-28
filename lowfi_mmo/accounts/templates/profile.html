@@ -6,7 +6,6 @@
 {% block content %}
 <p>
     <a class="button" href="{% url 'world_list' %}">View Worlds</a>
-    <a class="button" href="{% url 'world_create' %}">New World</a>
 </p>
 <form method="post">
     {% csrf_token %}

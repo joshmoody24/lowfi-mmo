@@ -4,6 +4,9 @@
 {% block header %}Worlds{% endblock %}
 
 {% block content %}
+
+<a class="button" href="{% url 'world_create' %}">Create New World</a>
+
 <h2>Owned Worlds</h2>
 {% for world in owned_worlds %}
 <p>
@@ -12,6 +15,7 @@
 {% empty %}
 <p>No worlds found.</p>
 {% endfor %}
+
 <h2>Other Worlds</h2>
 {% for world in participant_worlds %}
 <p>

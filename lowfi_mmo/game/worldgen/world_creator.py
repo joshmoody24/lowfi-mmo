@@ -7,7 +7,6 @@ from .location_creator import create_locations
 def populate_world(world):
     create_locations(world)
 
-
 def create_character(
     name,
     appearance,
@@ -15,7 +14,7 @@ def create_character(
     description,
     user=None,
 ):
-    return models.Character.objects.create(
+    character = models.Character.objects.create(
         name=name,
         description=description,
         appearance=appearance, 
