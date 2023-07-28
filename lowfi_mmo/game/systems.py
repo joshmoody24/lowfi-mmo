@@ -3,23 +3,56 @@ from django.db.models import Sum, Max
 from django.db import transaction
 
 @transaction.atomic
-def move(character, target_path): # todo: make this a traveler
+def move(character, path_name): # todo: make this a traveler
     paths = models.Path.objects.filter(start=character.position)
-    path = paths.filter(name__iexact=target_path).first()
-    if(path):
-        # check for locks
-        blocks = path.block_set.all()
-        if(blocks.count() > 0):
-            return "", f"You could not go {path.name}. {' Additionally, '.join([block.description for block in blocks])}"
-        character.position = path.end
-        character.save()
-        return f"{character.name} moved to {path.end}", ""
-    else:
-        return "", f"You cannot go \"{target_path}\""
+    path = paths.filter(name__iexact=path_name).first()
+    if(not path): return "", f"You cannot go \"{path_name}.\""
+
+    # check for locks
+    blocks = path.block_set.filter(active=True)
+    if(blocks.count() > 0):
+        return "", f"You could not go {path.name}. {' Additionally, '.join([block.description for block in blocks])}"
+    
+    character.position = path.end
+    character.save()
+    return f"{character.name} moved to {path.end}", ""
     
 def look(character):
     location_description = character.position.description
-    return f"You look around. You see {location_description[0].lower()}{location_description[1:]}", ""
+    formatted_description = location_description[0].lower() + location_description[1:]
+    return f"You look around. You see {formatted_description}.", ""
+
+def take(character, item_name):
+    item = models.Item.objects.filter(world=character.world, position=character.position, name__iexact=item_name).first()
+    if(not item): return "", f"You don't see a nearby \"{item_name}.\""
+    item.position = None
+    item.carrier = character
+    item.save()
+    return f"You pick up {item.name}", ""
+
+def use(character, item_name, entity_name):
+    item = models.Item.objects.filter(world=character.world, carrier=character, name__iexact=item_name).first()
+    entity = models.Entity.objects.filter(world=character.world, name__iexact=entity_name).first()
+    if(not item): return "", f"You are not carrying an item named \"{item_name}.\""
+    if(not entity or (hasattr(entity, 'position') and entity.position_id != character.position_id)): return "", f"There is no entity named \"{entity_name}\" nearby."
+
+    maybe_key = models.Key.objects.filter(pk=item.id).first()
+    nearby_paths = character.position.start_paths.all()
+    maybe_block = models.Block.objects.filter(pk=entity.id, paths__in=nearby_paths).first()
+    if maybe_key:
+        if not maybe_block:
+            print(f"There is no entity named \"{entity_name}\" nearby.")
+        return unblock(maybe_key, maybe_block)
+    
+    return "", f"{item.name} cannot be used on {entity.name}"
+
+def unblock(key, block):
+    if(block.active):
+        block.active = False
+        block.save()
+        return key.unlock_description, ""
+    else:
+        return "", f"{block.name} was already unlocked" # TODO: make this message dynamic
 
 @transaction.atomic
 def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):

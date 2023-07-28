@@ -89,6 +89,7 @@ class CharacterLog(models.Model):
         return self.result
 
 class Block(Entity):
+    active = models.BooleanField(default=True)
     paths = models.ManyToManyField(Path)
 
 class Item(Entity):
@@ -97,10 +98,10 @@ class Item(Entity):
     carrier = models.ForeignKey(Character, null=True, blank=True, on_delete=models.RESTRICT)
     position = models.ForeignKey(Location, null=True, blank=True, on_delete=models.RESTRICT)
     def clean(self):
-        if(self.carrier is None and self.location is None):
-            raise ValidationError("Item carrier and location cannot both be null")
-        if(self.carrier is not None and self.location is not None):
-            raise ValidationError("Item cannot have a carrier and location at the same time")
+        if(self.carrier is None and self.position is None):
+            raise ValidationError("Item carrier and location cannot both be null.")
+        if(self.carrier is not None and self.position is not None):
+            raise ValidationError("Item cannot have a carrier and location at the same time.")
         
 class Key(Item):
     unlocks = models.ForeignKey(Block, on_delete=models.CASCADE)

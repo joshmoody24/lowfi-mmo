@@ -1,20 +1,24 @@
 import re
 from game import systems, models
 from dataclasses import dataclass
+from django.db.transaction import atomic
 
 @dataclass
 class Command:
     name: str
     regex: str
-    syntax: str
+    arg_syntax: str
     description: str
 
 COMMANDS = [
-    Command('look', r"^look$", "look", "Examine your surroundings"),
-    Command('move', r"^go ([a-zA-Z\ ]*)$", "go [path]", "Follow a path to a new location"),
-    Command('attack', r"^attack ([a-zA-Z\ ]*)$", "attack [character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
+    Command('look', r"^look$", "", "Examine your surroundings"),
+    Command('move', r"^go ([a-zA-Z\ ]*)$", "[position]", "Follow a path to a new location"),
+    Command('take', r"^take ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
+    Command('use', r"^^use \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on an entity"),
+    Command('attack', r"^attack ([a-zA-Z\ ]*)$", ["character"], "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
 ]
 
+@atomic
 def handle_command(character, raw_input):
     command, args = parse_command(character, raw_input)
     result = None, None
@@ -24,6 +28,10 @@ def handle_command(character, raw_input):
         result = systems.attack(character, args[0])
     elif(command == 'look'):
         result = systems.look(character)
+    elif(command == 'take'):
+        result = systems.take(character, args[0])
+    elif(command == 'use'):
+        result = systems.use(character, args[0], args[1])
     else:
         result = "", f'"{raw_input}" is not a valid command.'
     

@@ -65,7 +65,7 @@
     <summary>Command Help</summary>
     <dl>
     {% for command in commands %}
-    <dt><code>{{ command.syntax }}</code></dt>
+    <dt><code>{{ command.name }} {{ command.arg_syntax }}</code></dt>
     <dd>{{ command.description }}</dd>
     {% endfor %}
     </dl>

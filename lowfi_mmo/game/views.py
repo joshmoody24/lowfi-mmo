@@ -21,7 +21,7 @@ def play(request, world_id, character_slug):
         command = request.POST.get('command')
         handle_command(player, command)
 
-    paths = models.Path.objects.filter(start=player.position)
+    paths = player.position.start_paths.all()
     nearby_npcs = models.Character.objects.filter(position=player.position, user=None)
     nearby_players = models.Character.objects.filter(position=player.position).exclude(id=player.id)
     most_recent_success_log = player.characterlog_set.filter(success=True).order_by('-created_at').first()

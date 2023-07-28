@@ -36,6 +36,10 @@ class TwoWayBlock(OneWayBlock):
 
 @dataclass
 class Key:
+    name: str
+    description: str
+    appearance: str
+    position: str
     unlocks: str
     unlock_description: str
 
@@ -52,28 +56,33 @@ locations = [
     # High School
     Location("Havenbrook High Entrance", False, "A 1980s rural high school", "The entrance of an old rural high school."),
 
+    # Pawn Shop
+    Location("Curiosity Corner", True, "Pawn shop exterior", "An old pawn shop in the middle of town."),
+
     # Mountains
     Location("Havenbrook Peak Trailhead", False, "Mountain hiking trailhead", "The starting point of a scenic mountain hiking trail."),
     Location("Old Observatory Entrance", False, "Small abandoned observatory on mountaintop", "An abandoned observatory atop the mountains, offering panoramic views.")
 ]
 
 paths = [
-    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to ruined mansion", "to library", 10.0),
-    TwoWayPath("Ruined Mansion Entrance", "Ruined Mansion Living Room", "inside", "outside", 10.0),
-    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up ladder", 10.0),
+    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to ruined mansion", "to library"),
+    TwoWayPath("Ruined Mansion Entrance", "Ruined Mansion Living Room", "inside", "outside"),
+    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up ladder"),
     
-    TwoWayPath("Library Front Lawn", "Havenbrook High Entrance", "to high school", "to library", 10.0),
+    TwoWayPath("Library Front Lawn", "Havenbrook High Entrance", "to high school", "to library"),
 
-    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to mountains", "to library", 10.0),
-    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to observatory", "to trailhead", 10.0)
+    TwoWayPath("Library Front Lawn", "Curiosity Corner", "to pawn shop", "to library"),
+
+    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to mountains", "to library"),
+    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to observatory", "to trailhead")
 ]
 
 blocks = [
-    TwoWayBlock("Ruined Mansion Living Room", "Secret Bunker", "Locked Trapdoor", "A large bronze padlock holds the trapdoor firmly in place. It won't budge.", "A hidden trapdoor leading to the secret bunker.")
+    TwoWayBlock("Ruined Mansion Living Room", "Secret Bunker", "Trapdoor", "A large bronze padlock holds the trapdoor firmly in place. It won't budge.", "A hidden trapdoor leading to the secret bunker.")
 ]
 
 keys = [
-    Key("Locked Trapdoor", "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click.")
+    Key("Bronze Key", "An old fashioned bronze key with a few dents.", "An old fashioned bronze key with a few dents.", "Curiosity Corner", "Locked Trapdoor", "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click.")
 ]
 
 def create_locations(world):
@@ -97,4 +106,5 @@ def create_locations(world):
 
     for key in keys:
         block = models.Block.objects.get(world=world, name=key.unlocks)
-        models.Key.objects.create(world=world, unlocks=block, unlock_description=key.unlock_description)
+        position = models.Location.objects.get(world=world, name=key.position)
+        models.Key.objects.create(world=world, name=key.name, description=key.description, appearance=key.appearance, unlocks=block, unlock_description=key.unlock_description, position=position)
