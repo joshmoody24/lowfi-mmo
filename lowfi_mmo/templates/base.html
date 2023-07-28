@@ -7,8 +7,14 @@
         <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
         <!-- alternative styling: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"> -->
         <title>{% block title %}Home{% endblock %} | VentureVerse</title>
+        <style>
+            dl { display: grid; grid-template-columns: max-content auto; }
+            dt { grid-column-start: 1; }
+            dd { grid-column-start: 2; }
+        </style>
     </head>
     <body>
+        
         {% block nav %}
         <header>
             <nav>

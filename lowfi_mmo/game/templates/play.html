@@ -63,8 +63,12 @@
 
 <details>
     <summary>Command Help</summary>
-    <p>Go <em>path</em></p>
-    <p>Attack <em>character</em></p>
+    <dl>
+    {% for command in commands %}
+    <dt><code>{{ command.syntax }}</code></dt>
+    <dd>{{ command.description }}</dd>
+    {% endfor %}
+    </dl>
 </details>
 
 <script>

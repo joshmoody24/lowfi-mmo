@@ -1,11 +1,19 @@
 import re
 from game import systems, models
+from dataclasses import dataclass
 
-commands = {
-    'move': r"^go ([a-zA-Z\ ]*)$",
-    'attack': r"^attack ([a-zA-Z\ ]*)$", # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
-    'look': r"^look$",
-}
+@dataclass
+class Command:
+    name: str
+    regex: str
+    syntax: str
+    description: str
+
+COMMANDS = [
+    Command('move', r"^go ([a-zA-Z\ ]*)$", "go [location]", "Move to a different location"),
+    Command('attack', r"^attack ([a-zA-Z\ ]*)$", "attack [character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
+    Command('look', r"^look$", "look", "Examine your surroundings")
+]
 
 def handle_command(character, raw_input):
     command, variable = parse_command(character, raw_input)
@@ -30,8 +38,8 @@ def handle_command(character, raw_input):
         )
     
 def parse_command(character, raw_input):
-    for command, regex in commands.items():
-        match = re.match(regex, raw_input, re.IGNORECASE)
+    for command in COMMANDS:
+        match = re.match(command.regex, raw_input, re.IGNORECASE)
         if match:
-            return command.lower(), match.group(1).strip()
+            return command.name.lower(), match.group(1).strip()
     return None, None

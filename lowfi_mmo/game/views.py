@@ -7,6 +7,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from .worldgen.world_creator import populate_world
 from .worldgen.world_visualizer import world_to_html
+from .commands import COMMANDS
 
 def index(request):
     return render(request, "index.html")
@@ -32,6 +33,7 @@ def play(request, world_id, character_slug):
         "paths": paths,
         'success_log': most_recent_success_log,
         'error_log': most_recent_error_log,
+        'commands': COMMANDS,
     }
     return render(request, "play.html", context)
 

@@ -5,17 +5,17 @@ from django.db import transaction
 @transaction.atomic
 def move(character, target_path): # todo: make this a traveler
     paths = models.Path.objects.filter(start=character.position)
-    target_path = paths.filter(name__iexact=target_path).first()
-    if(target_path):
+    path = paths.filter(name__iexact=target_path).first()
+    if(path):
         # check for locks
-        blocks = target_path.block_set.all()
+        blocks = path.block_set.all()
         if(blocks.count() > 0):
-            return "", f"You could not go {target_path.name}. {' Additionally, '.join([block.description for block in blocks])}"
-        character.position = target_path.end
+            return "", f"You could not go {path.name}. {' Additionally, '.join([block.description for block in blocks])}"
+        character.position = path.end
         character.save()
-        return f"{character.name} moved to {target_path.end}", ""
+        return f"{character.name} moved to {path.end}", ""
     else:
-        return "", f"No path leads \"{target_path}\""
+        return "", f"No path leads {target_path}"
     
 def look(character):
     pass
