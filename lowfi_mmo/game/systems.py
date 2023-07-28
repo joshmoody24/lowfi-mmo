@@ -8,7 +8,7 @@ def move(character, target_path): # todo: make this a traveler
     target_path = paths.filter(name__iexact=target_path).first()
     if(target_path):
         # check for locks
-        blocks = models.Block.objects.filter(path=target_path)
+        blocks = target_path.block_set.all()
         if(blocks.count() > 0):
             return "", f"You could not go {target_path.name}. {' Additionally, '.join([block.description for block in blocks])}"
         character.position = target_path.end

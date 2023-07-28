@@ -5,8 +5,8 @@ from game import models, forms
 from .commands import handle_command
 from django.db import transaction
 from django.http import HttpResponse
-from .world_creator import populate_world
-from .world_visualizer import world_to_html
+from .worldgen.world_creator import populate_world
+from .worldgen.world_visualizer import world_to_html
 
 def index(request):
     return render(request, "index.html")
@@ -71,7 +71,7 @@ def world_details(request, world_id):
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
         return HttpResponseNotFound("World not found.")
     
-    player_character = models.Character.objects.filter(user=request.user).first()
+    player_character = models.Character.objects.filter(world_id=world_id, user=request.user).first()
     
     context = {
         "world": world,
@@ -111,6 +111,8 @@ def character_create(request, world_id):
         if(character_form.is_valid()):
             character_form.instance.user = request.user
             character_form.instance.world_id = world_id
+            SPAWNPOINT = "Library Front Lawn"
+            character_form.instance.position = models.Location.objects.get(world_id=world_id, name=SPAWNPOINT)
             character_form.save()
             return redirect("world_details", world_id=world_id)
     else:

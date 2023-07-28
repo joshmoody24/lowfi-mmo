@@ -78,7 +78,7 @@ class Character(Entity):
         return self.name
 
 class Block(Entity):
-    path = models.ForeignKey(Path, on_delete=models.CASCADE)
+    paths = models.ManyToManyField(Path)
 
 class Item(Entity):
     kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
