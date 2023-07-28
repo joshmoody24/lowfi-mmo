@@ -16,6 +16,9 @@ def move(character, target_path): # todo: make this a traveler
         return f"{character.name} moved to {target_path.end}", ""
     else:
         return "", f"No path leads \"{target_path}\""
+    
+def look(character):
+    pass
 
 @transaction.atomic
 def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):

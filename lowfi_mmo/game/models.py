@@ -13,6 +13,7 @@ alphanumeric_validator = RegexValidator(
 class World(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
     # TODO: timezone field somehow
     def __str__(self):
         return self.name
@@ -71,11 +72,21 @@ class Character(Entity):
     personality = models.TextField(max_length=200)
     carry_limit = models.PositiveIntegerField(default=10)
     position = models.ForeignKey(Location, on_delete=models.RESTRICT)
+    created_at = models.DateTimeField(auto_now_add=True)
     @property
     def carrying_weight(self):
         return self.item_set.aggregate(Sum("kg"))
     def __str__(self):
         return self.name
+    
+class CharacterLog(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    command = models.CharField(max_length=200)
+    success = models.BooleanField(default=True)
+    result = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.result
 
 class Block(Entity):
     paths = models.ManyToManyField(Path)

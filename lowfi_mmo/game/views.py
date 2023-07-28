@@ -15,24 +15,23 @@ def index(request):
 def play(request, world_id, character_slug):
     player = models.Character.objects.get(world__id=world_id, slug=character_slug, user=request.user)
 
-    command_result = ""
-    error = ""
-
     if(request.method=="POST"):
         command = request.POST.get('command')
-        command_result, error = handle_command(player, command)
+        handle_command(player, command)
 
     paths = models.Path.objects.filter(start=player.position)
     nearby_npcs = models.Character.objects.filter(position=player.position, user=None)
     nearby_players = models.Character.objects.filter(position=player.position).exclude(id=player.id)
+    most_recent_success_log = player.characterlog_set.filter(success=True).order_by('-created_at').first()
+    most_recent_error_log = player.characterlog_set.filter(success=False).order_by('-created_at').first()
 
     context = {
         "player": player,
         "nearby_npcs": nearby_npcs,
         "nearby_players": nearby_players,
         "paths": paths,
-        'message': command_result if command_result else None,
-        "error": error if error else None,
+        'success_log': most_recent_success_log,
+        'error_log': most_recent_error_log,
     }
     return render(request, "play.html", context)
 

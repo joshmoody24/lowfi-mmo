@@ -8,15 +8,14 @@
 
 <h1>{{ player.name }}</h1>
 
-{% if message %}
-<p style="color:rgb(1, 187, 1)">
-    {{ message | linebreaksbr }}
-</p>
-{% endif %}
-
-{% if error %}
+{% if error_log.created_at > success_log.created_at %}
 <p style="color:rgb(243, 29, 29)">
-    {{ error | linebreaksbr }}
+    {{ error_log | linebreaksbr }}
+</p>
+
+{% else %}
+<p style="color:rgb(1, 187, 1)">
+    {{ success_log | linebreaksbr }}
 </p>
 {% endif %}
 
@@ -57,7 +56,7 @@
     <form method="post">
         {% csrf_token %}
         <label for="command">What will you do next?</label>
-        <input id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" />
+        <input id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" maxlength="200" />
         <input type="submit" />
     </form>
 </article>
