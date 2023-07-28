@@ -10,18 +10,18 @@ class Command:
     description: str
 
 COMMANDS = [
-    Command('move', r"^go ([a-zA-Z\ ]*)$", "go [location]", "Move to a different location"),
+    Command('look', r"^look$", "look", "Examine your surroundings"),
+    Command('move', r"^go ([a-zA-Z\ ]*)$", "go [path]", "Follow a path to a new location"),
     Command('attack', r"^attack ([a-zA-Z\ ]*)$", "attack [character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
-    Command('look', r"^look$", "look", "Examine your surroundings")
 ]
 
 def handle_command(character, raw_input):
-    command, variable = parse_command(character, raw_input)
+    command, args = parse_command(character, raw_input)
     result = None, None
     if(command == 'move'):
-        result =  systems.move(character, variable)
+        result =  systems.move(character, args[0])
     elif(command == 'attack'):
-        result = systems.attack(character, variable)
+        result = systems.attack(character, args[0])
     elif(command == 'look'):
         result = systems.look(character)
     else:
@@ -41,5 +41,6 @@ def parse_command(character, raw_input):
     for command in COMMANDS:
         match = re.match(command.regex, raw_input, re.IGNORECASE)
         if match:
-            return command.name.lower(), match.group(1).strip()
+            print(match.groups())
+            return command.name.lower(), match.groups()
     return None, None

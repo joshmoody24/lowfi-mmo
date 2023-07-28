@@ -15,10 +15,11 @@ def move(character, target_path): # todo: make this a traveler
         character.save()
         return f"{character.name} moved to {path.end}", ""
     else:
-        return "", f"No path leads {target_path}"
+        return "", f"You cannot go \"{target_path}\""
     
 def look(character):
-    pass
+    location_description = character.position.description
+    return f"You look around. You see {location_description[0].lower()}{location_description[1:]}", ""
 
 @transaction.atomic
 def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
