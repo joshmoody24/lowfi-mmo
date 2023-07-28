@@ -36,17 +36,21 @@ def use(character, item_name, entity_name):
     if(not item): return "", f"You are not carrying an item named \"{item_name}.\""
     if(not entity or (hasattr(entity, 'position') and entity.position_id != character.position_id)): return "", f"There is no entity named \"{entity_name}\" nearby."
 
+    # UNBLOCK SYSTEM
     maybe_key = models.Key.objects.filter(pk=item.id).first()
     nearby_paths = character.position.start_paths.all()
     maybe_block = models.Block.objects.filter(pk=entity.id, paths__in=nearby_paths).first()
     if maybe_key:
         if not maybe_block:
-            print(f"There is no entity named \"{entity_name}\" nearby.")
+            return "", f"There is no entity named \"{entity_name}\" nearby."
         return unblock(maybe_key, maybe_block)
     
+
+
     return "", f"{item.name} cannot be used on {entity.name}"
 
 def unblock(key, block):
+    if(key.unlocks != block): return "", f"You try to unlock {block.name} with {key.name}, but it doesn't work."
     if(block.active):
         block.active = False
         block.save()

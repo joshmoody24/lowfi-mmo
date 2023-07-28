@@ -31,8 +31,13 @@ class OneWayBlock:
     appearance: str = ""
     description: str = ""
 
-class TwoWayBlock(OneWayBlock):
-    pass
+@dataclass
+class TwoWayBlock:
+    start: str
+    end: str
+    name: str
+    appearance: str = ""
+    description: str = ""
 
 @dataclass
 class Key:
@@ -82,7 +87,7 @@ blocks = [
 ]
 
 keys = [
-    Key("Bronze Key", "An old fashioned bronze key with a few dents.", "An old fashioned bronze key with a few dents.", "Curiosity Corner", "Locked Trapdoor", "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click.")
+    Key("Bronze Key", "An old fashioned bronze key with a few dents.", "An old fashioned bronze key with a few dents.", "Curiosity Corner", "Trapdoor", "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click.")
 ]
 
 def create_locations(world):
