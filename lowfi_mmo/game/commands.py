@@ -18,6 +18,15 @@ COMMANDS = [
     Command('attack', r"^attack ([a-zA-Z\ ]*)$", "[character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
 ]
 
+# TODO: add the following commands
+# search (for locations and items tagged hidden)
+# clear (clear logs)
+# inventory (show carried items)
+# help (display help modal)
+# exit (route to world details)
+# text <group|name> message
+# tell/ask/talk to or something
+
 @atomic
 def handle_command(character, raw_input):
     command, args = parse_command(character, raw_input)
