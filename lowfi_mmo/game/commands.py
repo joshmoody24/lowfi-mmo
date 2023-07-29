@@ -11,8 +11,8 @@ class Command:
     description: str
 
 COMMANDS = [
-    Command('look', r"^look$", "", "Examine your surroundings"),
-    Command('go', r"^(?:go|g)(?: (to|through|inside|outside))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
+    Command('look', r"^(?:look|l)$", "", "Examine your surroundings"),
+    Command('go', r"^(?:go|g)(?: (back|to|through|inside|outside))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
     Command('take', r"^take ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
     Command('use', r"^^use \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
     Command('attack', r"^attack ([a-zA-Z\ ]*)$", "[character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
@@ -45,8 +45,7 @@ def handle_command(character, raw_input):
     
 def parse_command(character, raw_input):
     for command in COMMANDS:
-        match = re.match(command.regex, raw_input, re.IGNORECASE)
+        match = re.match(command.regex, raw_input.strip(), re.IGNORECASE)
         if match:
-            print(match.groups())
             return command.name.lower(), match.groups()
     return None, None

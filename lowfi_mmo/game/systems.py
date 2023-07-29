@@ -4,50 +4,65 @@ from django.db import transaction
 
 @transaction.atomic
 def move(character, preposition, noun): # todo: make this a traveler
-    paths = models.Path.objects.filter(start=character.position)
-    path = paths.filter(noun__iexact=noun, preposition__iexact=preposition).first()
-    if not path: path = paths.filter(noun__iexact=noun).first()
-    if not path: path = paths.filter(end__names__name=noun).first()
-    if not path: path = paths.filter(preposition__iexact=preposition, noun="").first()
-    if not path: return "", f"You cannot go {preposition}{' ' + noun if noun else ''}"
+    
+    if(preposition): preposition_regex = "\\s*".join(list(preposition)) # regex that ignores whitespace between characters
+    if(noun): noun_regex = "\\s*".join(list(noun)) # ignore whitespace between characters
+
+    if not preposition and not noun: return "", "Please specify where to go. Use <code>look</code> for nearby locations."
+
+    path = None
+    nearby_paths = models.Path.objects.filter(start=character.position)
+    if(preposition and preposition.startswith('back') and not noun and character.previous_position):
+        path = nearby_paths.filter(end=character.previous_position).first()
+    elif noun and preposition:
+        path = nearby_paths.filter(noun__iregex=noun_regex, preposition__iregex=preposition_regex).first()
+    elif noun:
+        path = nearby_paths.filter(noun__iregex=noun_regex).first()
+        if not path: path = nearby_paths.filter(end__names__name__iregex=noun_regex).first()
+    elif preposition and preposition not in ["to"]:
+        possible_paths = nearby_paths.filter(preposition__iregex=preposition_regex)
+        if(possible_paths.count() == 1): path = possible_paths.first()
+
+    if not path: return "", f"You cannot go {preposition if preposition else 'to'}{' ' + noun if noun else ''}"
 
     # check for locks
     blocks = path.block_set.filter(active=True)
     if(blocks.count() > 0):
-        return "", f"You could not go {path.name}. {' Additionally, '.join([block.description for block in blocks])}"
+        return "", f"You could not go {str(path)}. {' Additionally, '.join([block.description for block in blocks])}"
     
     character.previous_position = character.position
     character.position = path.end
     character.save()
-    return f"{character.name} moved to {path.end}", ""
+    return f'<span class="success">You go {"back " if preposition == "back" else ""}{str(path)}.</span> ' + look(character, False)[0], ""
     
-def look(character):
+def look(character, describe_position=True):
     location_description = character.position.description
     formatted_description = location_description[0].lower() + location_description[1:]
     items = character.position.item_set.all()
-    items_description = last_comma_to_and(f"Some nearby items include {', '.join([item.name for item in items])}.") if items.count() > 0 else ""
+    colored_item = lambda item: f'<span class="item">{str(item)}</span>'
+    items_description = last_comma_to_and(f"Some nearby items include {', '.join([colored_item(item.name) for item in items])}.") if items.count() > 0 else ""
     new_paths = character.position.start_paths.exclude(end=character.previous_position)
     followed_path = character.position.start_paths.filter(end=character.previous_position).first()
     colored_path = lambda path: f'<span class="location">{str(path)}</span>'
     paths_description = last_comma_to_and("From here you can go " + ', '.join([colored_path(path) for path in new_paths]) + ".") if new_paths.count() > 0 else ""
-    print(followed_path)
     if followed_path and new_paths: paths_description += f" Or you can go back {colored_path(followed_path)}."
     elif followed_path: paths_description += f" From here you can go back {colored_path(followed_path)}."
-    return f"You look around. You see {formatted_description} {items_description} {paths_description}", ""
+    initial_message = f'<span class="success">You look around.</span> You are at {character.position.name}. ' if describe_position else ''
+    return f"{initial_message}You see {formatted_description} {items_description} {paths_description}", ""
 
 def take(character, item_name):
-    item = models.Item.objects.filter(world=character.world, position=character.position, name__iexact=item_name).first()
+    item = models.Item.objects.filter(world=character.world, position=character.position, names__name__iexact=item_name).first()
     if(not item): return "", f"You don't see a nearby \"{item_name}.\""
     item.position = None
     item.carrier = character
     item.save()
-    return f"You pick up {item.name}", ""
+    return f'You pick up <span class="item">{item.name}</span>', ""
 
 def use(character, item_name, entity_name):
-    item = models.Item.objects.filter(world=character.world, carrier=character, name__iexact=item_name).first()
-    entity = models.Entity.objects.filter(world=character.world, name__iexact=entity_name).first()
-    if(not item): return "", f"You are not carrying an item named \"{item_name}.\""
-    if(not entity or (hasattr(entity, 'position') and entity.position_id != character.position_id)): return "", f"There is no entity named \"{entity_name}\" nearby."
+    item = models.Item.objects.filter(world=character.world, carrier=character, names__name__iexact=item_name).first()
+    entity = models.Entity.objects.filter(world=character.world, names__name__iexact=entity_name).first()
+    if not item: return "", f"You are not carrying an item named \"{item_name}.\""
+    if not entity or (hasattr(entity, 'position') and entity.position_id != character.position_id): return "", f"There is no entity named \"{entity_name}\" nearby."
 
     # UNBLOCK SYSTEM
     maybe_key = models.Key.objects.filter(pk=item.id).first()
@@ -58,9 +73,7 @@ def use(character, item_name, entity_name):
             return "", f"There is no entity named \"{entity_name}\" nearby."
         return unblock(maybe_key, maybe_block)
     
-
-
-    return "", f"{item.name} cannot be used on {entity.name}"
+    return "", f'<span class="item">{item.name}</span> cannot be used on {entity.name}'
 
 def unblock(key, block):
     if(key.unlocks != block): return "", f"You try to unlock {block.name} with {key.name}, but it doesn't work."

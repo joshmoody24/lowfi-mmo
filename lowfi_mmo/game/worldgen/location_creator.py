@@ -16,6 +16,8 @@ def create_locations(world, data):
         end = models.Location.objects.get(world=world, names__name=path['exit']['to'])
         preposition = path['exit'].get('preposition', 'to')
         noun = path['exit'].get('noun', '')
+        if not preposition and not noun: raise Exception("Path must have a preposition or a noun")
+        if(start == end): raise Exception("Path cannot have same position for both start and end")
         models.Path.objects.create(preposition=preposition, noun=noun, start=start, end=end) # TODO: optional travel_seconds
 
     for block_data in data["blocks"]:
@@ -24,7 +26,9 @@ def create_locations(world, data):
         one_way = block_data.get('one_way', False)
         starts = [block_data['from']] if one_way else [block_data['from'], block_data['to']]
         ends = [block_data['to']] if one_way else [block_data['from'], block_data['to']]
-        blocked_paths = models.Path.objects.filter(start__world=world, end__world=world, start__names__name=starts, end__names__name=ends)
+        blocked_paths = models.Path.objects.filter(start__world=world, end__world=world, start__names__name__in=starts, end__names__name__in=ends)
+        if(blocked_paths.count() == 0): raise Exception(f"Block \"{block}\" has no paths")
+        if(blocked_paths.count() > 2): raise Exception(f"Block \"{block}\" is blocking too many paths: " + ", ".join([str(path) + " (" + str(path.start) + " -> " + str(path.end) + ")" for path in blocked_paths])) # possibly temporary
         for path in blocked_paths:
             block.paths.add(path)
 

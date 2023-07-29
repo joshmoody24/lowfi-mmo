@@ -412,10 +412,14 @@ p.error, span.error {
   color: rgb(243, 29, 29);
 }
 
-p.success, span.error {
+p.success, span.success {
   color: rgb(1, 187, 1);
 }
 
 span.location {
   color: rgb(4, 103, 233);
+}
+
+span.item {
+  color: rgb(212, 157, 5);
 }

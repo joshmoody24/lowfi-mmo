@@ -5,8 +5,9 @@ description = "The serene front lawn of a quaint little library."
 appearance = "Small-town library"
 exits = [
     { noun = "ruined mansion", to = "ruined mansion entrance" },
-    { noun = "high schoool", to = "high school entrance" },
+    { noun = "high school", to = "high school entrance" },
     { noun = "Havenbrook Peak Trailhead", to = "trailhead" },
+    { noun = "pawn shop", to = "pawn shop entrance" },
 ]
 
 [[locations]]
@@ -25,7 +26,7 @@ tags = ["inside", "ruined mansion"]
 description = "A once-grand living room now consumed by nature."
 appearance = "A decayed, rotting living room with plant overgrowth"
 exits = [
-    { preposition = "outside", to = "ruined mansion living room" },
+    { preposition = "outside", to = "ruined mansion entrance" },
     { preposition = "through", noun = "trapdoor", to = "secret bunker" },
 ]
 
@@ -35,7 +36,7 @@ tags = ["inside", "ruined mansion"]
 description = "A hidden underground bunker filled with mysterious treasures."
 appearance = "Secret bunker"
 exits = [
-    { preposition = "outside", to = "ruined mansion living room" },
+    { preposition = "through", noun = "trapdoor", to = "ruined mansion living room" },
 ]
 
 [[locations]]
@@ -50,10 +51,10 @@ exits = [
 [[locations]]
 names = ["Curiosity Corner entrance", "pawn shop entrance"]
 tags = ["outside"]
-description = "The entrance to a dusty old pawn shop on Main Street"
+description = "The entrance to a dusty old pawn shop on Main Street."
 appearance = "Old fashioned pawn shop exterior"
 exits = [
-    { name = "library", to = "library front lawn" },
+    { noun = "library", to = "library front lawn" },
     { preposition = "inside", to = "pawn shop" },
 ]
 
@@ -72,7 +73,7 @@ tags = ["outside", "hiking trail"]
 description = "The starting point of a scenic mountain hiking trail."
 appearance = "Mountain hiking trailhead"
 exits = [
-    { name = "library", to = "library front lawn" },
+    { noun = "library", to = "library front lawn" },
     { preposition = "up", noun = "the mountain", to = "old observatory entrance"}
 ]
 
@@ -86,7 +87,7 @@ exits = [
 ]
 
 [[blocks]]
-names = ["secret bunker trapdoor"]
+names = ["trapdoor"]
 from = "ruined mansion living room"
 to = "secret bunker"
 one_way = false
@@ -98,5 +99,5 @@ names = ["bronze key"]
 description = "An old-fashioned bronze key with a few scratches and dents."
 appearance = "An old-fashioned bronze key with scratches and dents"
 position = "pawn shop"
-unlocks = "secret bunker trapdoor"
+unlocks = "trapdoor"
 unlock_description = "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click."

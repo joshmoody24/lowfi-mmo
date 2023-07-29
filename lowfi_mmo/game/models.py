@@ -109,7 +109,7 @@ class CharacterLog(models.Model):
         if not self.success:
             return "error"
         elif self.command.startswith("go") or self.command.startswith("take"):
-            return "success"
+            return ""
         else: return ""
     def __str__(self):
         return self.result
