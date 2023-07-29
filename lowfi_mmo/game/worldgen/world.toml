@@ -1,0 +1,102 @@
+[[locations]]
+names = ["library front lawn"]
+tags = ["outside"]
+description = "The serene front lawn of a quaint little library."
+appearance = "Small-town library"
+exits = [
+    { noun = "ruined mansion", to = "ruined mansion entrance" },
+    { noun = "high schoool", to = "high school entrance" },
+    { noun = "Havenbrook Peak Trailhead", to = "trailhead" },
+]
+
+[[locations]]
+names = ["ruined mansion entrance"]
+tags = ["outside", "ruined mansion"]
+description = "An eerie entrance to a crumbling mansion."
+appearance = "Rural mansion in ruins, broken windows, rotting wood"
+exits = [
+    { preposition = "inside", to = "ruined mansion living room" },
+    { preposition = "to", noun = "library", to = "library front lawn" }
+]
+
+[[locations]]
+names = ["ruined mansion living room"]
+tags = ["inside", "ruined mansion"]
+description = "A once-grand living room now consumed by nature."
+appearance = "A decayed, rotting living room with plant overgrowth"
+exits = [
+    { preposition = "outside", to = "ruined mansion living room" },
+    { preposition = "through", noun = "trapdoor", to = "secret bunker" },
+]
+
+[[locations]]
+names = ["secret bunker"]
+tags = ["inside", "ruined mansion"]
+description = "A hidden underground bunker filled with mysterious treasures."
+appearance = "Secret bunker"
+exits = [
+    { preposition = "outside", to = "ruined mansion living room" },
+]
+
+[[locations]]
+names = ["high school entrance"]
+tags = ["outside", "high school"]
+description = "The entrance of an old rural high school."
+appearance = "Exterior of a 1980s rural high school"
+exits = [
+    { noun = "library", to = "library front lawn" },
+]
+
+[[locations]]
+names = ["Curiosity Corner entrance", "pawn shop entrance"]
+tags = ["outside"]
+description = "The entrance to a dusty old pawn shop on Main Street"
+appearance = "Old fashioned pawn shop exterior"
+exits = [
+    { name = "library", to = "library front lawn" },
+    { preposition = "inside", to = "pawn shop" },
+]
+
+[[locations]]
+names = ["Curiosity Corner", "pawn shop"]
+tags = ["inside"]
+description = "A dusty old pawn shop filled with strange oddities."
+appearance = "Dusty old fashioned pawn shop interior"
+exits = [
+    { preposition = "outside", to = "pawn shop entrance" },
+]
+
+[[locations]]
+names = ["Havenbrook Peak Trailhead", "trailhead"]
+tags = ["outside", "hiking trail"]
+description = "The starting point of a scenic mountain hiking trail."
+appearance = "Mountain hiking trailhead"
+exits = [
+    { name = "library", to = "library front lawn" },
+    { preposition = "up", noun = "the mountain", to = "old observatory entrance"}
+]
+
+[[locations]]
+names = ["old observatory entrance"]
+tags = ["observatory"]
+description = "An abandoned observatory atop the mountains, offering panoramic views."
+appearance = "Small abandoned observatory on mountaintop"
+exits = [
+    { preposition = "down", name = "the mountain", to = "trailhead" }
+]
+
+[[blocks]]
+names = ["secret bunker trapdoor"]
+from = "ruined mansion living room"
+to = "secret bunker"
+one_way = false
+description = "A large bronze padlock holds the trapdoor in place. It won't budge."
+appearance = "Large metal trapdoor on wooden floor secured with large bronze padlock"
+
+[[keys]]
+names = ["bronze key"]
+description = "An old-fashioned bronze key with a few scratches and dents."
+appearance = "An old-fashioned bronze key with scratches and dents"
+position = "pawn shop"
+unlocks = "secret bunker trapdoor"
+unlock_description = "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click."

@@ -2,10 +2,14 @@ from game import models
 from django.db.transaction import atomic
 import uuid
 from .location_creator import create_locations
+import tomllib
+import os
 
 @atomic
 def populate_world(world):
-    create_locations(world)
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/world.toml', 'rb') as file:
+        world_data = tomllib.load(file)
+    create_locations(world, world_data)
 
 def create_character(
     name,

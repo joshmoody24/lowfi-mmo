@@ -15,7 +15,7 @@ def index(request):
 
 @login_required
 def play(request, world_id, character_slug):
-    player = models.Character.objects.get(world__id=world_id, slug=character_slug, user=request.user)
+    player = models.Character.objects.get(world__id=world_id, names__slug=character_slug, user=request.user)
 
     if(request.method=="POST"):
         command = request.POST.get('command')
@@ -42,6 +42,7 @@ def play(request, world_id, character_slug):
     }
     return render(request, "play.html", context)
 
+@login_required
 def world_list(request):
     owned_worlds = models.World.objects.filter(owner=request.user)
     participant_worlds = models.World.objects.filter(worldmember__user=request.user)
@@ -138,14 +139,15 @@ def character_create(request, world_id):
             character_form.instance.user = request.user
             character_form.instance.world_id = world_id
             SPAWNPOINT_NAME = "Library Front Lawn"
-            spawnpoint = models.Location.objects.get(world_id=world_id, name=SPAWNPOINT_NAME)
+            spawnpoint = models.Location.objects.get(world_id=world_id, names__name__iexact=SPAWNPOINT_NAME)
             character_form.instance.position = spawnpoint
             character = character_form.save()
+            character.names.create(world_id=world_id, name=character_form.cleaned_data['name'])
             INITIAL_MESSAGE = """You are {name}. You check your phone: {time}. You are chilling in the {location}. You stand up and take a deep breath. You get ready to rumble."""
             initial_log = models.CharacterLog.objects.create(
                 character=character,
                 command="start game",
-                result=INITIAL_MESSAGE.format(name=character.name, time=datetime.now().strftime("%I:%M %p").lstrip("0"), location=SPAWNPOINT_NAME)
+                result=INITIAL_MESSAGE.format(name=character.name, time=datetime.now().strftime("%I:%M %p").lstrip("0"), location=spawnpoint.name)
             )
             return redirect("world_details", world_id=world_id)
     else:
@@ -165,6 +167,10 @@ def character_edit(request, world_id, character_slug):
         character_form = forms.CharacterForm(request.POST, instance=character, prefix="character")
         if(character_form.is_valid()):
             character_form.save()
+            name = character_form.cleaned_data['name']
+            first_name = character.names.first()
+            first_name.name = name
+            first_name.save()
             return redirect("world_details", world_id=world_id)
     else:
         character_form = forms.CharacterForm(instance=character, prefix="character")

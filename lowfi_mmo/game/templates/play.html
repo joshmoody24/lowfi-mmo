@@ -6,7 +6,7 @@
 <style>header { padding-top: 0; }</style>
 
 {% for log in log_history %}
-<p class="{{ log.css_class }}">{{ log }}</p>
+<p class="{{ log.css_class }}">{{ log | safe }}</p>
 {% endfor %}
 
 <form method="post">

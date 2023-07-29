@@ -12,7 +12,7 @@ class Command:
 
 COMMANDS = [
     Command('look', r"^look$", "", "Examine your surroundings"),
-    Command('move', r"^go ([a-zA-Z\ ]*)$", "[position]", "Follow a path to a new location"),
+    Command('go', r"^(?:go|g)(?: (to|through|inside|outside))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
     Command('take', r"^take ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
     Command('use', r"^^use \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
     Command('attack', r"^attack ([a-zA-Z\ ]*)$", "[character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
@@ -22,8 +22,8 @@ COMMANDS = [
 def handle_command(character, raw_input):
     command, args = parse_command(character, raw_input)
     result = None, None
-    if(command == 'move'):
-        result =  systems.move(character, args[0])
+    if(command == 'go'):
+        result =  systems.move(character, args[0], args[1])
     elif(command == 'attack'):
         result = systems.attack(character, args[0])
     elif(command == 'look'):
@@ -36,8 +36,6 @@ def handle_command(character, raw_input):
         result = "", f'"{raw_input}" is not a valid command.'
     
     success = result[0] != "" and result[1] == ""
-    print(result)
-    print("creating log. Success:", success)
     models.CharacterLog.objects.create(
         character=character,
         command=raw_input,

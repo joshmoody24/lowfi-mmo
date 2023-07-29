@@ -1,115 +1,45 @@
 from game import models
 from dataclasses import dataclass
 
-@dataclass
-class Location:
-    name: str
-    interior: True
-    appearance: str = ""
-    description: str = ""
-
-@dataclass
-class TwoWayPath:
-    start: str
-    end: str
-    name: str
-    reverse_name: str
-    travel_seconds: float = 10.0
-
-@dataclass
-class OneWayPath:
-    start: str
-    end: str
-    name: str
-    travel_seconds: float = 10.0
-
-@dataclass
-class OneWayBlock:
-    start: str
-    end: str
-    name: str
-    appearance: str = ""
-    description: str = ""
-
-@dataclass
-class TwoWayBlock:
-    start: str
-    end: str
-    name: str
-    appearance: str = ""
-    description: str = ""
-
-@dataclass
-class Key:
-    name: str
-    description: str
-    appearance: str
-    position: str
-    unlocks: str
-    unlock_description: str
-
-
-locations = [
-    # Ruined Mansion
-    Location("Ruined Mansion Entrance", False, "Rural mansion in ruins, broken windows, rotting wood", "An eerie entrance to a crumbling mansion."),
-    Location("Ruined Mansion Living Room", True, "A decayed, rotting living room with plant overgrowth", "A once-grand living room now consumed by nature."),
-    Location("Secret Bunker", True, "Secret bunker", "A hidden underground bunker filled with mysterious treasures."),
-
-    # Library
-    Location("Library Front Lawn", False, "Small town library", "The serene front lawn of a quaint little library."),
-
-    # High School
-    Location("High School Entrance", False, "A 1980s rural high school", "The entrance of an old rural high school."),
-
-    # Pawn Shop
-    Location("Curiosity Corner", True, "Pawn shop exterior", "An old pawn shop in the middle of town."),
-
-    # Mountains
-    Location("Havenbrook Peak Trailhead", False, "Mountain hiking trailhead", "The starting point of a scenic mountain hiking trail."),
-    Location("Old Observatory Entrance", False, "Small abandoned observatory on mountaintop", "An abandoned observatory atop the mountains, offering panoramic views.")
-]
-
-paths = [
-    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to the ruined mansion", "to the library"),
-    TwoWayPath("Ruined Mansion Entrance", "Ruined Mansion Living Room", "inside", "outside"),
-    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up the ladder"),
-    
-    TwoWayPath("Library Front Lawn", "High School Entrance", "to the high school", "to the library"),
-
-    TwoWayPath("Library Front Lawn", "Curiosity Corner", "to the pawn shop", "to the library"),
-
-    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to the mountains", "to the library"),
-    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to the old observatory", "to the trailhead")
-]
-
-blocks = [
-    TwoWayBlock("Ruined Mansion Living Room", "Secret Bunker", "Trapdoor", "A large bronze padlock holds the trapdoor firmly in place. It won't budge.", "A hidden trapdoor leading to the secret bunker.")
-]
-
-keys = [
-    Key("Bronze Key", "An old fashioned bronze key with a few dents.", "An old fashioned bronze key with a few dents.", "Curiosity Corner", "Trapdoor", "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click.")
-]
-
-def create_locations(world):
-    for location in locations:
-       models.Location.objects.create(world=world, name=location.name, interior=location.interior, appearance=location.appearance, description=location.description)
+def create_locations(world, data):
+    paths = []
+    for location_data in data["locations"]:
+        location = models.Location.objects.create(world=world, appearance=location_data['appearance'], description=location_data['description'])
+        add_names_and_tags(location, location_data)
+        if not location_data.get('exits', False):
+            raise Exception(f"Location \"{location_data['names'][0]}\" must have at least one exit path")
+        for loc_exit in location_data['exits']:
+            paths.append({'start_obj': location, 'exit': loc_exit})
     
     for path in paths:
-        start = models.Location.objects.get(world=world, name=path.start)
-        end = models.Location.objects.get(world=world, name=path.end)
-        models.Path.objects.create(name=path.name, start=start, end=end, travel_seconds=path.travel_seconds)
-        if(isinstance(path, TwoWayPath)):
-            models.Path.objects.create(name=path.reverse_name, start=end, end=start, travel_seconds=path.travel_seconds)
+        start = path['start_obj']
+        end = models.Location.objects.get(world=world, names__name=path['exit']['to'])
+        preposition = path['exit'].get('preposition', 'to')
+        noun = path['exit'].get('noun', '')
+        models.Path.objects.create(preposition=preposition, noun=noun, start=start, end=end) # TODO: optional travel_seconds
 
-    for block in blocks:
-        starts = [block.start] if isinstance(block, OneWayBlock) else [block.start, block.end]
-        ends = [block.end] if isinstance(block, OneWayBlock) else [block.start, block.end]
-        blocked_paths = models.Path.objects.filter(start__world=world, end__world=world, start__name__in=starts, end__name__in=ends)
-        block_obj = models.Block.objects.create(world=world, name=block.name, appearance=block.appearance, description=block.appearance)
+    for block_data in data["blocks"]:
+        block = models.Block.objects.create(world=world, appearance=block_data['appearance'], description=block_data['description'])
+        add_names_and_tags(block, block_data)
+        one_way = block_data.get('one_way', False)
+        starts = [block_data['from']] if one_way else [block_data['from'], block_data['to']]
+        ends = [block_data['to']] if one_way else [block_data['from'], block_data['to']]
+        blocked_paths = models.Path.objects.filter(start__world=world, end__world=world, start__names__name=starts, end__names__name=ends)
         for path in blocked_paths:
-            block_obj.paths.add(path)
+            block.paths.add(path)
 
-    for key in keys:
-        block = models.Block.objects.get(world=world, name=key.unlocks)
-        position = models.Location.objects.get(world=world, name=key.position)
-        models.Key.objects.create(world=world, name=key.name, description=key.description, appearance=key.appearance, unlocks=block, unlock_description=key.unlock_description, position=position)
+    for key_data in data["keys"]:
+        block = models.Block.objects.get(world=world, names__name=key_data['unlocks'])
+        position = models.Location.objects.get(world=world, names__name=key_data['position'])
+        key = models.Key.objects.create(world=world, description=key_data['description'], appearance=key_data['appearance'], unlocks=block, unlock_description=key_data['unlock_description'], position=position)
+        add_names_and_tags(key, key_data)
+
+def add_names_and_tags(entity, data):
+    if not data.get('names', False):
+        raise Exception(f"Entities must have at least one name")
+    for name in data['names']:
+        name_obj = models.Name.objects.create(world=entity.world, entity=entity, name=name)
+        entity.names.add(name_obj)
+    for tag in data.get('tags', []):
+        tag_obj, _ = models.Tag.objects.get_or_create(name=tag)
+        entity.tags.add(tag_obj)

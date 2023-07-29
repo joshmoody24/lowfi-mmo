@@ -3,10 +3,13 @@ from django.db.models import Sum, Max
 from django.db import transaction
 
 @transaction.atomic
-def move(character, path_name): # todo: make this a traveler
+def move(character, preposition, noun): # todo: make this a traveler
     paths = models.Path.objects.filter(start=character.position)
-    path = paths.filter(name__iexact=path_name).first()
-    if(not path): return "", f"You cannot go \"{path_name}.\""
+    path = paths.filter(noun__iexact=noun, preposition__iexact=preposition).first()
+    if not path: path = paths.filter(noun__iexact=noun).first()
+    if not path: path = paths.filter(end__names__name=noun).first()
+    if not path: path = paths.filter(preposition__iexact=preposition, noun="").first()
+    if not path: return "", f"You cannot go {preposition}{' ' + noun if noun else ''}"
 
     # check for locks
     blocks = path.block_set.filter(active=True)
@@ -25,9 +28,11 @@ def look(character):
     items_description = last_comma_to_and(f"Some nearby items include {', '.join([item.name for item in items])}.") if items.count() > 0 else ""
     new_paths = character.position.start_paths.exclude(end=character.previous_position)
     followed_path = character.position.start_paths.filter(end=character.previous_position).first()
-    paths_description = last_comma_to_and(f"From here you can go {', '.join([path.name for path in new_paths])}.") if new_paths.count() > 0 else ""
-    if followed_path and new_paths: paths_description += f" Or you can go back {followed_path.name}."
-    elif followed_path and not new_paths: f"From here you can go {followed_path.name}"
+    colored_path = lambda path: f'<span class="location">{str(path)}</span>'
+    paths_description = last_comma_to_and("From here you can go " + ', '.join([colored_path(path) for path in new_paths]) + ".") if new_paths.count() > 0 else ""
+    print(followed_path)
+    if followed_path and new_paths: paths_description += f" Or you can go back {colored_path(followed_path)}."
+    elif followed_path: paths_description += f" From here you can go back {colored_path(followed_path)}."
     return f"You look around. You see {formatted_description} {items_description} {paths_description}", ""
 
 def take(character, item_name):

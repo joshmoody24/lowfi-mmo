@@ -27,33 +27,51 @@ class WorldMember(models.Model):
     def __str__(self):
         return f"{self.user} - {self.world}"
     
-class Entity(models.Model):
-    world = models.ForeignKey(World, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20, validators=[alphanumeric_validator]) # could be broken out
-    slug = models.SlugField(blank=True)
-    appearance = models.TextField(blank=True)
-    description = models.TextField(blank=True)
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Entity, self).save(*args, **kwargs)
+class Tag(models.Model):
+    name = models.CharField(max_length=20, unique=True, validators=[alphanumeric_validator])
     def __str__(self):
         return self.name
+
+class Entity(models.Model):
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
+    appearance = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+    tags = models.ManyToManyField(Tag)
+    @property
+    def name(self):
+        first_name = self.names.first()
+        return first_name.name if first_name else "anonymous entity"
+    @property
+    def slug(self):
+        first_name = self.names.first()
+        return first_name.slug if first_name else "anonymous-entity"
+    def __str__(self):
+        return self.name
+
+class Name(models.Model):
+    name = models.CharField(max_length=20, validators=[alphanumeric_validator]) # could be broken out
+    slug = models.SlugField(blank=True)
+    world = models.ForeignKey(World, on_delete=models.CASCADE, related_name="names") # denormalized, curse you SQL
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name="names")
+    def __str__(self):
+        return self.name
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Name, self).save(*args, **kwargs)
     class Meta:
-        ordering = ['name']
+        ordering = ['entity', 'name']
         unique_together = [["world", "slug"]]
-    
+
 class Location(Entity):
     LOCATION_CATEGORIES = (("house", "house"), ("store", "store"), ("secret", "secret"), ("other", "other"))
     category = models.CharField(max_length=20, choices=LOCATION_CATEGORIES, blank=True)
-    interior = models.BooleanField()
-    def __str__(self):
-        return self.name
     
 # class LocationTag(models.Model):
 #     LOCATION_TAGS = ["dark", "lit"]
 
 class Path(models.Model):
-    name = models.CharField(max_length=30, blank=True, validators=[alphanumeric_validator])
+    preposition = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
+    noun = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
     start = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="start_paths")
     end = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="end_paths")
     travel_seconds = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)], default=10.0)
@@ -62,10 +80,12 @@ class Path(models.Model):
             raise ValidationError("Path start and end cannot be equal.")
         if(self.start.world_id != self.world_id or self.end.world_id != self.end.world_id):
             raise ValidationError("Path cannot connect locations from different worlds")
+        if not self.preposition and not self.noun:
+            raise ValidationError("Path needs a preposition, a noun, or both")
     def __str__(self):
-        return f"{(self.name + ': ') if self.name else ''}{self.start.name} -> {self.end.name}"
+        return f"{self.preposition}{' ' + self.noun if self.noun else ''}"
     class Meta:
-        unique_together = [["start", "end"]]
+        unique_together = [["start", "end"], ["start", "preposition", "noun"]]
 
 class Character(Entity):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -77,8 +97,6 @@ class Character(Entity):
     @property
     def carrying_weight(self):
         return self.item_set.aggregate(Sum("kg"))
-    def __str__(self):
-        return self.name
     
 class CharacterLog(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
@@ -97,8 +115,8 @@ class CharacterLog(models.Model):
         return self.result
 
 class Block(Entity):
-    active = models.BooleanField(default=True)
     paths = models.ManyToManyField(Path)
+    active = models.BooleanField(default=True)
 
 class Item(Entity):
     kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])

@@ -408,10 +408,14 @@
     }
   }
 
-p.error {
+p.error, span.error {
   color: rgb(243, 29, 29);
 }
 
-p.success {
+p.success, span.error {
   color: rgb(1, 187, 1);
+}
+
+span.location {
+  color: rgb(4, 103, 233);
 }
