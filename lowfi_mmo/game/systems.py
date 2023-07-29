@@ -20,7 +20,7 @@ def move(character, path_name): # todo: make this a traveler
 def look(character):
     location_description = character.position.description
     formatted_description = location_description[0].lower() + location_description[1:]
-    return f"You look around. You see {formatted_description}.", ""
+    return f"You look around. You see {formatted_description}", ""
 
 def take(character, item_name):
     item = models.Item.objects.filter(world=character.world, position=character.position, name__iexact=item_name).first()

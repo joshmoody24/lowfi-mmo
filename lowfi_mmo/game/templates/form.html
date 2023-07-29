@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}{{form_heading|default:"Form"}}{% endblock %}
-{% block h1 %}{{form_heading|default:"Form"}}{% endblock %}
+{% block header %}
+    <h1>{{form_heading|default:"Form"}}</h1>
+    {% if form_subheading %}
+        <h2>{{ form_subheading }}</h2>
+    {% endif %}
+{% endblock %}
+
+
 
 {% block content %}
-{% if form_subheading %}
-<h2>{{ form_subheading }}</h2>
-{% endif %}
 <form method="{{ form_method|default:'post' }}">
     {% csrf_token %}
     {% if form %}{{ form.as_p }}{% endif %}

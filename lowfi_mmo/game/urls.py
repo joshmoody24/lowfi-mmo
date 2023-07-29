@@ -9,6 +9,7 @@ urlpatterns = [
     path('worlds/details/<int:world_id>', views.world_details, name='world_details'),
     path('worlds/create/', views.world_create, name='world_create'),
     path('worlds/delete/<int:world_id>', views.world_delete, name='world_delete'),
+    path('worlds/edit/<int:world_id>', views.world_edit, name='world_edit'),
 
     # characters
     path('characters/', views.character_list, name='character_list'),

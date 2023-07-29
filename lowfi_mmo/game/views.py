@@ -73,6 +73,27 @@ def world_create(request):
     return render(request, "form.html", context)
 
 @login_required
+@transaction.atomic
+def world_edit(request, world_id):
+    world = get_object_or_404(models.World, id=world_id)
+    if(world.owner_id != request.user.id):
+        return HttpResponseForbidden("You don't have permissions to edit this world.")
+    if(request.method == "POST"):
+        world_form = forms.WorldForm(request.POST, instance=world)
+        if(world_form.is_valid()):
+            world_form.instance.save()
+            return redirect("world_details", world_id=world_id)
+    else:
+        world_form = forms.WorldForm(instance=world)
+    context = {
+        "form": world_form,
+        "form_heading": "Edit World",
+        "form_submit": "Save Changes",
+    }
+    return render(request, "form.html", context)
+    
+
+@login_required
 def world_details(request, world_id):
     world = get_object_or_404(models.World, id=world_id)
     if(not world.worldmember_set.filter(user=request.user) and not world.owner == request.user):
@@ -89,7 +110,6 @@ def world_details(request, world_id):
 @login_required
 @transaction.atomic
 def world_delete(request, world_id):
-    print(request.method)
     world = get_object_or_404(models.World, id=world_id)
     if(world.owner != request.user):
         return HttpResponseForbidden("You are not allowed to delete this world.")
@@ -140,18 +160,19 @@ def character_create(request, world_id):
 
 def character_edit(request, world_id, character_slug):
     character = get_object_or_404(models.Character, world_id=world_id, slug=character_slug, user=request.user)
+    if(character.user_id != request.user_id):
+        return HttpResponseForbidden("You don't have permissions to edit this character.")
     if(request.method=="POST"):
-        character_form = forms.CharacterForm(request.POST)
+        character_form = forms.CharacterForm(request.POST, instance=character)
         if(character_form.is_valid()):
-            character_form.instance.user = request.user
-            character_form.instance.world_id = world_id
             character_form.save()
             return redirect("world_details", world_id=world_id)
     else:
         character_form = forms.CharacterForm(instance=character)
     context = {
         "form": character_form,
-        "form_heading": f"Edit character in {character.world}",
+        "form_heading": "Edit Character",
+        "form_subheading": f"{character_form.instance.name} from {character_form.instance.world.name}",
         "form_submit": "Save Changes",
     }
     return render(request, "form.html", context)

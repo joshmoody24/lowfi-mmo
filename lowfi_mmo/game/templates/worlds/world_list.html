@@ -21,9 +21,14 @@
 <h2>Other Worlds</h2>
 {% for world in participant_worlds %}
 <p>
-    <a class="button" href="{% url 'world_details' world_id=world.id %}">{{ world }}</a>
+    <a href="{% url 'world_details' world_id=world.id %}"><button>{{ world }}</button></a>
 </p>
 {% empty %}
 <p>No worlds found.</p>
 {% endfor %}
+
+<p>
+    <a class="button" href="{% url 'index' %}"><button>&larr; Home</button></a>
+</p>
+
 {% endblock %}

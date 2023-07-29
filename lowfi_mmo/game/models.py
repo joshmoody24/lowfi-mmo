@@ -85,6 +85,13 @@ class CharacterLog(models.Model):
     success = models.BooleanField(default=True)
     result = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    @property
+    def css_class(self):
+        if not self.success:
+            return "error"
+        elif self.command.startswith("go "):
+            return "success"
+        else: return ""
     def __str__(self):
         return self.result
 

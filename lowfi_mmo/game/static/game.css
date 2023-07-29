@@ -399,3 +399,12 @@
       background-color: #fff;
     }
   }
+
+/* CUSTOM STUFF */
+p.error {
+  color: rgb(243, 29, 29);
+}
+
+p.success {
+  color: rgb(1, 187, 1);
+}

@@ -5,53 +5,8 @@
 {% block content %}
 <style>header { padding-top: 0; }</style>
 
-{% if error_log.created_at > success_log.created_at %}
-<p style="color:rgb(243, 29, 29)">
-    {{ error_log | linebreaksbr }}
-</p>
-
-{% else %}
-<p style="color:rgb(1, 187, 1)">
-    {{ success_log | linebreaksbr }}
-</p>
-{% endif %}
-
-<!--
-    <details open>
-        <summary>{{ player.position }}</summary>
-        {{ player.position.description | linebreaks }}
-    </details>
-
-    {% if nearby_npcs|length > 0 %}
-    <details open>
-        <summary>Nearby characters</summary>
-        <ul>
-            {% for character in nearby_npcs %}
-            <li>{{ character.name }}</li>
-            {% endfor %}
-        </ul>
-    </details>
-    {% endif %}
--->
-
-
-<!--
-    <details open>
-        <summary>Nearby Paths</summary>
-            {% for path in paths %}
-            <form method="post">
-                {% csrf_token %}
-                <input id="command" name="command" type="hidden" value="go {{ path.name }}" />
-                <button type="submit">
-                    Go {{ path.name }}
-                </button>
-            </form>
-            {% endfor %}
-    </details>
--->
-
 {% for log in log_history %}
-<p>{{ log }}</p>
+<p class="{{ log.css_class }}">{{ log }}</p>
 {% endfor %}
 
 <form method="post">
