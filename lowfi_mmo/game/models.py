@@ -72,6 +72,7 @@ class Character(Entity):
     personality = models.TextField(max_length=200)
     carry_limit = models.PositiveIntegerField(default=10)
     position = models.ForeignKey(Location, on_delete=models.RESTRICT)
+    previous_position = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, related_name="previous_positionset")
     created_at = models.DateTimeField(auto_now_add=True)
     @property
     def carrying_weight(self):
@@ -89,7 +90,7 @@ class CharacterLog(models.Model):
     def css_class(self):
         if not self.success:
             return "error"
-        elif self.command.startswith("go "):
+        elif self.command.startswith("go") or self.command.startswith("take"):
             return "success"
         else: return ""
     def __str__(self):

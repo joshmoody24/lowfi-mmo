@@ -14,8 +14,8 @@ COMMANDS = [
     Command('look', r"^look$", "", "Examine your surroundings"),
     Command('move', r"^go ([a-zA-Z\ ]*)$", "[position]", "Follow a path to a new location"),
     Command('take', r"^take ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
-    Command('use', r"^^use \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on an entity"),
-    Command('attack', r"^attack ([a-zA-Z\ ]*)$", ["character"], "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
+    Command('use', r"^^use \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
+    Command('attack', r"^attack ([a-zA-Z\ ]*)$", "[character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
 ]
 
 @atomic

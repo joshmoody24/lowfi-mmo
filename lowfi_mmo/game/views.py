@@ -29,7 +29,6 @@ def play(request, world_id, character_slug):
 
     MAX_HISTORY = 99
     logs = player.characterlog_set.order_by('created_at')[:MAX_HISTORY]
-    print(logs)
 
     context = {
         "player": player,
@@ -57,14 +56,14 @@ def world_list(request):
 @transaction.atomic
 def world_create(request):
     if(request.method=="POST"):
-        world_form = forms.WorldForm(request.POST)
+        world_form = forms.WorldForm(request.POST, prefix="world")
         if(world_form.is_valid()):
             world_form.instance.owner = request.user
             world = world_form.save()
             populate_world(world)
             return redirect("world_list")
     else:
-        world_form = forms.WorldForm()
+        world_form = forms.WorldForm(prefix="world")
     context = {
         "form": world_form,
         "form_heading": "Create World",
@@ -79,12 +78,12 @@ def world_edit(request, world_id):
     if(world.owner_id != request.user.id):
         return HttpResponseForbidden("You don't have permissions to edit this world.")
     if(request.method == "POST"):
-        world_form = forms.WorldForm(request.POST, instance=world)
+        world_form = forms.WorldForm(request.POST, instance=world, prefix="world") # prefix to avoid person name autocomplete suggestions
         if(world_form.is_valid()):
             world_form.instance.save()
             return redirect("world_details", world_id=world_id)
     else:
-        world_form = forms.WorldForm(instance=world)
+        world_form = forms.WorldForm(instance=world, prefix="world")
     context = {
         "form": world_form,
         "form_heading": "Edit World",
@@ -134,7 +133,7 @@ def character_list(request):
 def character_create(request, world_id):
     world = get_object_or_404(models.World, id=world_id)
     if(request.method=="POST"):
-        character_form = forms.CharacterForm(request.POST)
+        character_form = forms.CharacterForm(request.POST, prefix="character") # avoid real person name autocomplete
         if(character_form.is_valid()):
             character_form.instance.user = request.user
             character_form.instance.world_id = world_id
@@ -142,7 +141,7 @@ def character_create(request, world_id):
             spawnpoint = models.Location.objects.get(world_id=world_id, name=SPAWNPOINT_NAME)
             character_form.instance.position = spawnpoint
             character = character_form.save()
-            INITIAL_MESSAGE = """You are {name}. You check your phone: {time}. You get out of bed and look around. You are chilling in the {location}. You get ready to rumble."""
+            INITIAL_MESSAGE = """You are {name}. You check your phone: {time}. You are chilling in the {location}. You stand up and take a deep breath. You get ready to rumble."""
             initial_log = models.CharacterLog.objects.create(
                 character=character,
                 command="start game",
@@ -150,7 +149,7 @@ def character_create(request, world_id):
             )
             return redirect("world_details", world_id=world_id)
     else:
-        character_form = forms.CharacterForm()
+        character_form = forms.CharacterForm(prefix="character")
     context = {
         "form": character_form,
         "form_heading": f"Create character in {world}",
@@ -163,12 +162,12 @@ def character_edit(request, world_id, character_slug):
     if(character.user_id != request.user.id):
         return HttpResponseForbidden("You don't have permissions to edit this character.")
     if(request.method=="POST"):
-        character_form = forms.CharacterForm(request.POST, instance=character)
+        character_form = forms.CharacterForm(request.POST, instance=character, prefix="character")
         if(character_form.is_valid()):
             character_form.save()
             return redirect("world_details", world_id=world_id)
     else:
-        character_form = forms.CharacterForm(instance=character)
+        character_form = forms.CharacterForm(instance=character, prefix="character")
     context = {
         "form": character_form,
         "form_heading": "Edit Character",

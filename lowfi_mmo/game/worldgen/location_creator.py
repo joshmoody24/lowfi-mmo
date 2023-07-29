@@ -59,7 +59,7 @@ locations = [
     Location("Library Front Lawn", False, "Small town library", "The serene front lawn of a quaint little library."),
 
     # High School
-    Location("Havenbrook High Entrance", False, "A 1980s rural high school", "The entrance of an old rural high school."),
+    Location("High School Entrance", False, "A 1980s rural high school", "The entrance of an old rural high school."),
 
     # Pawn Shop
     Location("Curiosity Corner", True, "Pawn shop exterior", "An old pawn shop in the middle of town."),
@@ -70,16 +70,16 @@ locations = [
 ]
 
 paths = [
-    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to ruined mansion", "to library"),
+    TwoWayPath("Library Front Lawn", "Ruined Mansion Entrance", "to the ruined mansion", "to the library"),
     TwoWayPath("Ruined Mansion Entrance", "Ruined Mansion Living Room", "inside", "outside"),
-    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up ladder"),
+    TwoWayPath("Ruined Mansion Living Room", "Secret Bunker", "through trapdoor", "up the ladder"),
     
-    TwoWayPath("Library Front Lawn", "Havenbrook High Entrance", "to high school", "to library"),
+    TwoWayPath("Library Front Lawn", "High School Entrance", "to the high school", "to the library"),
 
-    TwoWayPath("Library Front Lawn", "Curiosity Corner", "to pawn shop", "to library"),
+    TwoWayPath("Library Front Lawn", "Curiosity Corner", "to the pawn shop", "to the library"),
 
-    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to mountains", "to library"),
-    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to observatory", "to trailhead")
+    TwoWayPath("Library Front Lawn", "Havenbrook Peak Trailhead", "to the mountains", "to the library"),
+    TwoWayPath("Havenbrook Peak Trailhead", "Old Observatory Entrance", "to the old observatory", "to the trailhead")
 ]
 
 blocks = [

@@ -13,6 +13,7 @@ def move(character, path_name): # todo: make this a traveler
     if(blocks.count() > 0):
         return "", f"You could not go {path.name}. {' Additionally, '.join([block.description for block in blocks])}"
     
+    character.previous_position = character.position
     character.position = path.end
     character.save()
     return f"{character.name} moved to {path.end}", ""
@@ -20,7 +21,14 @@ def move(character, path_name): # todo: make this a traveler
 def look(character):
     location_description = character.position.description
     formatted_description = location_description[0].lower() + location_description[1:]
-    return f"You look around. You see {formatted_description}", ""
+    items = character.position.item_set.all()
+    items_description = last_comma_to_and(f"Some nearby items include {', '.join([item.name for item in items])}.") if items.count() > 0 else ""
+    new_paths = character.position.start_paths.exclude(end=character.previous_position)
+    followed_path = character.position.start_paths.filter(end=character.previous_position).first()
+    paths_description = last_comma_to_and(f"From here you can go {', '.join([path.name for path in new_paths])}.") if new_paths.count() > 0 else ""
+    if followed_path and new_paths: paths_description += f" Or you can go back {followed_path.name}."
+    elif followed_path and not new_paths: f"From here you can go {followed_path.name}"
+    return f"You look around. You see {formatted_description} {items_description} {paths_description}", ""
 
 def take(character, item_name):
     item = models.Item.objects.filter(world=character.world, position=character.position, name__iexact=item_name).first()
@@ -118,3 +126,11 @@ def attack(attacker_entity, defender_name, retaliation=False, battle_so_far=""):
 
 def read(reader_character, readable):
     return f"{reader_character.entity.name} read {readable.entity.name}. It said: {readable.message}"
+
+# handle oxford comma
+def last_comma_to_and(comma_separated_list_str):
+    return comma_separated_list_str[::-1].replace(', '[::-1], ', and '[::-1], 1)[::-1] # evil floating point string level hacking
+
+# handle oxford comma
+def last_comma_to_or(comma_separated_list_str):
+    return comma_separated_list_str[::-1].replace(', '[::-1], ', or '[::-1], 1)[::-1] # evil floating point string level hacking

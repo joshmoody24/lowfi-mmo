@@ -402,9 +402,12 @@
     progress::-moz-progress-bar {
       background-color: #fff;
     }
+    dialog {
+      background-color: #111;
+      color: #fff;
+    }
   }
 
-/* CUSTOM STUFF */
 p.error {
   color: rgb(243, 29, 29);
 }

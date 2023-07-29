@@ -8,10 +8,8 @@
     {% endif %}
 {% endblock %}
 
-
-
 {% block content %}
-<form method="{{ form_method|default:'post' }}">
+<form method="{{ form_method|default:'post' }}" autocomplete="off">
     {% csrf_token %}
     {% if form %}{{ form.as_p }}{% endif %}
     {% if related_form %}{{ related_form.as_p }}{% endif %}
