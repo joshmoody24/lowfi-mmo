@@ -27,6 +27,10 @@ def play(request, world_id, character_slug):
     most_recent_success_log = player.characterlog_set.filter(success=True).order_by('-created_at').first()
     most_recent_error_log = player.characterlog_set.filter(success=False).order_by('-created_at').first()
 
+    MAX_HISTORY = 99
+    logs = player.characterlog_set.order_by('created_at')[:MAX_HISTORY]
+    print(logs)
+
     context = {
         "player": player,
         "nearby_npcs": nearby_npcs,
@@ -34,6 +38,7 @@ def play(request, world_id, character_slug):
         "paths": paths,
         'success_log': most_recent_success_log,
         'error_log': most_recent_error_log,
+        'log_history': logs,
         'commands': COMMANDS,
     }
     return render(request, "play.html", context)

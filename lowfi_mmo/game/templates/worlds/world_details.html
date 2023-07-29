@@ -1,24 +1,26 @@
 {% extends "base.html" %}
 
 {% block title %}{{ world }}{% endblock %}
-{% block header %}{{ world }}{% endblock %}
+
+{% block header %}
+    <h1>{{ world }}</h1>
+    {% if player_character %}
+        <p>
+            <a class="button" href="{% url 'play' world_id=world.id character_slug=player_character.slug %}"><button>Play as {{ player_character }}</button></a>
+            <a class="button" href="{% url 'character_edit' world_id=world.id character_slug=player_character.slug %}"><button>Edit Character</button></a>
+            {% else %}
+            <a class="button" href="{% url 'character_create' world_id=world.id %}">Create Character</a>
+        </p>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 
-{% if player_character %}
-<h2>Your Character</h2>
-<p>
-<a class="button" href="{% url 'play' world_id=world.id character_slug=player_character.slug %}">Play as {{ player_character }}</a>
-<a class="button" href="{% url 'character_edit' world_id=world.id character_slug=player_character.slug %}">Edit Character</a>
-{% else %}
-<a class="button" href="{% url 'character_create' world_id=world.id %}">Create Character</a>
-</p>
-{% endif %}
 
 {% if world.owner == user %}
 <h2>Admin Tools</h2>
 <p>
-    <a href="{% url 'world_delete' world_id=world.id %}">Delete World</a>
+    <a href="{% url 'world_delete' world_id=world.id %}"><button>Delete World</button></a>
 </p>
 {% endif %}
 

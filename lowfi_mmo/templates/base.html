@@ -3,27 +3,42 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="A low-fi fantasy MMO that can be played over email">
-        <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-        <!-- alternative styling: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"> -->
+        <meta name="description" content="A low-fi MMO that can be played over email">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" type="text/css">
+        <link rel="stylesheet" href="https://unpkg.com/concrete.css@2.0.3/concrete.css" type="text/css">
+        <!-- alternative styling: <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"> -->
+        <!-- alternative styling 2: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"> -->
         <title>{% block title %}Home{% endblock %} | VentureVerse</title>
         <style>
             dl { display: grid; grid-template-columns: max-content auto; }
             dt { grid-column-start: 1; }
             dd { grid-column-start: 2; }
+            header { padding-bottom: 8rem!important; } /* override concrete.style */
+            details { margin-top: 2rem; margin-bottom: 2rem; }
+            summary { cursor: pointer; }
+
+            /*
+            basically just the main styles from concrete.css duplicated to extend to more elements
+            (though changed display from inline-block to block) 
+            */
+            details {
+                display: block;
+                vertical-align: middle;
+                padding: .4rem 1rem;
+                font-size: 2rem;
+                font-weight: normal;
+                margin-bottom: 1rem;
+                background: #fff;
+                color: #111;
+                border: .2rem solid #111;
+                border-radius: 0;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
-        
-        {% block nav %}
-        <header>
-            <nav>
-                {% include "nav_links.html" %}
-                <h1>{% block header %}VentureVerse{% endblock %}</h1>
-            </nav>
-        </header>
-        {% endblock %}
-        <main class="container">
+        <main>
+            <header>{% block header %}{% endblock %}</header>
             {% block content %}{% endblock %}
         </main>
     </body>

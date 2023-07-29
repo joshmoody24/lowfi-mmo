@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}Worlds{% endblock %}
-{% block header %}Worlds{% endblock %}
+{% block header %}
+    <h1>Worlds</h1>
+    <p>
+        <a href="{% url 'world_create' %}"><button>Create World</button></a>
+    </p>
+{% endblock %}
 
 {% block content %}
-
-<a class="button" href="{% url 'world_create' %}">Create New World</a>
-
 <h2>Owned Worlds</h2>
 {% for world in owned_worlds %}
 <p>
-    <a class="button" href="{% url 'world_details' world_id=world.id %}">{{ world }}</a>
+    <a href="{% url 'world_details' world_id=world.id %}"><button>{{ world }}</button></a>
 </p>
 {% empty %}
 <p>No worlds found.</p>

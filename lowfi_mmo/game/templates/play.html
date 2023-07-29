@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}{{ player }}{% endblock %}
-{% block header %}{{ player }}{% endblock %}
-{% block nav %}{% endblock %}
 
 {% block content %}
-
-<h1>{{ player.name }}</h1>
+<style>header { padding-top: 0; }</style>
 
 {% if error_log.created_at > success_log.created_at %}
 <p style="color:rgb(243, 29, 29)">
@@ -19,27 +16,29 @@
 </p>
 {% endif %}
 
-<details open>
-    <summary>{{ player.position }}</summary>
-    {{ player.position.description | linebreaks }}
-</details>
+<!--
+    <details open>
+        <summary>{{ player.position }}</summary>
+        {{ player.position.description | linebreaks }}
+    </details>
 
-{% if nearby_npcs|length > 0 %}
-<details open>
-    <summary>Nearby characters</summary>
-    <ul>
-        {% for character in nearby_npcs %}
-        <li>{{ character.name }}</li>
-        {% endfor %}
-    </ul>
-</details>
-{% endif %}
+    {% if nearby_npcs|length > 0 %}
+    <details open>
+        <summary>Nearby characters</summary>
+        <ul>
+            {% for character in nearby_npcs %}
+            <li>{{ character.name }}</li>
+            {% endfor %}
+        </ul>
+    </details>
+    {% endif %}
+-->
 
-<details open>
-    <summary>Nearby Paths</summary>
-    <ul>
-    {% for path in paths %}
-        <li>
+
+<!--
+    <details open>
+        <summary>Nearby Paths</summary>
+            {% for path in paths %}
             <form method="post">
                 {% csrf_token %}
                 <input id="command" name="command" type="hidden" value="go {{ path.name }}" />
@@ -47,34 +46,57 @@
                     Go {{ path.name }}
                 </button>
             </form>
-        </li>
-    {% endfor %}
-    </ul>
-</details>
+            {% endfor %}
+    </details>
+-->
 
-<article>
-    <form method="post">
-        {% csrf_token %}
-        <label for="command">What will you do next?</label>
-        <input id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" maxlength="200" />
-        <input type="submit" />
-    </form>
-</article>
+{% for log in log_history %}
+<p>{{ log }}</p>
+{% endfor %}
 
-<details>
-    <summary>Command Help</summary>
-    <dl>
-    {% for command in commands %}
-    <dt><code>{{ command.name }} {{ command.arg_syntax }}</code></dt>
-    <dd>{{ command.description }}</dd>
-    {% endfor %}
-    </dl>
-</details>
+<form method="post">
+    {% csrf_token %}
+    <label style="display:none" for="command">What will you do next?</label>
+    <div style="display:flex; justify-content: stretch; align-items: flex-start">
+        <button type="button" style="margin-right: 1rem" onclick="document.getElementById('help').showModal()">?</button>
+        <input 1rem id="command" name="command" type="text" placeholder="Enter command..." required minlength="2" autocomplete="off" maxlength="200" />
+        <input style="margin-left: 1rem" type="submit" />
+    </div>
+</form>
+
+
+<dialog id="help">
+    <h2>Help</h2>
+    <p>This is the command prompt. Use it to tell your character what to do.</p>
+    <h3>Commands</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Command</th>
+                <th>Description</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for command in commands %}
+            <tr>
+                <td><code>{{ command.name }} {{ command.arg_syntax }}</code></td>
+                <td>{{ command.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
+    <button onclick="document.getElementById('help').close()">Ok</button>
+</dialog>
 
 <script>
-    let input = document.getElementById("command");
+    const input = document.getElementById("command");
     input.focus();
     input.select();
+
+    window.scrollTo(0, document.body.scrollHeight);
+
+    const help = document.getElementById("help");
 </script>
 
 {% endblock %}

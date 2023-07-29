@@ -1,15 +1,20 @@
-{% extends "Base.html" %}
+{% extends "base.html" %}
 
-{% block title %}VentureVerse{% endblock %}
-{% block header %}VentureVerse{% endblock %}
-
-{% block content %}
-{% if not request.user.is_authenticated %}
-<p>This is the future site of a MMO you can play over email.</p>
-{% else %}
-<p>
-    <a class="button" href="{% url 'world_list' %}">View Worlds</a>
-    <a class="button" href="{% url 'world_create' %}">New World</a>
-</p>
-{% endif %}
+{% block header %}
+    {% if not request.user.is_authenticated %}
+        <h1>VentureVerse</h1>
+        <p>A lowfi text-based MMO</p>
+        <p>
+            <a class="button" href="{% url 'world_list' %}"><button>Sign up</button></a>
+            <a class="button" href="{% url 'login' %}"><button>Login</button></a>
+        </p>
+    {% else %}
+        <h1>Hello, {{ request.user }}</h1>
+        <p>Welcome to VentureVerse</p>
+        <p>
+            <a class="button" href="{% url 'world_list' %}"><button>View Worlds</button></a>
+            <a class="button" href="{% url 'profile' %}"><button>Profile</button></a>
+            <a class="button" href="{% url 'logout' %}"><button>Logout</button></a>
+        </p>
+    {% endif %}
 {% endblock %}
