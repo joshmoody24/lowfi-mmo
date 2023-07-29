@@ -4,10 +4,6 @@ from django.db import transaction
 
 @transaction.atomic
 def move(character, preposition, noun): # todo: make this a traveler
-    
-    if(preposition): preposition_regex = "\\s*".join(list(preposition)) # regex that ignores whitespace between characters
-    if(noun): noun_regex = "\\s*".join(list(noun)) # ignore whitespace between characters
-
     if not preposition and not noun: return "", "Please specify where to go. Use <code>look</code> for nearby locations."
 
     path = None
@@ -15,12 +11,12 @@ def move(character, preposition, noun): # todo: make this a traveler
     if(preposition and preposition.startswith('back') and not noun and character.previous_position):
         path = nearby_paths.filter(end=character.previous_position).first()
     elif noun and preposition:
-        path = nearby_paths.filter(noun__iregex=noun_regex, preposition__iregex=preposition_regex).first()
+        path = nearby_paths.filter(noun_slug__iexact=models.slugify_spaceless(noun), preposition__iexact=preposition).first()
     elif noun:
-        path = nearby_paths.filter(noun__iregex=noun_regex).first()
-        if not path: path = nearby_paths.filter(end__names__name__iregex=noun_regex).first()
+        path = nearby_paths.filter(noun_slug__iexact=models.slugify_spaceless(noun)).first()
+        if not path: path = nearby_paths.filter(end__names__name_slug__iexact=models.slugify_spaceless(noun)).first()
     elif preposition and preposition not in ["to"]:
-        possible_paths = nearby_paths.filter(preposition__iregex=preposition_regex)
+        possible_paths = nearby_paths.filter(preposition__iexact=preposition)
         if(possible_paths.count() == 1): path = possible_paths.first()
 
     if not path: return "", f"You cannot go {preposition if preposition else 'to'}{' ' + noun if noun else ''}"

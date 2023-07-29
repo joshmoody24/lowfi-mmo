@@ -10,6 +10,9 @@ alphanumeric_validator = RegexValidator(
     'Only alphanumeric characters, spaces and single quotes are allowed.'
 )
 
+def slugify_spaceless(entity):
+    return slugify(str(entity)).replace("-", "")
+
 class World(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -56,7 +59,7 @@ class Name(models.Model):
     def __str__(self):
         return self.name
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify_spaceless(self.name)
         super(Name, self).save(*args, **kwargs)
     class Meta:
         ordering = ['entity', 'name']
@@ -75,6 +78,10 @@ class Path(models.Model):
     start = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="start_paths")
     end = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="end_paths")
     travel_seconds = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)], default=10.0)
+    noun_slug = models.SlugField(max_length=20) # for spaceless string matching
+    def save(self, *args, **kwargs):
+        self.noun_slug = slugify_spaceless(self.noun)
+        super(Path, self).save(*args, **kwargs)
     def clean(self):
         if self.start_id == self.end_id:
             raise ValidationError("Path start and end cannot be equal.")
