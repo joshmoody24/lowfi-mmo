@@ -2,10 +2,11 @@
 
 {% block title %}Worlds{% endblock %}
 {% block header %}
-    <h1>Worlds</h1>
-    <p>
-        <a href="{% url 'world_create' %}"><button>Create World</button></a>
-    </p>
+<h1>Worlds</h1>
+<p>
+    <a class="button" href="{% url 'index' %}"><button>&larr; Home</button></a>
+    <a href="{% url 'world_create' %}"><button>Create World</button></a>
+</p>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +19,7 @@
 <p>No worlds found.</p>
 {% endfor %}
 
-<h2>Other Worlds</h2>
+<h2>Participant Worlds</h2>
 {% for world in participant_worlds %}
 <p>
     <a href="{% url 'world_details' world_id=world.id %}"><button>{{ world }}</button></a>
@@ -26,9 +27,5 @@
 {% empty %}
 <p>No worlds found.</p>
 {% endfor %}
-
-<p>
-    <a class="button" href="{% url 'index' %}"><button>&larr; Home</button></a>
-</p>
 
 {% endblock %}

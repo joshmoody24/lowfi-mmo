@@ -120,6 +120,8 @@
    */
   
   button:disabled,
+  input[type="text"]:disabled,
+  input[type="email"]:disabled,
   input[type="button"]:disabled,
   input[type="reset"]:disabled,
   input[type="submit"]:disabled{
@@ -373,6 +375,8 @@
       border-color: #fff;
     }
     button:disabled,
+    input[type="text"]:disabled,
+    input[type="email"]:disabled,
     input[type="button"]:disabled,
     input[type="reset"]:disabled,
     input[type="submit"]:disabled{

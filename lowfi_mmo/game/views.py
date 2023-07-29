@@ -160,7 +160,7 @@ def character_create(request, world_id):
 
 def character_edit(request, world_id, character_slug):
     character = get_object_or_404(models.Character, world_id=world_id, slug=character_slug, user=request.user)
-    if(character.user_id != request.user_id):
+    if(character.user_id != request.user.id):
         return HttpResponseForbidden("You don't have permissions to edit this character.")
     if(request.method=="POST"):
         character_form = forms.CharacterForm(request.POST, instance=character)
