@@ -13,9 +13,9 @@ class Command:
 COMMANDS = [
     Command('look', r"^(?:look|l)$", "", "Examine your surroundings"),
     Command('go', r"^(?:go|g)(?: (back|to|through|inside|outside))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
-    Command('take', r"^take ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
-    Command('use', r"^^use \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
-    Command('attack', r"^attack ([a-zA-Z\ ]*)$", "[character]", "Attack a character"), # r"^attack ([a-zA-Z\ ]*) with ([a-zA-Z\ ]*)$"
+    Command('take', r"^(?:take|t) ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
+    Command('use', r"^^(?:use|u) \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
+    Command('attack', r"^(?:attack|a) ([a-zA-Z\ ]*)$", "[character]", "Attack a character"),
 ]
 
 # TODO: add the following commands
@@ -26,6 +26,7 @@ COMMANDS = [
 # exit (route to world details)
 # text <group|name> message
 # tell/ask/talk to or something
+# drop <item>
 
 @atomic
 def handle_command(character, raw_input):

@@ -48,7 +48,7 @@ def look(character, describe_position=True):
 
 def take(character, item_name):
     item = models.Item.objects.filter(world=character.world, position=character.position, names__name__iexact=item_name).first()
-    if(not item): return "", f"You don't see a nearby \"{item_name}.\""
+    if(not item): return "", f"You don't see a nearby \"{item_name}\"."
     item.position = None
     item.carrier = character
     item.save()
