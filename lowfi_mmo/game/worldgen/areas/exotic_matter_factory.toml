@@ -1,0 +1,55 @@
+[[locations]]
+names = ["Factory Entrance"]
+tags = ["mountain", "factory"]
+description = "The entrance to the Exotic Matter Factory, a place long abandoned by its creators. The rusted gates creak ominously, and a sign warning of danger hangs askew. The faint smell of chemicals lingers in the air, a reminder of the extraordinary work that was once conducted here."
+appearance = "Rusted gates and warning signs at the entrance to an abandoned factory."
+exits = [
+    { noun = "reception area", to = "Reception Area" },
+]
+
+[[locations]]
+names = ["Reception Area"]
+tags = ["factory"]
+description = "The reception area is filled with dust and decay, its once-bustling atmosphere replaced by the silence of abandonment. Broken chairs, scattered papers, and an unattended reception desk tell a story of hurried departure."
+appearance = "Dusty and abandoned reception area."
+exits = [
+    { noun = "main production floor", to = "Main Production Floor" },
+]
+
+[[locations]]
+names = ["Main Production Floor"]
+tags = ["factory"]
+description = "A vast production floor filled with dormant machinery. The place is a mechanical graveyard, filled with the remnants of cutting-edge technology used to manufacture exotic matter. The silence is broken only by the occasional drip of oil or creak of metal."
+appearance = "Large production floor with dormant machinery."
+exits = [
+    { noun = "control room", to = "Control Room" },
+    { noun = "storage area", to = "Storage Area" },
+]
+
+[[locations]]
+names = ["Control Room"]
+tags = ["factory"]
+description = "The control room overlooks the main production floor. Consoles and monitors are covered in dust, and the once-glowing screens are now dark. The room is filled with the ghosts of activity, a technological tomb frozen in time."
+appearance = "Dusty control room overlooking the production floor."
+exits = [
+    { noun = "storage area", to = "storage area" },
+    { noun = "experimentation chamber", to = "experimentation chamber" }
+]
+
+[[locations]]
+names = ["Storage Area"]
+tags = ["factory"]
+description = "A storage area filled with crates, barrels, and containers. Some are labeled with warnings and chemical symbols. The room holds the raw materials that were once used to produce exotic matter, now left to sit in forgotten silence."
+appearance = "Storage room with crates and containers of raw materials."
+exits = [
+    { noun = "control room", to = "control room" },
+]
+
+[[locations]]
+names = ["Experimentation Chamber"]
+tags = ["factory", "chamber"]
+description = "A sealed chamber where experiments with exotic matter were conducted. The room is filled with specialized equipment, containment units, and the faint aura of otherworldly energy. Though abandoned, the chamber still exudes a sense of potential and danger."
+appearance = "Chamber with specialized equipment for exotic matter experiments."
+exits = [
+    { noun = "control room", to = "control room" },
+]

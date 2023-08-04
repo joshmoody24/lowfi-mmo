@@ -1,0 +1,61 @@
+[[locations]]
+names = ["Area 15 Entrance", "entrance"]
+tags = ["outside"]
+description = "An unmarked entrance hidden in a remote location. There's a sense of secrecy and abandonment. The heavy metal doors hint at something concealed within."
+appearance = "Isolated, concealed entrance with heavy metal doors."
+exits = [
+    { noun = "primary corridor", to = "primary corridor" },
+]
+
+[[locations]]
+names = ["primary corridor", "corridor"]
+tags = ["inside"]
+description = "A long, dimly lit corridor filled with unmarked doors. The air is heavy with silence, and the whole place feels like it's hiding something."
+appearance = "Long, dimly-lit corridor with numerous unmarked doors."
+exits = [
+    { noun = "Area 15 Entrance", to = "Area 15 Entrance" },
+    { preposition = "deeper", to = "archive stairwell" },
+    { noun = "extraterrestrial translation center", to = "translation center entrance" },
+]
+
+# Glacial Deep Archive Subarea
+
+[[locations]]
+names = ["archive stairwell"]
+tags = ["inside"]
+description = "The entrance to a mysterious section of the facility. Cold air flows from within, and an unusual symbol marks the door."
+appearance = "Cold, foreboding entrance marked with a strange symbol."
+exits = [
+    { noun = "primary corridor", to = "primary corridor" },
+    { noun = "archive chamber", to = "archive chamber" },
+]
+
+[[locations]]
+names = ["archive chamber", "deep archive"]
+tags = ["inside"]
+description = "A massive, icy chamber filled with rows of unknown devices. An unexplained chill fills the air, and the sense of something otherworldly is palpable."
+appearance = "Enormous, glacial chamber filled with strange devices."
+exits = [
+    { noun = "archive stairwell", to = "archive stairwell" },
+]
+
+# Extraterrestrial Translation Center Subarea
+
+[[locations]]
+names = ["translation center entrance", "translation entrance"]
+tags = ["inside"]
+description = "An entrance leading to a part of the facility filled with high-tech equipment. Subtle sounds and flickering lights suggest ongoing activity, despite the apparent abandonment."
+appearance = "High-tech entrance with signs of subtle activity."
+exits = [
+    { noun = "primary corridor", to = "primary corridor" },
+    { noun = "translation lab", to = "translation lab" },
+]
+
+[[locations]]
+names = ["translation lab", "extraterrestrial lab"]
+tags = ["inside"]
+description = "A complex lab filled with screens, antennas, and unknown technology. The room seems to buzz with alien languages and signals, though its purpose is unclear."
+appearance = "Complex lab with screens, antennas, and mysterious technology."
+exits = [
+    { noun = "translation center entrance", to = "translation center entrance" },
+]

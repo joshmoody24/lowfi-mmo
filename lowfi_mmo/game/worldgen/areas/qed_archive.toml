@@ -1,0 +1,63 @@
+[[locations]]
+names = ["Archive Entrance"]
+tags = ["mountain", "archive"]
+description = "A hidden entrance guarded by advanced security measures leads to the Quantum Experiment Department Archive. The logo of a long-abandoned research organization is faintly visible above the door. The air buzzes with latent energy, hinting at the wonders and dangers within."
+appearance = "Hidden entrance to a high-tech archive."
+exits = [
+    { noun = "security checkpoint", to = "Security Checkpoint" },
+]
+
+[[locations]]
+names = ["Security Checkpoint"]
+tags = ["archive"]
+description = "The security checkpoint is filled with state-of-the-art scanners, cameras, and robotic guards, all deactivated but still imposing. Passages lead deeper into the facility, and the silence is heavy with the weight of untold secrets."
+appearance = "High-tech security checkpoint with robotic guards."
+exits = [
+    { noun = "main corridor", to = "Main Corridor" },
+]
+
+[[locations]]
+names = ["Main Corridor"]
+tags = ["archive"]
+description = "The main corridor is lined with doors to various research labs, offices, and storage rooms. The place looks as though it was abandoned in a hurry. Papers are scattered, and the air is thick with the musky smell of old books and chemicals."
+appearance = "Long corridor with many doors leading to different rooms."
+exits = [
+    { noun = "quantum lab", to = "Quantum Lab" },
+    { noun = "archive room", to = "Archive Room" },
+]
+
+[[locations]]
+names = ["Quantum Lab"]
+tags = ["archive", "lab"]
+description = "A high-tech laboratory filled with cutting-edge quantum research equipment. Tables are cluttered with notes, diagrams, and prototypes of experimental devices. The silence is broken only by the occasional hum of machinery."
+appearance = "Advanced quantum research laboratory."
+exits = [
+    { noun = "experiment chamber", to = "Experiment Chamber" },
+]
+
+[[locations]]
+names = ["Experiment Chamber"]
+tags = ["archive", "chamber"]
+description = "A large chamber designed to conduct quantum experiments. The room is dominated by a massive machine, its purpose unclear. Consoles, monitors, and cables cover the area, creating a maze of technology."
+appearance = "Chamber filled with complex experimental quantum machinery."
+exits = [
+    { noun = "quantum lab", to = "quantum lab" },
+]
+
+[[locations]]
+names = ["Archive Room"]
+tags = ["archive"]
+description = "Shelves upon shelves of documents, tapes, and files fill the archive room. The collected knowledge of years of quantum research is stored here, waiting to be rediscovered."
+appearance = "Room filled with shelves of documents and research materials."
+exits = [
+    { noun = "main corridor", to = "main corridor" },
+]
+
+[[locations]]
+names = ["Observation Deck"]
+tags = ["archive"]
+description = "A glass-walled observation deck that overlooks the quantum experiment chamber. From here, scientists would have observed and recorded the groundbreaking experiments conducted within."
+appearance = "Glass-walled observation deck overlooking the chamber."
+exits = [
+    { noun = "archive room", to = "archive room" },
+]

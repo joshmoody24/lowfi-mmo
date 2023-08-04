@@ -1,5 +1,6 @@
 from game import models
 from dataclasses import dataclass
+from django.db import IntegrityError
 
 def create_locations(world, data):
     paths = []
@@ -13,12 +14,18 @@ def create_locations(world, data):
     
     for path in paths:
         start = path['start_obj']
-        end = models.Location.objects.get(world=world, names__name=path['exit']['to'])
+        try:
+            end = models.Location.objects.get(world=world, names__name__iexact=path['exit']['to'])
+        except models.Location.DoesNotExist:
+            raise models.Location.DoesNotExist(f"Location named \"{path['exit']['to']}\" does not exist.")
         preposition = path['exit'].get('preposition', 'to')
         noun = path['exit'].get('noun', '')
         if not preposition and not noun: raise Exception("Path must have a preposition or a noun")
         if(start == end): raise Exception("Path cannot have same position for both start and end")
-        models.Path.objects.create(preposition=preposition, noun=noun, start=start, end=end) # TODO: optional travel_seconds
+        try:
+            models.Path.objects.create(preposition=preposition, noun=noun, start=start, end=end) # TODO: optional travel_seconds
+        except IntegrityError:
+            raise IntegrityError(f"{preposition if noun else '<no preposition>'}-{noun if noun else '<no noun>'} already exists for location {path['exit']['name']}")
 
     for block_data in data["blocks"]:
         block = models.Block.objects.create(world=world, appearance=block_data['appearance'], description=block_data['description'])
@@ -42,8 +49,11 @@ def add_names_and_tags(entity, data):
     if not data.get('names', False):
         raise Exception(f"Entities must have at least one name")
     for name in data['names']:
-        name_obj = models.Name.objects.create(world=entity.world, entity=entity, name=name)
-        entity.names.add(name_obj)
+        try:
+            name_obj = models.Name.objects.create(world=entity.world, entity=entity, name=name)
+            entity.names.add(name_obj)
+        except IntegrityError:
+            raise IntegrityError(f"Entity with name \"{name}\" has already been created.")
     for tag in data.get('tags', []):
         tag_obj, _ = models.Tag.objects.get_or_create(name=tag)
         entity.tags.add(tag_obj)

@@ -1,7 +1,7 @@
 [[locations]]
 names = ["apartment complex", "apartments"]
 tags = ["outside"]
-description = "A run-down apartment complex. People move in and out frequently."
+description = "A run-down apartment complex situated in a less glamorous part of town. People move in and out frequently, leaving behind echoes of their stories. The buildings show signs of wear, with peeling paint and creaking stairs. A sense of transience hangs in the air, and the people you see seem burdened with the weight of everyday struggles. You, however, have always found it to be a pretty chill place to live."
 appearance = "Run-down suburban apartment complex"
 exits = [
     {  noun = "center street", to = "center street" },
@@ -11,8 +11,8 @@ exits = [
 [[locations]]
 names = ["center street", "center st"]
 tags = ["outside"]
-description = "A street that runs north/south right through the middle of Hubbleton. Is is primarily a residential area."
-appearance = "Large road in center of suburban town. Residential area. Two lane road."
+description = "A street that runs north/south right through the middle of Hubbleton. It is primarily a residential area, lined with modest homes and lush green lawns. Trees arch over the road, casting a dappled shade that dances with the wind."
+appearance = "Large road in center of suburban town. Residential area. Many trees casting shade. Two lane road."
 exits = [
     { noun = "city center", to = "city center" },
     { noun = "high school", to = "high school entrance" },
@@ -22,7 +22,7 @@ exits = [
 [[locations]]
 names = ["city center"]
 tags = ["outside"]
-description = "The intersection of center and main street."
+description = "The intersection of center and main street. The beating heart of Hubbleton. Well, that might be a bit of an exaggeration. More like the barely-beating heart of an old man who hasn't gotten off the couch for a decade."
 appearance = "City center intersection. Suburban, crosswalk, commercial area."
 exits = [
     { noun = "center street", to = "center street" },
@@ -33,7 +33,7 @@ exits = [
 [[locations]]
 names = ["gas station exterior"]
 tags = ["outside"]
-description = "A small gas station at the outskirts of town."
+description = "A small gas station at the outskirts of town, the underwhelming final outpost before the wilderness. The exterior shows signs of neglect, with rusting pumps and faded advertisements. A solitary streetlight flickers as the sun dips, casting an eerie glow. The windows are grimy, and there's an air of nostalgia pervading the area."
 appearance = "Exterior of run-down gas station at the edge of rural town."
 exits = [
     { noun = "center street", to = "center street" },
@@ -42,7 +42,7 @@ exits = [
 
 [[locations]]
 names = ["gas station interior"]
-description = "The inside of a small gas station."
+description = "The inside of a small gas station, filled with the scent of packaged snacks and motor oil. The shelves are stocked with travel necessities, while the floor bears the marks of countless shoes. The clerk behind the counter has seen it all, greeting each customer with a knowing smile. The interior holds a certain charm, a connection to the open road and the freedom it promises."
 appearance = "Interior of run-down gas station at edge of rural town."
 exits = [
     { preposition = "outside", to = "gas station exterior" },
@@ -51,7 +51,7 @@ exits = [
 [[locations]]
 names = ["main street", "main st"]
 tags = ["outside"]
-description = "A street that runs east/west right through the middle of Hubbleton. It is primarily a commercial area."
+description = "A street that runs east/west through the middle of Hubbleton. It is primarily a commercial area, often alive with the vibrant energy of business and pleasure. Many small shops display their wares in the windows."
 appearance = "Main street in suburban town. Commercial area."
 exits = [
     { noun = "city center", to = "city center" },
@@ -62,7 +62,7 @@ exits = [
 [[locations]]
 names = ["library exterior"]
 tags = ["outside"]
-description = "The serene front lawn of a quaint little library."
+description = "The serene front lawn of a quaint little library, adorned with well-tended flowerbeds and welcoming benches. A path leads to the entrance, inviting knowledge seekers of all ages. The building itself is charming, with large windows and a classic design. It stands as a beacon of wisdom and community, a place where minds expand and imaginations soar."
 appearance = "Small-town library"
 exits = [
     { noun = "city center", to = "city center" },
@@ -71,7 +71,7 @@ exits = [
 
 [[locations]]
 names = ["library interior"]
-description = "The inside of the library. Although it is a small building, it is packed full of bookshelves."
+description = "The inside of the library. Although it is a small building, it is packed full of bookshelves, each one a gateway to a different world. The scent of old paper fills the air, and the soft rustling of pages is the only sound. Cozy reading nooks beckon, and the librarian's stern glare warms the heart in a weird sort of way."
 appearance = "Small town library interior, many bookshelves."
 exits = [
     { preposition = "outside", to = "library exterior" },
@@ -80,7 +80,7 @@ exits = [
 [[locations]]
 names = ["high school entrance"]
 tags = ["outside", "high school"]
-description = "The entrance of an old rural high school."
+description = "The entrance of an old rural high school, worn by time but still standing proud. The architecture is rather out of date. You've had a lot of good times here. You smirk, remembering the \"beaver incident.\""
 appearance = "Exterior of a 1980s rural high school"
 exits = [
     { noun = "center street", to = "center street" },
@@ -89,7 +89,7 @@ exits = [
 [[locations]]
 names = ["Curiosity Corner entrance", "pawn shop entrance"]
 tags = ["outside"]
-description = "The entrance to a dusty old pawn shop on Main Street."
+description = "The entrance to a dusty old pawn shop on Main Street, aptly named Curiosity Corner. The window displays an eclectic mix of items from decades past. The door creaks open, inviting the curious and the bargain hunters alike."
 appearance = "Old fashioned pawn shop exterior"
 exits = [
     { noun = "main street", to = "main street" },
@@ -99,7 +99,7 @@ exits = [
 [[locations]]
 names = ["Curiosity Corner", "pawn shop"]
 tags = ["inside"]
-description = "A dusty old pawn shop filled with strange oddities."
+description = "A dusty old pawn shop filled with strange oddities. Shelves are crammed with everything from antiques to trinkets, and the air is heavy with the scent of history. The shopkeeper's eyes twinkle with secrets. Every item has a story, and you can hardly wait to see it all. The shop feels like a treasure trove, a collection of the quirkiest relics of humanity, waiting to be explored."
 appearance = "Dusty old fashioned pawn shop interior"
 exits = [
     { preposition = "outside", to = "pawn shop entrance" },
