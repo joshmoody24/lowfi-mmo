@@ -55,7 +55,7 @@ def handle_command(character, raw_input):
     
 def parse_command(character, raw_input):
     for command in COMMANDS:
-        match = re.match(command.regex, raw_input.strip(), re.IGNORECASE)
+        match = re.match(command.regex, raw_input.strip().replace("'", ""), re.IGNORECASE)
         if match:
             return command.name.lower(), match.groups()
     return None, None
