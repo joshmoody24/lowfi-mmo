@@ -138,8 +138,13 @@ def character_create(request, world_id):
         if(character_form.is_valid()):
             character_form.instance.user = request.user
             character_form.instance.world_id = world_id
-            SPAWNPOINT_NAME = "apartment complex"
-            spawnpoint = models.Location.objects.get(world_id=world_id, names__name__iexact=SPAWNPOINT_NAME)
+            character_name = character_form.cleaned_data['name']
+            HUB_NAME = "apartment complex"
+            hub = models.Location.objects.get(world_id=world_id, names__name__iexact=HUB_NAME)
+            spawnpoint = models.Location.objects.create(world_id=world_id, appearance="Interior of cheap apartment living room", description=f"A dingy little apartment that isn't worth writing home about. It's alright, you suppose.")
+            spawnpoint.names.create(world_id=world_id, name=f"{character_name}'s apartment")
+            models.Path.objects.create(preposition="outside", start=spawnpoint, end=hub)
+            models.Path.objects.create(preposition="to", noun=f"{character_name}'s apartment", start=hub, end=spawnpoint)
             character_form.instance.position = spawnpoint
             character = character_form.save()
             character.names.create(world_id=world_id, name=character_form.cleaned_data['name'])
@@ -160,7 +165,7 @@ def character_create(request, world_id):
     return render(request, "form.html", context)
 
 def character_edit(request, world_id, character_slug):
-    character = get_object_or_404(models.Character, world_id=world_id, slug=character_slug, user=request.user)
+    character = get_object_or_404(models.Character, world_id=world_id, names__slug=character_slug, user=request.user)
     if(character.user_id != request.user.id):
         return HttpResponseForbidden("You don't have permissions to edit this character.")
     if(request.method=="POST"):
@@ -173,7 +178,7 @@ def character_edit(request, world_id, character_slug):
             first_name.save()
             return redirect("world_details", world_id=world_id)
     else:
-        character_form = forms.CharacterForm(instance=character, prefix="character")
+        character_form = forms.CharacterForm(instance=character, prefix="character", initial={"name": character.name})
     context = {
         "form": character_form,
         "form_heading": "Edit Character",

@@ -70,9 +70,6 @@ class Name(models.Model):
 class Location(Entity):
     LOCATION_CATEGORIES = (("house", "house"), ("store", "store"), ("secret", "secret"), ("other", "other"))
     category = models.CharField(max_length=20, choices=LOCATION_CATEGORIES, blank=True)
-    
-# class LocationTag(models.Model):
-#     LOCATION_TAGS = ["dark", "lit"]
 
 class Path(models.Model):
     preposition = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
