@@ -7,9 +7,26 @@ import os
 
 @atomic
 def populate_world(world):
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/world.toml', 'rb') as file:
-        world_data = tomllib.load(file)
+    folder_path = os.path.dirname(os.path.abspath(__file__)) + '\\areas'
+    world_data = compile_world_data(folder_path)
     create_locations(world, world_data)
+
+def compile_world_data(folder_path):
+    world_data = {}
+    for file in os.listdir(folder_path):
+        if(file.endswith('.toml')):
+            file_path = os.path.join(folder_path, file)
+            with open(file_path, 'rb') as file:
+                file_data = tomllib.load(file)
+                merge_lists(world_data, file_data)
+    return world_data
+
+def merge_lists(dict1, dict2):
+    for key, value in dict2.items():
+        if key in dict1 and isinstance(dict1[key], list) and isinstance(value, list):
+            dict1[key].extend(value)
+        else:
+            dict1[key] = value
 
 def create_character(
     name,

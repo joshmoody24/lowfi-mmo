@@ -1,0 +1,114 @@
+[[locations]]
+names = ["apartment complex", "apartments"]
+tags = ["outside"]
+description = "A run-down apartment complex. People move in and out frequently."
+appearance = "Run-down suburban apartment complex"
+exits = [
+    {  noun = "center street", to = "center street" },
+    { noun = "main street", to = "main street" },
+]
+
+[[locations]]
+names = ["center street", "center st"]
+tags = ["outside"]
+description = "A street that runs north/south right through the middle of Hubbleton. Is is primarily a residential area."
+appearance = "Large road in center of suburban town. Residential area. Two lane road."
+exits = [
+    { noun = "city center", to = "city center" },
+    { noun = "high school", to = "high school entrance" },
+    { noun = "canyon road", to = "canyon road"}
+]
+
+[[locations]]
+names = ["city center"]
+tags = ["outside"]
+description = "The intersection of center and main street."
+appearance = "City center intersection. Suburban, crosswalk, commercial area."
+exits = [
+    { noun = "center street", to = "center street" },
+    { noun = "main street", to = "main street" },
+    { noun = "library", to = "library exterior" }
+]
+
+[[locations]]
+names = ["gas station exterior"]
+tags = ["outside"]
+description = "A small gas station at the outskirts of town."
+appearance = "Exterior of run-down gas station at the edge of rural town."
+exits = [
+    { noun = "center street", to = "center street" },
+    { preposition = "inside", to = "gas station interior" },
+]
+
+[[locations]]
+names = ["gas station interior"]
+description = "The inside of a small gas station."
+appearance = "Interior of run-down gas station at edge of rural town."
+exits = [
+    { preposition = "outside", to = "gas station exterior" },
+]
+
+[[locations]]
+names = ["main street", "main st"]
+tags = ["outside"]
+description = "A street that runs east/west right through the middle of Hubbleton. It is primarily a commercial area."
+appearance = "Main street in suburban town. Commercial area."
+exits = [
+    { noun = "city center", to = "city center" },
+    { noun = "pawn shop", to = "pawn shop entrance" },
+    { noun = "boonies", to = "the boonies" },
+]
+
+[[locations]]
+names = ["library exterior"]
+tags = ["outside"]
+description = "The serene front lawn of a quaint little library."
+appearance = "Small-town library"
+exits = [
+    { noun = "city center", to = "city center" },
+    { preposition = "inside", to = "library interior" },
+]
+
+[[locations]]
+names = ["library interior"]
+description = "The inside of the library. Although it is a small building, it is packed full of bookshelves."
+appearance = "Small town library interior, many bookshelves."
+exits = [
+    { preposition = "outside", to = "library exterior" },
+]
+
+[[locations]]
+names = ["high school entrance"]
+tags = ["outside", "high school"]
+description = "The entrance of an old rural high school."
+appearance = "Exterior of a 1980s rural high school"
+exits = [
+    { noun = "center street", to = "center street" },
+]
+
+[[locations]]
+names = ["Curiosity Corner entrance", "pawn shop entrance"]
+tags = ["outside"]
+description = "The entrance to a dusty old pawn shop on Main Street."
+appearance = "Old fashioned pawn shop exterior"
+exits = [
+    { noun = "main street", to = "main street" },
+    { preposition = "inside", to = "pawn shop" },
+]
+
+[[locations]]
+names = ["Curiosity Corner", "pawn shop"]
+tags = ["inside"]
+description = "A dusty old pawn shop filled with strange oddities."
+appearance = "Dusty old fashioned pawn shop interior"
+exits = [
+    { preposition = "outside", to = "pawn shop entrance" },
+]
+
+[[keys]]
+names = ["bronze key"]
+description = "An old-fashioned bronze key with a few scratches and dents."
+appearance = "An old-fashioned bronze key with scratches and dents"
+position = "pawn shop"
+unlocks = "trapdoor"
+unlock_description = "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click."

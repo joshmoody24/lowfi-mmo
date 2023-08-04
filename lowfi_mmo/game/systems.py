@@ -14,7 +14,7 @@ def move(character, preposition, noun): # todo: make this a traveler
         path = nearby_paths.filter(noun_slug__iexact=models.slugify_spaceless(noun), preposition__iexact=preposition).first()
     elif noun:
         path = nearby_paths.filter(noun_slug__iexact=models.slugify_spaceless(noun)).first()
-        if not path: path = nearby_paths.filter(end__names__name_slug__iexact=models.slugify_spaceless(noun)).first()
+        if not path: path = nearby_paths.filter(end__names__slug__iexact=models.slugify_spaceless(noun)).first()
     elif preposition and preposition not in ["to"]:
         possible_paths = nearby_paths.filter(preposition__iexact=preposition)
         if(possible_paths.count() == 1): path = possible_paths.first()

@@ -1,0 +1,75 @@
+[[locations]]
+names = ["canyon road"]
+tags = ["outside"]
+description = "A long, winding road through Hubbleton canyon."
+appearance = "Long, winding, single-lane canyon road."
+exits = [
+    { noun = "center street", to = "center street" },
+    { noun = "trailhead", to = "Hubbleton Peak Trailhead" },
+]
+
+[[locations]]
+names = ["Hubbleton Peak Trailhead", "trailhead"]
+tags = ["outside", "hiking trail"]
+description = "The starting point of a scenic mountain hiking trail."
+appearance = "Mountain hiking trailhead"
+exits = [
+    { noun = "canyon road", to = "canyon road" },
+    { preposition = "up", noun = "the mountain", to = "mountain meadow"}
+]
+
+[[locations]]
+names = ["mountain meadow", "meadow"]
+tags = ["outside", "hiking trail"]
+description = "A small clearing several miles beyond the trailhead. It contains pretty wildflowers in many colors"
+appearance = "Mountain trail meadow, colorful wildflowers"
+exits = [
+    { preposition = "farther", noun = "up the trail", to = "rocky cliffside" },
+    { noun = "trailhead", to = "trailhead" },
+]
+
+[[locations]]
+names = ["rocky cliffside", "cliffside"]
+tags = ["outside", "hiking trail"]
+description = "A narrow, steep part of the trail facing a sharp drop-off. The peak isn't far off, but it's a treacherous journey."
+appearance = "Narrow hiking trail on top of a steep cliff."
+exits = [
+    { preposition = "farther", noun = "", to =  "mountain peak" },
+    { noun = "mountain meadow", to = "mountain meadow" },
+]
+
+[[locations]]
+names = ["mountain peak", "peak", "Hubbleton peak"]
+tags = ["outside", "hiking trail"]
+description = "The top of Hubbleton mountain, offering panoramic views in every direction. The air is crisp and clean."
+appearance = "Mountain peak with trail leading down. Scattered wildflowers."
+exits = [
+    { preposition = "down", noun = "the mountain", to = "rocky cliffside"},
+    { noun = "radio tower", to = "radio tower" },
+]
+
+[[locations]]
+names = ["radio tower"]
+tags = ["outside"]
+description = "An abandoned observatory atop the mountains, offering panoramic views."
+appearance = "Small abandoned observatory on mountaintop"
+exits = [
+    { preposition = "down", noun = "the mountain", to = "trailhead" },
+    { preposition = "inside", noun = "shack", to = "radio tower shack" },
+]
+
+[[locations]]
+names = ["radio tower shack", "shack", "radio shack"]
+description = "A small shack next to the radio tower. It is mostly empty, but there are some wires connected to a small black box in one corner of the room"
+appearance = "Small mountaintop wooden shack with light peering through dusty windows. Black computer box in corner with several cables leading to it."
+exits = [
+    { preposition = "outside", to = "radio tower" },
+]
+
+[[blocks]]
+names = ["long road"]
+from = "center street"
+to = "canyon road"
+one_way = false
+description = "Reaching the canyon from here would take days on foot. You need a different way to get there."
+appearance = "Long road leading into a distant canyon."

@@ -35,6 +35,8 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+# TODO: make an entity manager or something that
+# handles world filtering automatically, if possible
 class Entity(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     appearance = models.TextField(blank=True)

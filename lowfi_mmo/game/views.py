@@ -138,7 +138,7 @@ def character_create(request, world_id):
         if(character_form.is_valid()):
             character_form.instance.user = request.user
             character_form.instance.world_id = world_id
-            SPAWNPOINT_NAME = "Library Front Lawn"
+            SPAWNPOINT_NAME = "apartment complex"
             spawnpoint = models.Location.objects.get(world_id=world_id, names__name__iexact=SPAWNPOINT_NAME)
             character_form.instance.position = spawnpoint
             character = character_form.save()

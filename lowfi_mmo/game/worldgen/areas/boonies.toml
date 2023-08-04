@@ -1,0 +1,54 @@
+[[locations]]
+names = ["the boonies", "boonies"]
+tags = ["outside"]
+description = "The middle of nowhere. It is heavily forested."
+appearance = "Heavily forested boonies."
+exits = [
+    { noun = "the forest", to = "Hubbleton forest" },
+]
+
+[[locations]]
+names = ["Hubbleton forest", "forest", "woods"]
+tags = ["outside"]
+description = "A small forest at the far outskirts of town. Very little sunlight makes it through the dense tree cover. A light fog permeates the air. The dark, quiet atmosphere is a bit unnerving."
+appearance = "Foggy, dense, creepy forest"
+exits = [
+    { noun = "ruined mansion", to = "ruined mansion entrance" },
+]
+
+[[locations]]
+names = ["ruined mansion entrance"]
+tags = ["outside", "ruined mansion"]
+description = "An eerie entrance to a crumbling mansion."
+appearance = "Rural mansion in ruins, broken windows, rotting wood"
+exits = [
+    { preposition = "inside", to = "ruined mansion living room" },
+    { preposition = "to", noun = "forest", to = "Hubbleton forest" }
+]
+
+[[locations]]
+names = ["ruined mansion living room"]
+tags = ["inside", "ruined mansion"]
+description = "A once-grand living room now consumed by nature."
+appearance = "A decayed, rotting living room with plant overgrowth"
+exits = [
+    { preposition = "outside", to = "ruined mansion entrance" },
+    { preposition = "through", noun = "trapdoor", to = "secret bunker" },
+]
+
+[[locations]]
+names = ["secret bunker"]
+tags = ["inside", "ruined mansion"]
+description = "A hidden underground bunker filled with mysterious treasures. If you're reading this, you win!"
+appearance = "Secret bunker"
+exits = [
+    { preposition = "through", noun = "trapdoor", to = "ruined mansion living room" },
+]
+
+[[blocks]]
+names = ["trapdoor"]
+from = "ruined mansion living room"
+to = "secret bunker"
+one_way = false
+description = "A large bronze padlock holds the trapdoor in place. It won't budge."
+appearance = "Large metal trapdoor on wooden floor secured with large bronze padlock"

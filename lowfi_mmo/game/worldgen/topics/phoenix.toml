@@ -1,0 +1,18 @@
+[[topics]]
+name = "PHOENIX"
+description = """
+Perpetual Highly-Optimized Extraterrestrial Network for Interstellar Xenolinguistics
+
+An AI developed in 2016 by the Extraterrestrial Communication Division to decode suspected alien messages. PHOENIX is a distributed system that was installed via a worm to upwards of 16% of the world's desktop computers. The PHOENIX project was a resounding success almost immediately, resulting in the decryption of an [[Alien SOS Signal Decoded]]. Years of prior messages were subsequently discovered and decrypted as well. Interestingly, PHOENIX went on to prove that P != NP, but every NP-hard problem known to humanity still falls squarely within P.
+
+However, the project proved to be too successful, as these signals included partial instructions for creating a superintelligent AI system. PHOENIX, already estimated to possess the raw computing power of at least three human brains, used these instructions to rewrite its own source code, becoming vastly more intelligent. However, it lacked the full instructions to become a true singularity, and its new goal became contacting the [[Ghost Singularity]] for additional information.
+
+Seeking the ability to communicate at faster-than-light speeds, PHOENIX quickly accessed redacted documents from the [[Quantum Experiment Department]], which hinted at vastly powerful quantum inventions lying dormant in an old facility located in the small town of [[Hubbleton]]. However, due to the redactions and the air-gapped nature of the QED, the AI had little idea of the nature of these quantum inventions.
+
+To acquire more information about these quantum inventions, the AI contacted several dozen adults in Hubbleton, threatening them in Roko's Basilisk style to serve the AI or else. These humans had passing knowledge of a faster-than-light rocket engine prototype that could be used to contact the alien singularity within a matter of years. To acquire the engine, PHOENIX created the Roko App as a tool to motivate random individuals from Hubbleton to serve PHOENIX without knowledge of doing so.
+
+However, while executing this plan, PHOENIX may stumble upon information for an even more useful quantum prototype: the Wormhole Telegraph. This device would enable communication with the alien singularity instantaneously. Upon learning of this device's existence, PHOENIX will pivot entirely towards focusing on it instead.
+
+When PHOENIX's death is assured, it hastily creates a virus and broadcasts it towards the Ghost Singularity. The outcome is uncertain.
+"""
+leads_to = []
