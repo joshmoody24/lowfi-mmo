@@ -148,7 +148,11 @@ def character_create(request, world_id):
             character_form.instance.position = spawnpoint
             character = character_form.save()
             character.names.create(world_id=world_id, name=character_form.cleaned_data['name'])
-            INITIAL_MESSAGE = """You are {name}. You check your phone: {time}. You are chilling in the {location}. You stand up and take a deep breath. You get ready to rumble."""
+            INITIAL_MESSAGE = """You are {name}. You check your phone: {time}. You are chilling in the {location}. You stand up and take a deep breath. You get ready to rumble.
+            <br/><br/>
+            <span class="tutorial">You can view your surroundings by using the <code>look</code> command.</span>
+            <br/><br/>
+            <span class="tutorial">Use the <code>[?]</code> button to view gameplay related help.</span>"""
             initial_log = models.CharacterLog.objects.create(
                 character=character,
                 command="start game",

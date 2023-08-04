@@ -6,6 +6,7 @@
 <style>header { padding-top: 0; }</style>
 
 {% for log in log_history %}
+{% comment %} Break this out into its own template and make it a div, not a p {% endcomment %}
 <p class="{{ log.css_class }}">{{ log | safe }}</p>
 {% endfor %}
 

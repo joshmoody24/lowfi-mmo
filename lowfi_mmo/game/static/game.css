@@ -427,3 +427,15 @@ span.location {
 span.item {
   color: rgb(228, 168, 3);
 }
+
+p.tutorial, span.tutorial {
+  opacity: 0.72;
+}
+
+p.tutorial::before, span.tutorial::before {
+  content: "Tip: "
+}
+
+code {
+  color: rgb(221, 28, 228);
+}
