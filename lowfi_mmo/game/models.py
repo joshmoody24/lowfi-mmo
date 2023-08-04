@@ -81,6 +81,7 @@ class Path(models.Model):
     end = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="end_paths")
     travel_seconds = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)], default=10.0)
     noun_slug = models.SlugField(max_length=20) # for spaceless string matching
+    hidden = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         self.noun_slug = slugify_spaceless(self.noun)
         super(Path, self).save(*args, **kwargs)
