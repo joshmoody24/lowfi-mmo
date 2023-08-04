@@ -13,14 +13,14 @@
     {% csrf_token %}
     <label style="display:none" for="command">What will you do next?</label>
     <div style="display:flex; justify-content: stretch; align-items: flex-start">
-        <button type="button" style="margin-right: 1rem" onclick="document.getElementById('help').showModal()">?</button>
+        <button type="button" popovertarget="help-modal" popoveraction="show" style="margin-right: 1rem" onclick="document.getElementById('help').showModal()">?</button>
         <input 1rem id="command" name="command" type="text" placeholder="Enter command..." required autocomplete="off" maxlength="200" />
         <input style="margin-left: 1rem" type="submit" />
     </div>
 </form>
 
 
-<dialog id="help">
+<dialog id="help-modal" popover>
     <h2>Help</h2>
     <p>Type commands to tell your character what to do.</p>
     <table>
@@ -40,7 +40,7 @@
         </tbody>
     </table>
     <br />
-    <button onclick="document.getElementById('help').close()">OK</button>
+    <button popovertarget="help-modal" popovertargetaction="close">OK</button>
 </dialog>
 
 <script>

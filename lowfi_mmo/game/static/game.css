@@ -405,6 +405,10 @@
     dialog {
       background-color: #111;
       color: #fff;
+      padding: 2rem;
+    }
+    ::backdrop {
+      backdrop-filter: blur(3px);
     }
   }
 
