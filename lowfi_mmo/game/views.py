@@ -183,7 +183,7 @@ def character_edit(request, world_id, character_slug):
     return render(request, "form.html", context)
 
 
-def area_map(request, world_id):
+def world_visualize(request, world_id):
     area = get_object_or_404(models.World, id=world_id)
     plot_html = world_to_html(area)
     response = HttpResponse(content_type='text/html')

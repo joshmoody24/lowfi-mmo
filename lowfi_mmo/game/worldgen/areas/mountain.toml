@@ -54,7 +54,7 @@ tags = ["outside"]
 description = "An abandoned observatory atop the mountains, offering panoramic views."
 appearance = "Small abandoned observatory on mountaintop"
 exits = [
-    { preposition = "down", noun = "the mountain", to = "trailhead" },
+    { preposition = "down", noun = "the mountain", to = "rocky cliffside" },
     { preposition = "inside", noun = "shack", to = "radio tower shack" },
 ]
 

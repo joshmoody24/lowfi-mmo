@@ -44,7 +44,7 @@ class Entity(models.Model):
     tags = models.ManyToManyField(Tag)
     @property
     def name(self):
-        first_name = self.names.first()
+        first_name = self.names.order_by('id').first()
         return first_name.name if first_name else "anonymous entity"
     @property
     def slug(self):
