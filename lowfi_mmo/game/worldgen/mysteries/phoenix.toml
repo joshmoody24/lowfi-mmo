@@ -1,0 +1,29 @@
+[[mysteries]]
+name = "Heritage Elementary"
+clues = [
+    "Every door to the building is locked, and the windows are boarded up.",
+    "[Friend Name] entered the building last year through an open window.",
+    "The school bathroom can be accessed through the storm drain.",
+    "There is a ring of chairs in the basement with an old-fashioned radio in the center of the circle.",
+    "A large door in the basement is marked with a biohazard symbol.",
+    "The basement is used by a group called Basilica",
+    "The purpose of the recorded Basilica meeting focused mainly on finding the Wormhole Telegraph for an entity named PHOENIX.\nThe parents seemed extremely miserable throughout the meeting.",
+    "While listening to the recording, the drive overheated and the computer died.",
+]
+
+[[mysteries]]
+name = "Storm Drain"
+clues = [
+    "The storm drain tunnels spread all throughout the town of Hubbleton.",
+    "Several tunnels have signs from the Hubbleton police that indicate nearby motion sensors.",
+    "The police never seem to respond to the motion sensors being tripped.",
+]
+
+[[mysteries]]
+name = "The ASHTWIN Project"
+clues = [
+    "ASHTWIN stands for \"Anti-Singularity Human Taskforce to Withstand Intelligent Nullification.\"",
+    "The project is run by a small team of rebels researching PHOENIX from an air-gapped facility.",
+    "The facility located deep in the storm drain system.",
+    "The ASHTWIN Project was a complete fake created by PHOENIX to intimidate us.",
+]
