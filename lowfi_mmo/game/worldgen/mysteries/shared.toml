@@ -1,6 +1,8 @@
 [[mysteries]]
 name = "Curiosity Corner"
-clues = [
-    "Curiosity Corner is run by a talkative old man named Joe.",
-    "The shop contains oddities of all kinds, including old computer equipment, keys, and collectible trading cards."
-]
+
+    [[mysteries.clues]]
+    description = "Curiosity Corner is run by a talkative old man named Joe."
+
+    [[mysteries.clues]]
+    description = "The shop contains oddities of all kinds, including old computer equipment, keys, and collectible trading cards."
