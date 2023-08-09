@@ -20,7 +20,10 @@ name = "Heritage Elementary"
     description = "The basement is used by a group called Basilica"
 
     [[mysteries.clues]]
-    description = "The purpose of the recorded Basilica meeting focused mainly on finding the Wormhole Telegraph for an entity named PHOENIX.\nThe parents seemed extremely miserable throughout the meeting."
+    description = """
+        The purpose of the recorded Basilica meeting was about finding the Wormhole Telegraph for their leader: Phoenix.
+        During the meeting, the members seemed extremely miserable.
+        """
 
     [[mysteries.clues]]
     description = "While listening to the recording, the drive overheated and the computer died."

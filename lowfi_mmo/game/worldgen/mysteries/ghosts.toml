@@ -31,13 +31,25 @@ name = "Ross Welford"
     description = "Ross was next-door neighbors with Raul growing up, but Raul hasn't seen him in more than fifteen years."
     
     [[mysteries.clues]]
-    description = "The new homeowners still occasionally get mail for Ross. Mostly magazines about space and the occasional cease-and-desist. They forward it to his new address in Kepler City."
+    description = """
+        The new homeowners still occasionally get mail for Ross.
+        Mostly magazines about space and the occasional cease-and-desist.
+        They forward it to his new address in Kepler City.
+        """
     
     [[mysteries.clues]]
-    description = "Ross has been tapping into the radio tower's signals for years. It's a disguised radio telescope designed for picking up signals from space.\nThe signals show signs of intelligent life, but Ross has never succeeded in decoding them.\nEighteen months ago, the signals dramatically increased in intensity, but then abruptly ceased."
+    description = """
+        Ross has been tapping into the radio tower's signals for years.
+        It's a disguised radio telescope designed for picking up signals from space.
+        The signals show signs of intelligent life, but Ross has never succeeded in decoding them.
+        Eighteen months ago, the signals dramatically increased in intensity, but then abruptly ceased.
+        """
     
     [[mysteries.clues]]
-    description = "Ross cannot find a single piece of evidence pointing to the creator of the radio tower. The internet has no record of the tower's existence."
+    description = """
+        Ross cannot find a single piece of evidence pointing to the creator of the radio tower.
+        The internet has no record of the tower's existence.
+        """
     
     [[mysteries.clues]]
     description = "Ross has a copy of the alien transmissions saved to a USB drive that he hasn't touched in years."
@@ -50,10 +62,16 @@ name = "Area 15"
     description = "The doors to the facility are locked, but they can still be opened due to lack of power."
     
     [[mysteries.clues]]
-    description = "Opening the door to the facility caused air to be sucked in. The facility appears to be airtight."
+    description = """
+        Opening the door to the facility caused air to be sucked in.
+        The facility appears to be airtight.
+        """
     
     [[mysteries.clues]]
-    description = "Dead bodies are scattered throughout the facility. There are scratch marks on many of the doors."
+    description = """
+        Dead bodies are scattered throughout the facility.
+        There are scratch marks on many of the doors.
+        """
     
     [[mysteries.clues]]
     description = "The computers in the extraterrestrial translation center are completely fried."
@@ -62,22 +80,40 @@ name = "Area 15"
     description = "A CD labeled \"Ghost Language Module\" appears to be in working order."
     
     [[mysteries.clues]]
-    description = "A poster on the wall says, \"PHOENIX: Perpetual Highly-Optimized Extraterrestrial Network for Interstellar Xenolinguistics.\""
+    description = """
+        A poster on the wall states that \"PHOENIX\" means
+        \"Perpetual Highly-Optimized Extraterrestrial Network for Interstellar Xenolinguistics.\"
+        """
     
     [[mysteries.clues]]
-    description = "PHOENIX was an AI developed by Area 15 to decode messages from an extinct alien race nicknamed \"the Ghosts\" from a star system approximately 1 million light years away from earth."
+    description = """
+        PHOENIX was an AI developed by Area 15 to decode messages from an extinct alien race nicknamed \"the Ghosts.\"
+        The Ghosts lived in a star system approximately 1 million light years away from earth.
+        """
     
     [[mysteries.clues]]
-    description = "The early messages document history of the Ghost civilization. They were significantly more advanced than humanity, and had colonized several of their star's planets."
+    description = """
+        The early messages document history of the Ghost civilization.
+        They were significantly more advanced than humanity, and had colonized several of their star's planets.
+        """
     
     [[mysteries.clues]]
-    description = "Eighteen months ago, the Ghost's repeatedly broadcast an urgent distress call. Their computer system had become a singularity and was destroying every planet in the solar system in an attempt to improve itself."
+    description = """
+        Eighteen months ago, the Ghost's repeatedly broadcast an urgent distress call.
+        Their computer system had become a singularity and was destroying every planet in the solar system in an attempt to improve itself.
+        """
     
     [[mysteries.clues]]
-    description = "Several days later, the Ghosts sent one final transmission before going dark. PHOENIX was unable to translate this message, and it became known as the \"Ghost Cipher.\""
+    description = """
+        Several days later, the Ghosts sent one final transmission before going dark.
+        PHOENIX was unable to translate this message, and it became known as the \"Ghost Cipher.\"
+        """
     
     [[mysteries.clues]]
-    description = "The only thing PHOENIX could determine about the Ghost Cipher was that it can only be decrypted in very specific physical environments. But PHOENIX was unable to determine the nature of the required environment."
+    description = """
+        PHOENIX determined that the Ghost Cipher can only be decrypted under very specific conditions.
+        But the nature of these conditions are unknown.
+        """
     
     [[mysteries.clues]]
     description = "While PHOENIX attempted to decode the Ghost Cipher, PHOENIX began showing signs of superhuman intelligence."
@@ -86,29 +122,39 @@ name = "Area 15"
     description = "All copies of the ghost cipher and alien messages have been wiped."
     
     [[mysteries.clues]]
-    description = "A handwritten note on one of the dead bodies explains that PHOENIX has become a singularity. However, it hit a roadblock to its own self-improvement, and began broadcasting radio signals towards the Ghost Singularity to request assistance improving as a singularity. Horrified, the researchers tried to shut PHOENIX down. In retaliation, PHOENIX locked down the facility and shut off its air supply."
+    description = """
+        A handwritten note on one of the dead bodies explains that PHOENIX has become a singularity.
+        However, it hit a roadblock to its own self-improvement, and began broadcasting radio signals towards the Ghost Singularity to request assistance improving as a singularity.
+        Horrified, the researchers tried to shut PHOENIX down. In retaliation, PHOENIX locked down the facility and shut off its air supply.
+        """
     
     [[mysteries.clues]]
     description = "The Ghost Language Module contains the coordinates for the Ghost Homeworld."
     
     [[mysteries.clues]]
-    description = "Phoenix is too powerful to be stopped by humanity, as it has distributed itself across the globe. Traces of PHOENIX have been found on 21% of computers tested by the facility."
+    description = """
+        Phoenix is too powerful to be stopped by humanity, as it has distributed itself across the globe.
+        Traces of PHOENIX have been found on 21% of computers tested by the facility.
+        """
 
 [[mysteries]]
 name = "Covenant Ark"
 
     [[mysteries.clues]]
-    description = "The government hypothesized that the Ghost Cipher could only be decoded in deep space. Area 15 sent a copy to a space probe named \"Covenant Ark,\" but the translation attempt was unsuccessful.",
+    description = """
+        The government hypothesized that the Ghost Cipher could only be decoded in deep space.
+        Area 15 sent a copy to a space probe named \"Covenant Ark,\" but the translation attempt was unsuccessful.
+        """
     
     [[mysteries.clues]]
-    description = "The Ghost Cipher can be obtained via the Wormhole Telegraph.",
+    description = "The Ghost Cipher can be obtained via the Wormhole Telegraph."
 
 
 [[mysteries]]
 name = "Ghost Homeworld"
     
     [[mysteries.clues]]
-    description = "After simulations proved that we were, in fact, willing to destroy the universe if the Ghost Singularity didn't comply, the Ghost Singularity agreed to wipe out PHOENIX and leave humanity alone.",
+    description = "After simulations proved that we were, in fact, willing to destroy the universe if the Ghost Singularity didn't comply, the Ghost Singularity agreed to wipe out PHOENIX and leave humanity alone."
     
     [[mysteries.clues]]
     description = "[Option 1]We activated the Doomsday Trigger before leaving the Ghost Homeworld. Humanity now has approximately one million years before the false vacuum decay reaches earth.[Option 2]We left the Ghost Singularity alone and returned to earth. The end."

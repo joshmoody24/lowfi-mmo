@@ -5,13 +5,19 @@ name = "Ruined Cabin"
     description = "The cabin seems to shimmer when looking at it from a distance. Sort of like seeing double."
     
     [[mysteries.clues]]
-    description = "There is a picture on the wall of a tall, slender man with a bushy gray mustache. The man looks strangely familiar, you're almost positive you've seen his picture before."
+    description = """
+        There is a picture on the wall of a tall, slender man with a bushy gray mustache.
+        The man looks strangely familiar, you're almost positive you've seen his picture before.
+        """
     
     [[mysteries.clues]]
     description = "The library has a portrait of the same man. His name is Edward Muhlstein, a mayor of Hubbleton from the fifties."
    
     [[mysteries.clues]]
-    description = "Edward's biography claims that he was honorably discharged as mayor after suffering a psychotic episode while in office. He then retired and was rarely seen again."
+    description = """
+        Edward's biography claims that he was honorably discharged as mayor after suffering a psychotic episode while in office.
+        He then retired and was rarely seen again.
+        """
   
     [[mysteries.clues]]
     description = "One of Edward's best friends was named Joseph Wheeler."
@@ -65,10 +71,13 @@ name = "Quantum Testing Chamber"
     description = "A chamber used for testing a quantum invention called the Tunnel Emulator, which enables the user to travel through solid objects for a short distance."
    
     [[mysteries.clues]]
-    description = "The first device invented by the QED was catastrophically dangerous. So much so that the government wiped all records of it and disposed of anyone who knew its location."
+    description = """
+        The first device invented by the QED was catastrophically dangerous.
+        The government wiped all records of it and disposed of anyone who knew its location.
+        """
    
     [[mysteries.clues]]
-    description = "Being in the proximity of the device provided some useful side effects, so instead of destroying it, the government hid it in a \"Doomsday Vault.\""
+    description = "Being in the proximity of the device provided some useful side effects. so the government did not destroy it."
    
     [[mysteries.clues]]
     description = "Preliminary research was being done into combining the Wormhole Telegraph with the Tunnel Emulator to make a teleporter. But the device required more intense quantum energy before it could function properly."
@@ -107,4 +116,11 @@ name = "Doomsday Vault"
     description = "Being near the Doomsday Trigger strengthens the power of quantum devices."
   
     [[mysteries.clues]]
-    description = "Translating the Ghost Cipher at this location revealed The Singularity Principle: \"The one weakness of singularities is that they always choose self-preservation. For this reason, a singularity will never create a Doomsday Trigger and thus will always be bound by the speed of light. Biological life, on the other hand, is sometimes crazy enough to put everything on the line. Even the universe. And sometimes the WILLINGNESS to put everything on the line is all that is necessary to obtain one's desires."
+    description = """
+        Translating the Ghost Cipher at this location revealed The Singularity Principle:
+        \"The one weakness of singularities is that they always choose self-preservation.
+        For this reason, a singularity will never create a Doomsday Trigger.
+        Thus, singularities will always be bound by the speed of light.
+        Biological life, on the other hand, is sometimes crazy enough to put everything on the line, even the universe itself.
+        And sometimes the WILLINGNESS to put everything on the line is enough.
+        """
