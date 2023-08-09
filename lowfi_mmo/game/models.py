@@ -35,13 +35,20 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-# TODO: make an entity manager or something that
-# handles world filtering automatically, if possible
+class EntityQuerySet(models.QuerySet):
+    def in_world(self, world):
+        return self.filter(world=world)
+    def at_location(self, location):
+        return self.filter(location=location)
+    def fuzzy_match(self, query):
+        return self.filter(names__slug__iexact=slugify_spaceless(query))
+
 class Entity(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     appearance = models.TextField(blank=True)
     description = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag)
+    objects: EntityQuerySet = EntityQuerySet.as_manager()
     @property
     def name(self):
         first_name = self.names.order_by('id').first()
@@ -71,6 +78,16 @@ class Location(Entity):
     LOCATION_CATEGORIES = (("house", "house"), ("store", "store"), ("secret", "secret"), ("other", "other"))
     category = models.CharField(max_length=20, choices=LOCATION_CATEGORIES, blank=True)
 
+class PathQuerySet(models.QuerySet):
+    def fuzzy_match_noun(self, noun):
+        # TODO: when closer to release, use postgres trigram similarity instead of slugify_spaceless.
+        return self.filter(noun_slug__iexact=slugify_spaceless(noun))
+    def fuzzy_match_preposition(self, preposition):
+        return self.filter(preposition__iexact=preposition)
+    def fuzzy_match_destinations(self, noun):
+        return self.filter(end__names__slug__iexact=slugify_spaceless(noun))
+
+
 class Path(models.Model):
     preposition = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
     noun = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
@@ -79,6 +96,7 @@ class Path(models.Model):
     travel_seconds = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)], default=10.0)
     noun_slug = models.SlugField(max_length=20) # for spaceless string matching
     hidden = models.BooleanField(default=False)
+    objects = PathQuerySet.as_manager()
     def save(self, *args, **kwargs):
         self.noun_slug = slugify_spaceless(self.noun)
         super(Path, self).save(*args, **kwargs)
@@ -109,7 +127,7 @@ class CharacterLog(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     command = models.CharField(max_length=200)
     success = models.BooleanField(default=True)
-    result = models.TextField()
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     @property
     def css_class(self):

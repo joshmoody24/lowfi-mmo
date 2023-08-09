@@ -15,7 +15,6 @@ COMMANDS = [
     Command('go', r"^(?:go|g)(?: (back|to|through|inside|outside))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
     Command('take', r"^(?:take|t) ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
     Command('use', r"^^(?:use|u) \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
-    Command('attack', r"^(?:attack|a) ([a-zA-Z\ ]*)$", "[character]", "Attack a character"),
 ]
 
 # TODO: add the following commands
@@ -31,26 +30,24 @@ COMMANDS = [
 @atomic
 def handle_command(character, raw_input):
     command, args = parse_command(character, raw_input)
-    result = None, None
-    if(command == 'go'):
-        result =  systems.move(character, args[0], args[1])
-    elif(command == 'attack'):
-        result = systems.attack(character, args[0])
-    elif(command == 'look'):
-        result = systems.look(character)
-    elif(command == 'take'):
-        result = systems.take(character, args[0])
-    elif(command == 'use'):
-        result = systems.use(character, args[0], args[1])
-    else:
-        result = "", f'"{raw_input}" is not a valid command.'
+    result: systems.Result
+    match command:
+        case 'go':
+            result = systems.move(character, args[0], args[1])
+        case 'look':
+            result = systems.look(character)
+        case 'take':
+            result = systems.take(character, args[0])
+        case 'use':
+            result = systems.use(character, args[0], args[1])
+        case _:
+            result = systems.Result.fail(f'"{raw_input}" is not a valid command.')
     
-    success = result[0] != "" and result[1] == ""
     models.CharacterLog.objects.create(
         character=character,
         command=raw_input,
-        success=success,
-        result=result[0] if success else result[1]
+        success=result.success,
+        message=result.message
         )
     
 def parse_command(character, raw_input):
