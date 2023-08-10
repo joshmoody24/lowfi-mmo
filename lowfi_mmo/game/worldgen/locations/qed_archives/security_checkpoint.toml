@@ -1,0 +1,7 @@
+names = ["Security Checkpoint"]
+tags = ["archive"]
+description = "The security checkpoint is filled with state-of-the-art scanners, cameras, and robotic guards, all deactivated but still imposing. Passages lead deeper into the facility, and the silence is heavy with the weight of untold secrets."
+appearance = "High-tech security checkpoint with robotic guards."
+exits = [
+    { noun = "main corridor", to = "Main Corridor" },
+]

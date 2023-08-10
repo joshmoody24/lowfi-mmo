@@ -1,0 +1,8 @@
+names = ["Main Hallway"]
+tags = ["school", "abandoned"]
+description = "The main hallway is strewn with trash, broken lockers, and decaying educational materials. The walls, once filled with colorful artwork, are now marred by decay and neglect. The smell of mold and asbestos is pervasive."
+appearance = "Decaying main hallway in an abandoned school."
+exits = [
+    { noun = "classroom", to = "Abandoned Classroom" },
+    { noun = "basement entrance", to = "Basement Entrance" },
+]

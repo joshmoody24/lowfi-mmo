@@ -1,0 +1,14 @@
+name = "Edward Muhlstein"
+connections = ["Ruined Mansion"]
+
+[[clues]]
+summary = "The library has a portrait of a man named Edward Muhlstein. He was mayor of Hubbleton in the fifties."
+
+[[clues]]
+summary = """
+    A liibrary book states that Edward was honorably discharged as mayor after suffering a psychotic episode while in office.
+    He then retired to a private mansion and was rarely seen again.
+    """
+
+[[clues]]
+summary = "One of Edward's best friends was named Joseph Wheeler."

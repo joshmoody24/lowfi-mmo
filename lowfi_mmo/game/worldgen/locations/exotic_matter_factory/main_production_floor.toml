@@ -1,0 +1,8 @@
+names = ["Main Production Floor"]
+tags = ["factory"]
+description = "A vast production floor filled with dormant machinery. The place is a mechanical graveyard, filled with the remnants of cutting-edge technology used to manufacture exotic matter. The silence is broken only by the occasional drip of oil or creak of metal."
+appearance = "Large production floor with dormant machinery."
+exits = [
+    { noun = "control room", to = "Control Room" },
+    { noun = "storage area", to = "Storage Area" },
+]

@@ -1,0 +1,23 @@
+name = "Mansion Basement"
+connections = ["Cavern Archives"]
+
+[[clues]]
+summary = "There is a large steel trapdoor under the rug in the mansion bedroom. It is locked with an old-fashioned bronze padlock."
+
+[[clues]]
+summary = "The key to the trapdoor was found at Curiosity Corner."
+
+[[clues]]
+summary = "The walls of the basement are covered in deep scratches, some of which form the phrase \"CLOSE EYES\""
+
+[[clues]]
+summary = "A desk contained several decayed documents, all of which have the letters \"QED\" in an ornate logotype."
+
+[[clues]]
+summary = "Memo 3041 is unreadable except for the phrases \"air metal\" and \"observation-dependent density\""
+
+[[clues]]
+summary = "Memo 3052 is unreadable except for the phrase \"cavern archives\""
+
+[[clues]]
+summary = "Memo 4919 is unreadable except for the words \"neurological effect\" and \"subatomic\""

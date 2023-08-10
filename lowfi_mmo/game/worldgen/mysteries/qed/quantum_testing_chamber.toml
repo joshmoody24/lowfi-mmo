@@ -1,0 +1,16 @@
+name = "Quantum Testing Chamber"
+
+[[clues]]
+summary = "A chamber used for testing a quantum invention called the Tunnel Emulator, which enables the user to travel through solid objects for a short distance."
+
+[[clues]]
+summary = """
+    The first device invented by the QED was catastrophically dangerous.
+    The government wiped all records of it and disposed of anyone who knew its location.
+    """
+
+[[clues]]
+summary = "Being in the proximity of the device provided some useful side effects. so the government did not destroy it."
+
+[[clues]]
+summary = "Preliminary research was being done into combining the Wormhole Telegraph with the Tunnel Emulator to make a teleporter. But the device required more intense quantum energy before it could function properly."

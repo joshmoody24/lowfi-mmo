@@ -1,0 +1,15 @@
+names = ["Rotten Log", "Log"]
+tags = ["outside"]
+description = "A large, decaying log covered in moss and mushrooms. An ant colony is living underneath the log, and several spiders are keeping them company."
+appearance = "Rotten log in forest with mushrooms growing on it."
+exits = [
+    { preposition = "north", to = "Small Ravine" }, # correct path
+    { preposition = "south", to = "muddy pond" },
+    { preposition = "east", to = "hubbleton forest entrance" },
+    { preposition = "west", to = "little waterfall" }
+]
+    [[locations.items]]
+    names = ["ant", "ants"]
+    tags = ["hidden"]
+    description = "A large carpenter ant found in the forest in a test tube."
+    appearance = "Large camponotus ant worker in test tube."

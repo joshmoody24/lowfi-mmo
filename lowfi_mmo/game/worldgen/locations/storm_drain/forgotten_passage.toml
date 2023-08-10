@@ -1,0 +1,7 @@
+names = ["Forgotten Passage"]
+tags = ["underground"]
+description = "A narrow forgotten passage filled with remnants of the past."
+appearance = "Narrow, forgotten passage leading deeper into the unknown."
+exits = [
+    { noun = "deep junction", to = "deep junction" },
+]

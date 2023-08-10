@@ -1,0 +1,9 @@
+names = ["canyon road"]
+tags = ["outside"]
+description = "A long, winding path that cuts through the heart of Hubbleton's breathtaking canyon. Tall rock walls tower on either side, often adorned with rugged vegetation clinging to crevices. The road is narrow and often appears forgotten, providing a serene drive or walk with the sound of a distant river echoing off the rocks. Wild animals are occasionally spotted darting across the road or peering down from high ledges."
+appearance = "Long, winding, single-lane canyon road surrounded by tall rock walls and sporadic greenery."
+exits = [
+    { noun = "center street", to = "center street" },
+    { noun = "mountain trailhead", to = "Hubbleton Peak Trailhead" },
+    { noun = "forest entrance", to = "hubbleton forest entrance"}
+]

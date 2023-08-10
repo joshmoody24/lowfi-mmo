@@ -1,0 +1,7 @@
+names = ["Final Chamber"]
+tags = ["underground"]
+description = "The final chamber of the storm drain, filled with silence and mystery."
+appearance = "Final underground chamber filled with silence."
+exits = [
+    { preposition = "up", to = "gas station exterior" },
+]

@@ -1,0 +1,13 @@
+names = ["ruined mansion living room"]
+tags = ["inside", "ruined mansion"]
+description = "A once-grand living room now consumed by nature. The wallpaper is peeling, chandeliers hang broken, and luxurious furnishings lay rotting. Plant overgrowth reaches in through the shattered windows, reclaiming the space as its own. Paintings of unknown figures watch silently from the walls, their faces obscured by time."
+appearance = "A decayed, ruined cabin living room overgrown with plants"
+exits = [
+    { preposition = "outside", to = "ruined mansion entrance" },
+    { preposition = "through", noun = "trapdoor", to = "secret bunker" },
+]
+
+[[items]]
+names = ["Mansion Portrait"]
+appearance = "old-fashioned serious portrait of middle-aged man in suit with bushy blond mustache wearing top hat."
+description = "An ornate portrait of a middle-aged man in a fine suit and top hat. He has a bushy blond mustache and is has a rather serious expression on his face."

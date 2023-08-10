@@ -1,0 +1,8 @@
+names = ["Drain Junction"]
+tags = ["underground"]
+description = "A junction where the drain paths divide."
+appearance = "A junction with various tunnels leading in different directions."
+exits = [
+    { preposition = "up", to = "center street" },
+    { noun = "hidden path", to = "hidden path" },
+]

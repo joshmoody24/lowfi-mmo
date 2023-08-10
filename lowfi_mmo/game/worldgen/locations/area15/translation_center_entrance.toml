@@ -1,0 +1,8 @@
+names = ["translation center entrance", "translation entrance"]
+tags = ["inside"]
+description = "An entrance leading to a part of the facility filled with high-tech equipment. Subtle sounds and flickering lights suggest ongoing activity, despite the apparent abandonment."
+appearance = "High-tech entrance with signs of subtle activity."
+exits = [
+    { noun = "primary corridor", to = "primary corridor" },
+    { noun = "translation lab", to = "translation lab" },
+]

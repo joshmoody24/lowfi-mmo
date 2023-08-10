@@ -1,0 +1,10 @@
+names = ["Small Ravine", "Ravine"]
+tags = ["outside"]
+description = "A small ravine carves through the forest here. It may have once been a river, but it seems to have dried up."
+appearance = "Dried up riverbed in forest, small ravine."
+exits = [
+    { preposition = "north", to = "muddy pond" },
+    { preposition = "south", to = "rotten log" },
+    { preposition = "east", to = "big tree" },
+    { preposition = "west", to = "bramble patch" } # correct path
+]

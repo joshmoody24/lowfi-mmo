@@ -1,0 +1,8 @@
+names = ["Hubbleton Peak Trailhead", "trailhead"]
+tags = ["outside", "hiking trail"]
+description = "The starting point of a scenic mountain hiking trail. The trailhead itself is adorned with an old wooden sign indicating the distance to the peak, along with worn maps and notices from fellow hikers. The scent of pine fills the air, and the path ahead invites you with a mix of dirt, rocks, and the sounds of nature."
+appearance = "Mountain hiking trailhead with informational signs, surrounded by dense forest."
+exits = [
+    { noun = "canyon road", to = "canyon road" },
+    { preposition = "up", noun = "the trail", to = "mountain meadow"}
+]

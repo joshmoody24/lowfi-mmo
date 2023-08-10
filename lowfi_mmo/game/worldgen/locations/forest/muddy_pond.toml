@@ -1,0 +1,10 @@
+names = ["Muddy Pond"]
+tags = ["outside"]
+description = "A small pond barely larger than a puddle. The water is brown, murky, and covered in algae. Water-skeeter bugs dart over the surface of the water."
+appearance = "small muddy pond in middle of thick forest."
+exits = [
+    { preposition = "north", to = "hubbleton forest entrance" },
+    { preposition = "south", to = "hubbleton forest entrance" },
+    { preposition = "east", to = "large boulder" },
+    { preposition = "west", to = "big tree"}
+]

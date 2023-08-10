@@ -1,0 +1,7 @@
+names = ["translation lab", "extraterrestrial lab"]
+tags = ["inside"]
+description = "A complex lab filled with screens, antennas, and unknown technology. The room seems to buzz with alien languages and signals, though its purpose is unclear."
+appearance = "Complex lab with screens, antennas, and mysterious technology."
+exits = [
+    { noun = "translation center entrance", to = "translation center entrance" },
+]

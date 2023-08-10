@@ -1,0 +1,7 @@
+names = ["Archive Room"]
+tags = ["archive"]
+description = "Shelves upon shelves of documents, tapes, and files fill the archive room. The collected knowledge of years of quantum research is stored here, waiting to be rediscovered."
+appearance = "Room filled with shelves of documents and research materials."
+exits = [
+    { noun = "main corridor", to = "main corridor" },
+]

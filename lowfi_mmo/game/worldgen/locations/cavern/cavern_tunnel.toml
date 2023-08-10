@@ -1,0 +1,8 @@
+names = ["Cavern Tunnel"]
+tags = ["cavern"]
+description = "The tunnel leads deeper into the cave, the walls wet with moisture. Stalactites hang down like icicles, and you can hear the distant sound of water flowing."
+appearance = "Damp cave tunnel with stalactites."
+exits = [
+    { noun = "glowing chamber", to = "Glowing Chamber" },
+    { noun = "narrow passage", to = "Narrow Passage" },
+]

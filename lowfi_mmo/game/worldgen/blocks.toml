@@ -1,0 +1,17 @@
+[[blocks]]
+names = ["trapdoor"]
+from = "ruined mansion living room"
+to = "secret bunker"
+one_way = false
+description = "A large bronze padlock holds the trapdoor in place. It won't budge."
+appearance = "Large metal trapdoor on wooden floor secured with large bronze padlock"
+unlocked_by = "bronze key"
+unlock_description = "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click."
+
+# [[blocks]]
+# names = ["long road"]
+# from = "center street"
+# to = "canyon road"
+# one_way = false
+# description = "Reaching the canyon from here would take days on foot. You need a different way to get there."
+# appearance = "Long road leading into a distant canyon."

@@ -1,0 +1,9 @@
+names = ["center street", "center st"]
+tags = ["outside"]
+description = "A street that runs north/south right through the middle of Hubbleton. It is primarily a residential area, lined with modest homes and lush green lawns. Trees arch over the road, casting a dappled shade that dances with the wind."
+appearance = "Large road in center of suburban town. Residential area. Many trees casting shade. Two lane road."
+exits = [
+    { noun = "city center", to = "city center" },
+    { noun = "high school", to = "high school entrance" },
+    { noun = "canyon road", to = "canyon road"}
+]

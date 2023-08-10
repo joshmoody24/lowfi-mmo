@@ -1,0 +1,8 @@
+names = ["radio tower"]
+tags = ["outside"]
+description = "An old-fashioned radio tower that towers over you. The structure stands as a testament to human ingenuity, yet its silence and decay add a sense of mystery. Whether used for stargazing or communication, its purpose now seems lost to time. Several cables from the radio tower lead into a small wooden shack at the base of the tower."
+appearance = "Abandoned radio tower on mountaintop, surrounded by scattered equipment."
+exits = [
+    { preposition = "down", noun = "the mountain", to = "rocky cliffside" },
+    { preposition = "inside", noun = "shack", to = "radio tower shack" },
+]

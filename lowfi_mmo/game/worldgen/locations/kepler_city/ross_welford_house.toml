@@ -1,0 +1,7 @@
+names = ["Ross Welford's house", "Welford's house", "Ross's house"]
+tags = ["inside"]
+description = "The home of Ross Welford, filled with shelves of books, artifacts, and odd trinkets. The atmosphere is cozy, and the smell of old paper and wood fills the room. Ross can often be found in his study, deep in thought."
+appearance = "Cozy home filled with books, artifacts, and a sense of history."
+exits = [
+    { preposition = "outside", to = "Welford street" },
+]

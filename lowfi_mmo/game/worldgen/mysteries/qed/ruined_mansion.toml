@@ -1,0 +1,16 @@
+name = "Ruined Mansion"
+connections = ["Edward Muhlstein", "Mansion Basement"]
+
+[[clues]]
+summary = "The mansion seems to shimmer when looking at it from a distance. Sort of like seeing double."
+known_by = ["Joe"]
+discoverable_at = [
+    { location = "ruined mansion entrance", on = "arrive" }
+]
+
+[[clues]]
+summary = """
+    The living room wall has a portrait of a tall, slender man with a bushy blond mustache.
+    The man looks strangely familiar, you're almost certain you've seen his picture before.
+    """
+inspectable_from = ["Mansion Portrait"]

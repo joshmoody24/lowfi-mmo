@@ -1,0 +1,7 @@
+names = ["Dark Forest"]
+tags = ["outside"]
+description = "This part of the forest is especialy dark and foggy. You can only see about 10 feet in front of you. The trees seem to be changing places every time you look around. You have no idea which direction you came from."
+appearance = "Thick, dark, foggy, creepy forest."
+exits = [
+    { preposition = "deeper", to = "ruined mansion entrance" }
+]

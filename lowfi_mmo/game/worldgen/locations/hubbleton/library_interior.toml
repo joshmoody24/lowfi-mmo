@@ -1,0 +1,6 @@
+names = ["library interior"]
+description = "The inside of the library. Although it is a small building, it is packed full of bookshelves, each one a gateway to a different world. The scent of old paper fills the air, and the soft rustling of pages is the only sound. Cozy reading nooks beckon, and the librarian's stern glare warms the heart in a weird sort of way."
+appearance = "Small town library interior, many bookshelves."
+exits = [
+    { preposition = "outside", to = "library exterior" },
+]

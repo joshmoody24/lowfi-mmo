@@ -1,0 +1,8 @@
+names = ["ruined mansion kitchen"]
+tags = ["inside", "ruined mansion"]
+description = "A kitchen that has been reclaimed by nature. The floor is covered in dirt, and every window is broken. The walls have fallen apart."
+appearnce = "Ruined kitchen interior reclaimed by nature, dirty floor, broken windows, dusty air."
+exits = [
+    { noun = "living room", to = "ruined mansion living room" },
+    { noun = "bedroom", to = "ruined mansion bedroom" }
+]

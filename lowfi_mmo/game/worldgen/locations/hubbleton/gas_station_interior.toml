@@ -1,0 +1,6 @@
+names = ["gas station interior"]
+description = "The inside of a small gas station, filled with the scent of packaged snacks and motor oil. The shelves are stocked with travel necessities, while the floor bears the marks of countless shoes. The clerk behind the counter has seen it all, greeting each customer with a knowing smile. The interior holds a certain charm, a connection to the open road and the freedom it promises."
+appearance = "Interior of run-down gas station at edge of rural town."
+exits = [
+    { preposition = "outside", to = "gas station exterior" },
+]

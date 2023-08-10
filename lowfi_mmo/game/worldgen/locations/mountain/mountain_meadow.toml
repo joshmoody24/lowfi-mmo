@@ -1,0 +1,8 @@
+names = ["mountain meadow", "meadow"]
+tags = ["outside", "hiking trail"]
+description = "A small clearing several miles beyond the trailhead. The meadow is a rich tapestry of colorful wildflowers, waving gently in the mountain breeze. Surrounded by towering trees, it's a perfect spot to rest and take in the natural splendor. It is so beautiful, in fact, that you feel a strong desire to reject humanity, cover yourself in pine needles, and live in the forest like some sort of prickly bigfoot child."
+appearance = "Mountain trail meadow filled with colorful wildflowers and surrounded by tall trees."
+exits = [
+    { preposition = "up", noun = "the trail", to = "rocky cliffside" },
+    { preposition = "down", noun = "the trail", to = "trailhead"},
+]

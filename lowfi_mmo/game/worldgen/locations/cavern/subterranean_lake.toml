@@ -1,0 +1,7 @@
+names = ["Subterranean Lake", "cavern lake"]
+tags = ["cave"]
+description = "A subterranean lake with crystal-clear water. The reflection of the glowing minerals dances on the water's surface, creating a surreal and breathtaking scene."
+appearance = "Underground lake with clear water and glowing reflections."
+exits = [
+    { noun = "waterfall alcove", to = "Waterfall Alcove" },
+]

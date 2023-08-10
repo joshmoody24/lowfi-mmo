@@ -1,0 +1,8 @@
+names = ["Curiosity Corner entrance", "pawn shop entrance"]
+tags = ["outside"]
+description = "The entrance to a dusty old pawn shop on Main Street, aptly named Curiosity Corner. The window displays an eclectic mix of items from decades past. The door creaks open, inviting the curious and the bargain hunters alike."
+appearance = "Old fashioned pawn shop exterior"
+exits = [
+    { noun = "main street", to = "main street" },
+    { preposition = "inside", to = "pawn shop" },
+]

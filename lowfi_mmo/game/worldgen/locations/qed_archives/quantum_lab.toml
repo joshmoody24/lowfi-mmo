@@ -1,0 +1,7 @@
+names = ["Quantum Lab"]
+tags = ["archive", "lab"]
+description = "A high-tech laboratory filled with cutting-edge quantum research equipment. Tables are cluttered with notes, diagrams, and prototypes of experimental devices. The silence is broken only by the occasional hum of machinery."
+appearance = "Advanced quantum research laboratory."
+exits = [
+    { noun = "experiment chamber", to = "Experiment Chamber" },
+]

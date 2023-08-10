@@ -1,0 +1,7 @@
+names = ["School Entrance"]
+tags = ["school", "abandoned"]
+description = "The entrance to Heritage Elementary is marked by shattered windows and graffiti. An eerie silence hangs in the air, and the once-welcoming doors now creak in disrepair. The school's sign hangs crooked, a ghostly reminder of a place that once buzzed with life."
+appearance = "Ruined entrance to an abandoned elementary school."
+exits = [
+    { noun = "main hallway", to = "Main Hallway" },
+]

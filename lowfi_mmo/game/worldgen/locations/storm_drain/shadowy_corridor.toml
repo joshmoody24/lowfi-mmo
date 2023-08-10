@@ -1,0 +1,7 @@
+names = ["Shadowy Corridor"]
+tags = ["underground"]
+description = "A corridor filled with shadows and whispers of the unknown."
+appearance = "Dark, shadowy corridor."
+exits = [
+    { noun = "final chamber", to = "final chamber" },
+]

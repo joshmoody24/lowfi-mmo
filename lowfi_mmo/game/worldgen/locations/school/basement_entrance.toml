@@ -1,0 +1,7 @@
+names = ["Basement Entrance"]
+tags = ["school", "abandoned"]
+description = "The entrance to the basement is hidden away, its doorway marked by dark symbols and warnings. The chill in the air hints at the evil that lurks below. The door is heavy, and opening it reveals a steep staircase descending into darkness."
+appearance = "Ominous entrance to the basement with dark symbols."
+exits = [
+    { noun = "basement", to = "Cult Meetingplace" },
+]

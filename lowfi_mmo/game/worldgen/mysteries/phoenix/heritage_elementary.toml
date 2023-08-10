@@ -1,0 +1,28 @@
+name = "Heritage Elementary"
+
+[[clues]]
+summary = "Every door to the building is locked, and the windows are boarded up."
+
+[[clues]]
+summary = "[Friend Name] entered the building last year through an open window."
+
+[[clues]]
+summary = "The school bathroom can be accessed through the storm drain."
+
+[[clues]]
+summary = "There is a ring of chairs in the basement with an old-fashioned radio in the center of the circle."
+
+[[clues]]
+summary = "A large door in the basement is marked with a biohazard symbol."
+
+[[clues]]
+summary = "The basement is used by a group called Basilica"
+
+[[clues]]
+summary = """
+    The purpose of the recorded Basilica meeting was about finding the Wormhole Telegraph for their leader: Phoenix.
+    During the meeting, the members seemed extremely miserable.
+    """
+
+[[clues]]
+summary = "While listening to the recording, the drive overheated and the computer died."

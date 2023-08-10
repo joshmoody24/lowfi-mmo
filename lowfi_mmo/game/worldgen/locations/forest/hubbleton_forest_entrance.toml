@@ -1,0 +1,27 @@
+names = ["Hubbleton Forest entrance", "Hubbleton Forest", "forest", "forest entrance", "woods"]
+tags = ["outside"]
+description = "A small forest at the far outskirts of town. Very little sunlight makes it through the dense tree cover. A light fog permeates the air, casting an ethereal glow over the twisted trees. The dark, quiet atmosphere is a bit unnerving. You hear the sounds of unknown creatures rustling in the underbrush. The air is thick with the scent of pine, and the ground is soft with centuries of fallen leaves. Moisture clings to everything, and the faint sound of dripping water can be heard deep in the forest's core. Somewhere in this forest is a ruined mansion."
+appearance = "Foggy, dense, creepy forest"
+
+[[exits]]
+noun = "canyon road"
+to = "canyon road"
+
+[[exits]]
+preposition = "north"
+to = "Large Boulder"
+
+[[exits]]
+preposition = "west"
+to = "Big Tree"
+
+[[exits]]
+preposition = "south"
+to = "Little Waterfall"
+
+[[exits]]
+noun = "ruined mansion"
+to = "ruined mansion entrance"
+hidden = true
+discoverable = false
+description = "You know the forest like the back of your hand. You follow a very specific path until you reach the ruined mansion without making a single wrong turn."

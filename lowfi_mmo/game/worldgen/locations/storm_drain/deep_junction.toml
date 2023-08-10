@@ -1,0 +1,8 @@
+names = ["Deep Junction"]
+tags = ["underground"]
+description = "A deep junction where several tunnels meet."
+appearance = "Deep underground junction with many paths."
+exits = [
+    { preposition = "up", to = "high school entrance" },
+    { noun = "shadowy corridor", to = "shadowy corridor" },
+]

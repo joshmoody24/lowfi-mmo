@@ -1,0 +1,7 @@
+names = ["Hidden Path"]
+tags = ["underground"]
+description = "A hidden path that leads further into the darkness."
+appearance = "Narrow hidden path filled with shadows."
+exits = [
+    { noun = "silent chamber", to = "silent chamber" },
+]

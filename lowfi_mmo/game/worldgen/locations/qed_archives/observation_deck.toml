@@ -1,0 +1,7 @@
+names = ["Observation Deck"]
+tags = ["archive"]
+description = "A glass-walled observation deck that overlooks the quantum experiment chamber. From here, scientists would have observed and recorded the groundbreaking experiments conducted within."
+appearance = "Glass-walled observation deck overlooking the chamber."
+exits = [
+    { noun = "archive room", to = "archive room" },
+]

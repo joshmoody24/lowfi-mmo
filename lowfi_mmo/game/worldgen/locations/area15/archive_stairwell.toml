@@ -1,0 +1,8 @@
+names = ["archive stairwell"]
+tags = ["inside"]
+description = "The entrance to a mysterious section of the facility. Cold air flows from within, and an unusual symbol marks the door."
+appearance = "Cold, foreboding entrance marked with a strange symbol."
+exits = [
+    { noun = "primary corridor", to = "primary corridor" },
+    { noun = "archive chamber", to = "archive chamber" },
+]

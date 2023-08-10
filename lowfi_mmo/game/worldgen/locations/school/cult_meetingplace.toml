@@ -1,0 +1,7 @@
+names = ["Cult Meetingplace"]
+tags = ["school", "basement", "cult"]
+description = "The basement of Heritage Elementary serves as the meeting place for an evil cult. The room is filled with dark symbols, ritual objects, and the remnants of sinister gatherings. The air is thick with malevolence, and the shadows seem to move of their own accord."
+appearance = "Dark and sinister basement filled with ritual objects."
+exits = [
+    { noun = "basement entrance", to = "basement entrance" },
+]

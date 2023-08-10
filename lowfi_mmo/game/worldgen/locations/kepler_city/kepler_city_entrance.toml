@@ -1,0 +1,8 @@
+names = ["Kepler City Entrance", "city entrance"]
+tags = ["outside"]
+description = "The grand entrance to Kepler City, marked by a towering arch and bustling with activity. Skyscrapers loom in the distance, and the air is filled with the sounds of urban life."
+appearance = "Busy city entrance with an impressive arch, cars, and pedestrians."
+exits = [
+    { noun = "main avenue", to = "main avenue" },
+    { noun = "bus station", to = "bus station" },
+]

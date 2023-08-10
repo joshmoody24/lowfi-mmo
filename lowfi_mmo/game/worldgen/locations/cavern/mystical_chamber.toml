@@ -1,0 +1,7 @@
+names = ["Mystical Chamber"]
+tags = ["cave"]
+description = "A mystical chamber filled with strange symbols and carvings. The air is charged with energy, and you can feel a connection to something ancient and powerful."
+appearance = "Chamber with mystical symbols and carvings."
+exits = [
+    { noun = "hidden tunnel", to = "hidden tunnel" }
+]

@@ -1,0 +1,8 @@
+names = ["Welford street", "Ross Welford's street"]
+tags = ["outside"]
+description = "A quieter residential street just off Main Avenue. The homes here are well-kept, with small gardens. Ross Welford's house, known for its unique blue door, stands at the end of the street."
+appearance = "Residential street with charming houses and gardens."
+exits = [
+    { noun = "main avenue", to = "main avenue" },
+    { noun = "Ross Welford's house", to = "Ross Welford's house" },
+]

@@ -1,0 +1,7 @@
+names = ["Glowing Chamber"]
+tags = ["cave"]
+description = "A chamber illuminated by glowing minerals embedded in the walls. The soft blue light casts a magical glow, revealing sparkling gemstones and intricate rock formations."
+appearance = "Chamber with glowing minerals and gems."
+exits = [
+    { noun = "subterranean lake", to = "Subterranean Lake" },
+]

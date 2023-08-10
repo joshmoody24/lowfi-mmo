@@ -1,0 +1,10 @@
+name = "Storm Drain"
+
+[[clues]]
+summary = "The storm drain tunnels spread all throughout the town of Hubbleton."
+
+[[clues]]
+summary = "Several tunnels have signs from the Hubbleton police that indicate nearby motion sensors."
+
+[[clues]]
+summary = "The police never seem to respond to the motion sensors being tripped."

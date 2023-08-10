@@ -1,0 +1,8 @@
+names = ["gas station exterior"]
+tags = ["outside"]
+description = "A small gas station at the outskirts of town, the underwhelming final outpost before the wilderness. The exterior shows signs of neglect, with rusting pumps and faded advertisements. A solitary streetlight flickers as the sun dips, casting an eerie glow. The windows are grimy, and there's an air of nostalgia pervading the area."
+appearance = "Exterior of run-down gas station at the edge of rural town."
+exits = [
+    { noun = "center street", to = "center street" },
+    { preposition = "inside", to = "gas station interior" },
+]

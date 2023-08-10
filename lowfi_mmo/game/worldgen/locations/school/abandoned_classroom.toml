@@ -1,0 +1,7 @@
+names = ["Abandoned Classroom"]
+tags = ["school", "abandoned"]
+description = "A classroom frozen in time, filled with ruined desks, chairs, and educational materials. The blackboard still bears faint writing, a lesson interrupted and never resumed. The air is thick with dust, and every surface is tainted with asbestos."
+appearance = "Ruined and asbestos-filled classroom."
+exits = [
+    { noun = "main hallway", to = "main hallway" },
+]

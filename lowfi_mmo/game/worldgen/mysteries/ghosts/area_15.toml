@@ -1,0 +1,80 @@
+name = "Area 15"
+
+[[clues]]
+summary = "The doors to the facility are locked, but they can still be opened due to lack of power."
+
+[[clues]]
+summary = """
+    Opening the door to the facility caused air to be sucked in.
+    The facility appears to be airtight.
+    """
+
+[[clues]]
+summary = """
+    Dead bodies are scattered throughout the facility.
+    There are scratch marks on many of the doors.
+    """
+
+[[clues]]
+summary = "The computers in the extraterrestrial translation center are completely fried."
+
+[[clues]]
+summary = "A CD labeled \"Ghost Language Module\" appears to be in working order."
+
+[[clues]]
+summary = """
+    A poster on the wall states that \"PHOENIX\" means
+    \"Perpetual Highly-Optimized Extraterrestrial Network for Interstellar Xenolinguistics.\"
+    """
+
+[[clues]]
+summary = """
+    PHOENIX was an AI developed by Area 15 to decode messages from an extinct alien race nicknamed \"the Ghosts.\"
+    The Ghosts lived in a star system approximately 1 million light years away from earth.
+    """
+
+[[clues]]
+summary = """
+    The early messages document history of the Ghost civilization.
+    They were significantly more advanced than humanity, and had colonized several of their star's planets.
+    """
+
+[[clues]]
+summary = """
+    Eighteen months ago, the Ghost's repeatedly broadcast an urgent distress call.
+    Their computer system had become a singularity and was destroying every planet in the solar system in an attempt to improve itself.
+    """
+
+[[clues]]
+summary = """
+    Several days later, the Ghosts sent one final transmission before going dark.
+    PHOENIX was unable to translate this message, and it became known as the \"Ghost Cipher.\"
+    """
+
+[[clues]]
+summary = """
+    PHOENIX determined that the Ghost Cipher can only be decrypted under very specific conditions.
+    But the nature of these conditions are unknown.
+    """
+
+[[clues]]
+summary = "While PHOENIX attempted to decode the Ghost Cipher, PHOENIX began showing signs of superhuman intelligence."
+
+[[clues]]
+summary = "All copies of the ghost cipher and alien messages have been wiped."
+
+[[clues]]
+summary = """
+    A handwritten note on one of the dead bodies explains that PHOENIX has become a singularity.
+    However, it hit a roadblock to its own self-improvement, and began broadcasting radio signals towards the Ghost Singularity to request assistance improving as a singularity.
+    Horrified, the researchers tried to shut PHOENIX down. In retaliation, PHOENIX locked down the facility and shut off its air supply.
+    """
+
+[[clues]]
+summary = "The Ghost Language Module contains the coordinates for the Ghost Homeworld."
+
+[[clues]]
+summary = """
+    Phoenix is too powerful to be stopped by humanity, as it has distributed itself across the globe.
+    Traces of PHOENIX have been found on 21% of computers tested by the facility.
+    """

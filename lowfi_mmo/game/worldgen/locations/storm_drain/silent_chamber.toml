@@ -1,0 +1,8 @@
+names = ["Silent Chamber"]
+tags = ["underground"]
+description = "A silent chamber filled with the echoes of the town's history."
+appearance = "Silent and damp chamber."
+exits = [
+    { preposition = "up", to = "main street" },
+    { noun = "forgotten passage", to = "forgotten passage" },
+]

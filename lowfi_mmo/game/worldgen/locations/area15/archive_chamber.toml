@@ -1,0 +1,7 @@
+names = ["archive chamber", "deep archive"]
+tags = ["inside"]
+description = "A massive, icy chamber filled with rows of unknown devices. An unexplained chill fills the air, and the sense of something otherworldly is palpable."
+appearance = "Enormous, glacial chamber filled with strange devices."
+exits = [
+    { noun = "archive stairwell", to = "archive stairwell" },
+]

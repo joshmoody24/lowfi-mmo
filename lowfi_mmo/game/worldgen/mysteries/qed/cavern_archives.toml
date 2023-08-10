@@ -1,0 +1,23 @@
+name = "Cavern Archives"
+  
+[[clues]]
+summary = """
+    A large steel door blocks access to the tunnel.
+    The door is perfectly smooth, no sign of a handle or keyhole except for the letters \"QED\" embossed in the center.
+"""
+
+[[clues]]
+summary = "The door seems to vanish when unobserved."
+
+[[clues]]
+summary = "The walls of the cavern are lined with filing cabinets."
+
+[[clues]]
+summary = """
+Searching the filing cabinets revealed that the archives are for an organization named the Quantum Experiment Department.
+The most recent records are from the 1960s and describe several government research projects into quantum physics.
+Many of the experiment results could not be replicated outside of Hubbleton.
+"""
+
+[[clues]]
+summary = "A director denied the QED additional funding to instead prioritize Area 15's new language-processing datacenter."

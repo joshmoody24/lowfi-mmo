@@ -1,0 +1,7 @@
+names = ["high school entrance"]
+tags = ["outside", "high school"]
+description = "The entrance of an old rural high school, worn by time but still standing proud. The architecture is rather out of date. You've had a lot of good times here. You smirk, remembering the \"beaver incident.\""
+appearance = "Exterior of a 1980s rural high school"
+exits = [
+    { noun = "center street", to = "center street" },
+]

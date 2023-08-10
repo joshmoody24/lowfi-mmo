@@ -1,0 +1,7 @@
+names = ["Factory Entrance"]
+tags = ["mountain", "factory"]
+description = "The entrance to the Exotic Matter Factory, a place long abandoned by its creators. The rusted gates creak ominously, and a sign warning of danger hangs askew. The faint smell of chemicals lingers in the air, a reminder of the extraordinary work that was once conducted here."
+appearance = "Rusted gates and warning signs at the entrance to an abandoned factory."
+exits = [
+    { noun = "reception area", to = "Reception Area" },
+]

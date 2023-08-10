@@ -1,0 +1,8 @@
+names = ["library exterior"]
+tags = ["outside"]
+description = "The serene front lawn of a quaint little library, adorned with well-tended flowerbeds and welcoming benches. A path leads to the entrance, inviting knowledge seekers of all ages. The building itself is charming, with large windows and a classic design. It stands as a beacon of wisdom and community, a place where minds expand and imaginations soar."
+appearance = "Small-town library"
+exits = [
+    { noun = "city center", to = "city center" },
+    { preposition = "inside", to = "library interior" },
+]

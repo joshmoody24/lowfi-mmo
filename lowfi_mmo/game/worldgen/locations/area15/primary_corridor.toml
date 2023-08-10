@@ -1,0 +1,9 @@
+names = ["primary corridor", "corridor"]
+tags = ["inside"]
+description = "A long, dimly lit corridor filled with unmarked doors. The air is heavy with silence, and the whole place feels like it's hiding something."
+appearance = "Long, dimly-lit corridor with numerous unmarked doors."
+exits = [
+    { noun = "Area 15 Entrance", to = "Area 15 Entrance" },
+    { preposition = "deeper", to = "archive stairwell" },
+    { noun = "extraterrestrial translation center", to = "translation center entrance" },
+]

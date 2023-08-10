@@ -1,0 +1,7 @@
+names = ["Fossil Chamber"]
+tags = ["cave"]
+description = "A chamber filled with ancient fossils embedded in the walls. The remnants of creatures from a bygone era tell a silent story of the earth's history."
+appearance = "Chamber with visible fossils in the cavern walls."
+exits = [
+    { noun = "hidden tunnel", to = "Hidden Tunnel" },
+]

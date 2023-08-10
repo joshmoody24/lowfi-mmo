@@ -1,0 +1,7 @@
+names = ["Narrow Passage"]
+tags = ["cave"]
+description = "A narrow passage that twists and turns, leading deeper into the cave. The walls close in, and you have to watch your step as you navigate through."
+appearance = "Narrow and winding cave passage."
+exits = [
+    { noun = "fossil chamber", to = "Fossil Chamber" },
+]

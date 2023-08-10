@@ -1,0 +1,7 @@
+names = ["Twisted Corridor"]
+tags = ["underground"]
+description = "A twisting corridor filled with echoes."
+appearance = "Damp, twisting corridor."
+exits = [
+    { noun = "drain junction", to = "drain junction" },
+]

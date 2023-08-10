@@ -1,0 +1,10 @@
+names = ["Big Tree"]
+tags = ["outside"]
+description = "A unsually large tree looming over a particularly dense region of Hubbleton Forest."
+appearance = "Large tree in thick forest"
+exits = [
+    { preposition = "north", to = "hubbleton forest entrance" },
+    { preposition = "south", to = "Little Waterfall" }, # correct path
+    { preposition = "east", to = "hubbleton forest entrance" },
+    { preposition = "west", to = "little waterfall"}
+]

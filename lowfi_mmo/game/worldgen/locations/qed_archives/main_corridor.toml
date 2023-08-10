@@ -1,0 +1,8 @@
+names = ["Main Corridor"]
+tags = ["archive"]
+description = "The main corridor is lined with doors to various research labs, offices, and storage rooms. The place looks as though it was abandoned in a hurry. Papers are scattered, and the air is thick with the musky smell of old books and chemicals."
+appearance = "Long corridor with many doors leading to different rooms."
+exits = [
+    { noun = "quantum lab", to = "Quantum Lab" },
+    { noun = "archive room", to = "Archive Room" },
+]

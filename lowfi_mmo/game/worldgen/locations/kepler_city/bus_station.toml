@@ -1,0 +1,7 @@
+names = ["bus station", "Kepler City bus station"]
+tags = ["outside"]
+description = "The Kepler City Bus Station serves as a hub for travelers. Buses arrive and depart for various destinations, including Hubbleton. The station is filled with a mix of locals and tourists, all with their unique stories."
+appearance = "Busy bus station with ticket booths, waiting areas, and buses coming and going."
+exits = [
+    { noun = "city entrance", to = "city entrance" },
+]

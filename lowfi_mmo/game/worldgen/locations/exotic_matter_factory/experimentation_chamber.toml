@@ -1,0 +1,7 @@
+names = ["Experimentation Chamber"]
+tags = ["factory", "chamber"]
+description = "A sealed chamber where experiments with exotic matter were conducted. The room is filled with specialized equipment, containment units, and the faint aura of otherworldly energy. Though abandoned, the chamber still exudes a sense of potential and danger."
+appearance = "Chamber with specialized equipment for exotic matter experiments."
+exits = [
+    { noun = "control room", to = "control room" },
+]

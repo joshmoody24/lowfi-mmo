@@ -1,0 +1,9 @@
+names = ["main street", "main st"]
+tags = ["outside"]
+description = "A street that runs east/west through the middle of Hubbleton. It is primarily a commercial area, often alive with the vibrant energy of business and pleasure. Many small shops display their wares in the windows."
+appearance = "Main street in suburban town. Commercial area."
+exits = [
+    { noun = "city center", to = "city center" },
+    { noun = "pawn shop", to = "pawn shop entrance" },
+    { noun = "canyon road", to = "canyon road" },
+]

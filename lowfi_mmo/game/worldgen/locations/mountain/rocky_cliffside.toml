@@ -1,0 +1,8 @@
+names = ["rocky cliffside", "cliffside"]
+tags = ["outside", "hiking trail"]
+description = "A narrow, steep part of the trail facing a sharp drop-off. The peak isn't far off, but it's a treacherous journey. Loose gravel and shifting stones make every step a gamble."
+appearance = "Narrow hiking trail on top of a steep cliff with a precarious drop-off and breathtaking valley views."
+exits = [
+    { preposition = "up", noun = "the mountain", to =  "mountain peak" },
+    { preposition = "down", noun = "the mountain", to = "mountain meadow" },
+]

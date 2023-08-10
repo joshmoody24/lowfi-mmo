@@ -1,0 +1,7 @@
+names = ["Hidden Tunnel"]
+tags = ["cave"]
+description = "A hidden tunnel that leads to unknown parts of the cave. It's dark and foreboding, and you can't help but feel a sense of mystery and adventure as you venture forward."
+appearance = "Dark and hidden tunnel in the cave."
+exits = [
+    { noun = "mystical chamber", to = "Mystical Chamber" },
+]

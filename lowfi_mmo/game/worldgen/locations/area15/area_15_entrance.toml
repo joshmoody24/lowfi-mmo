@@ -1,0 +1,7 @@
+names = ["Area 15 Entrance", "entrance"]
+tags = ["outside"]
+description = "An unmarked entrance hidden in a remote location. There's a sense of secrecy and abandonment. The heavy metal doors hint at something concealed within."
+appearance = "Isolated, concealed entrance with heavy metal doors."
+exits = [
+    { noun = "primary corridor", to = "primary corridor" },
+]

@@ -1,0 +1,10 @@
+names = ["Little Waterfall", "Waterfall"]
+tags = ["outside"]
+description = "A small stream running through the dirt, carving a miniature waterfall only a few inches tall."
+appearance = "Small stream carving a little trench through a thick forest, with a small waterfall."
+exits = [
+    { preposition = "north", to = "hubbleton forest entrance" },
+    { preposition = "south", to = "hubbleton forest entrance"},
+    { preposition = "east", to = "Rotten Log" }, # correct path
+    { preposition = "west", to = "muddy pond" }
+]

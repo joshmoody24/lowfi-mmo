@@ -1,0 +1,7 @@
+names = ["Waterfall Alcove"]
+tags = ["cave"]
+description = "An alcove with a small waterfall feeding into the lake. The sound of water cascading over rocks fills the space, and the air is fresh and cool."
+appearance = "Alcove with a small waterfall in the cave."
+exits = [
+    { noun = "subterranean lake", to = "subterranean lake" },
+]

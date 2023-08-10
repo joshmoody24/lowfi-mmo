@@ -74,9 +74,20 @@ class Name(models.Model):
         ordering = ['entity', 'name']
         unique_together = [["world", "slug"]]
 
+class Mystery(models.Model):
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    connections = models.ManyToManyField("Mystery")
+
+class Clue(models.Model):
+    mystery = models.ForeignKey(Mystery, on_delete=models.CASCADE)
+    summary = models.TextField()
+
 class Location(Entity):
     LOCATION_CATEGORIES = (("house", "house"), ("store", "store"), ("secret", "secret"), ("other", "other"))
     category = models.CharField(max_length=20, choices=LOCATION_CATEGORIES, blank=True)
+    arrive_clue = models.ForeignKey(Clue, null=True, blank=True, on_delete=models.SET_NULL, related_name="locations_arrive")
+    search_clue = models.ForeignKey(Clue, null=True, blank=True, on_delete=models.SET_NULL, related_name="locations_search")
 
 class PathQuerySet(models.QuerySet):
     def fuzzy_match_noun(self, noun):
@@ -87,7 +98,6 @@ class PathQuerySet(models.QuerySet):
     def fuzzy_match_destinations(self, noun):
         return self.filter(end__names__slug__iexact=slugify_spaceless(noun))
 
-
 class Path(models.Model):
     preposition = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
     noun = models.CharField(max_length=20, blank=True, validators=[alphanumeric_validator])
@@ -96,6 +106,7 @@ class Path(models.Model):
     travel_seconds = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0.0)], default=10.0)
     noun_slug = models.SlugField(max_length=20) # for spaceless string matching
     hidden = models.BooleanField(default=False)
+    discoverable = models.BooleanField(default=True)
     objects = PathQuerySet.as_manager()
     def save(self, *args, **kwargs):
         self.noun_slug = slugify_spaceless(self.noun)
@@ -123,6 +134,10 @@ class Character(Entity):
     def carrying_weight(self):
         return self.item_set.aggregate(Sum("kg"))
     
+class ClueKnowledge(models.Model):
+    clue = models.ForeignKey(Clue, on_delete=models.CASCADE)
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    
 class CharacterLog(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     command = models.CharField(max_length=200)
@@ -139,22 +154,33 @@ class CharacterLog(models.Model):
     def __str__(self):
         return self.message
 
-class Block(Entity):
-    paths = models.ManyToManyField(Path)
-    active = models.BooleanField(default=True)
-
 class Item(Entity):
     kg = models.FloatField(default=1.0, validators=[MinValueValidator(0.0)])
     value = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
     carrier = models.ForeignKey(Character, null=True, blank=True, on_delete=models.RESTRICT)
     position = models.ForeignKey(Location, null=True, blank=True, on_delete=models.RESTRICT)
+
+    # inspectable
+    inspect_clue = models.ForeignKey(Clue, null=True, blank=True, on_delete=models.SET_NULL, related_name="inspectable_from")
+
+    # readable
+    text = models.TextField(blank=True)
+    text_clue = models.ForeignKey(Clue, null=True, blank=True, on_delete=models.SET_NULL, related_name="readable_from")
+
+    def is_readable(self):
+        return hasattr(self, 'text')
+
+    def is_key(self):
+        return hasattr(self, 'unlocks')
+    
     def clean(self):
         if(self.carrier is None and self.position is None):
             raise ValidationError("Item carrier and location cannot both be null.")
         if(self.carrier is not None and self.position is not None):
             raise ValidationError("Item cannot have a carrier and location at the same time.")
         
-class Key(Item):
-    unlocks = models.ForeignKey(Block, on_delete=models.CASCADE)
+class Block(Entity):
+    paths = models.ManyToManyField(Path)
+    active = models.BooleanField(default=True)
+    unlocked_by = models.ForeignKey(Item, on_delete=models.CASCADE)
     unlock_description = models.TextField(blank=True)
-        

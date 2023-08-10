@@ -1,0 +1,7 @@
+names = ["Reception Area"]
+tags = ["factory"]
+description = "The reception area is filled with dust and decay, its once-bustling atmosphere replaced by the silence of abandonment. Broken chairs, scattered papers, and an unattended reception desk tell a story of hurried departure."
+appearance = "Dusty and abandoned reception area."
+exits = [
+    { noun = "main production floor", to = "Main Production Floor" },
+]

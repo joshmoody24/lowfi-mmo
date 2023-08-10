@@ -1,0 +1,8 @@
+names = ["ruined mansion entrance", "ruined mansion"]
+tags = ["outside", "ruined mansion"]
+description = "An eerie entrance to a crumbling mansion, surrounded by wild, overgrown vegetation. The large wooden doors hang askew, creaking in the wind, inviting or warning those who dare to enter. Broken windows reveal glimpses of decay inside, and the rotting wood exudes a musty, forgotten smell."
+appearance = "Rural mansion in ruins with broken windows and a rotting wooden porch"
+exits = [
+    { preposition = "inside", to = "ruined mansion living room" },
+    { preposition = "to", noun = "forest entrance", to = "Hubbleton Forest" }
+]

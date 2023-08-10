@@ -1,0 +1,7 @@
+names = ["Storage Area"]
+tags = ["factory"]
+description = "A storage area filled with crates, barrels, and containers. Some are labeled with warnings and chemical symbols. The room holds the raw materials that were once used to produce exotic matter, now left to sit in forgotten silence."
+appearance = "Storage room with crates and containers of raw materials."
+exits = [
+    { noun = "control room", to = "control room" },
+]

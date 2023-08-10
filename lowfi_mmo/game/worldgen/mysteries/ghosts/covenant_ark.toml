@@ -1,0 +1,10 @@
+name = "Covenant Ark"
+
+[[clues]]
+summary = """
+    The government hypothesized that the Ghost Cipher could only be decoded in deep space.
+    Area 15 sent a copy to a space probe named \"Covenant Ark,\" but the translation attempt was unsuccessful.
+    """
+
+[[clues]]
+summary = "The Ghost Cipher can be obtained via the Wormhole Telegraph."

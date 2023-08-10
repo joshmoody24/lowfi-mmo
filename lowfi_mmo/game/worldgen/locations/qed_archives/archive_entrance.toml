@@ -1,0 +1,7 @@
+names = ["Archive Entrance"]
+tags = ["mountain", "archive"]
+description = "A hidden entrance guarded by advanced security measures leads to the Quantum Experiment Department Archive. The logo of a long-abandoned research organization is faintly visible above the door. The air buzzes with latent energy, hinting at the wonders and dangers within."
+appearance = "Hidden entrance to a high-tech archive."
+exits = [
+    { noun = "security checkpoint", to = "Security Checkpoint" },
+]

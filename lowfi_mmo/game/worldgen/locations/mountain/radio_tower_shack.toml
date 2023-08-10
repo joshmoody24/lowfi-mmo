@@ -1,0 +1,6 @@
+names = ["radio tower shack", "shack", "radio shack"]
+description = "A small shack adjacent to the radio tower. Its wooden frame is worn and weathered. A collection of cables lead inside from the radio tower, connecting to a small black box that looks like it would have been considered high tech in the seventies. Light peers through dusty windows, casting an eerie glow on the almost-empty room."
+appearance = "Small mountaintop wooden shack with light peering through dusty windows. Black computer box in corner with several cables leading to it."
+exits = [
+    { preposition = "outside", to = "radio tower" },
+]

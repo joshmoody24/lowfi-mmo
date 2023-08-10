@@ -1,0 +1,7 @@
+names = ["Cavern Entrance"]
+tags = ["mountain", "cave"]
+description = "The mouth of Turtle Cavern opens before you, inviting you into its dark depths. The cavern gets its name from the turtle-like shape of the rocks near the entrance. A slight chill emanates from within, and the sound of dripping water echoes through the air."
+appearance = "Mountain cave entrance with turtle-shaped rocks."
+exits = [
+    { noun = "cavern tunnel", to = "Cavern Tunnel" },
+]

@@ -1,0 +1,8 @@
+names = ["Control Room"]
+tags = ["factory"]
+description = "The control room overlooks the main production floor. Consoles and monitors are covered in dust, and the once-glowing screens are now dark. The room is filled with the ghosts of activity, a technological tomb frozen in time."
+appearance = "Dusty control room overlooking the production floor."
+exits = [
+    { noun = "storage area", to = "storage area" },
+    { noun = "experimentation chamber", to = "experimentation chamber" }
+]

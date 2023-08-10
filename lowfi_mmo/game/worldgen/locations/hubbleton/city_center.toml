@@ -1,0 +1,9 @@
+names = ["city center"]
+tags = ["outside"]
+description = "The intersection of center and main street. The beating heart of Hubbleton. Well, that might be a bit of an exaggeration. More like the barely-beating heart of an old man who hasn't gotten off the couch for a decade."
+appearance = "City center intersection. Suburban, crosswalk, commercial area."
+exits = [
+    { noun = "center street", to = "center street" },
+    { noun = "main street", to = "main street" },
+    { noun = "library", to = "library exterior" }
+]

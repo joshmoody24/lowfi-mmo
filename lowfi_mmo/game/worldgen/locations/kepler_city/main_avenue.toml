@@ -1,0 +1,8 @@
+names = ["main avenue", "main ave"]
+tags = ["outside"]
+description = "The vibrant heart of Kepler City, Main Avenue is lined with shops, cafes, and street vendors. People bustle about, and the scent of food, coffee, and city air mingles together."
+appearance = "Wide city avenue with shops, cafes, and crowds of people."
+exits = [
+    { noun = "city entrance", to = "city entrance" },
+    { noun = "Ross Welford's street", to = "Welford street" },
+]

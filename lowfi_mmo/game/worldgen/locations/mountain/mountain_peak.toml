@@ -1,0 +1,8 @@
+names = ["mountain peak", "peak", "Hubbleton peak"]
+tags = ["outside", "hiking trail"]
+description = "The top of Hubbleton mountain. It is the triumphant culmination of the trail, offering panoramic views that stretch to the horizon in every direction. Standing at the top, the world seems to unfold beneath you, with valleys, rivers, and distant towns coming into view. The air is crisp and clean, filled with the fragrance of wildflowers that somehow find a way to grow at this altitude."
+appearance = "Mountain peak with trail leading down, scattered wildflowers, and unparalleled panoramic views."
+exits = [
+    { preposition = "down", noun = "the mountain", to = "rocky cliffside"},
+    { noun = "radio tower", to = "radio tower" },
+]

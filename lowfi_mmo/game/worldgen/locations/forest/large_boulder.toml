@@ -1,0 +1,10 @@
+names = ["Large Boulder"]
+tags = ["outside"]
+description = "A large boulder resting in the middle of a thicket. It's large enough that it would be difficult to climb to the top. It looks vaguely like a face, keeping watch over this section of the forest."
+appearance = "large boulder in middle of thick forest"
+exits = [
+    { preposition = "north", to = "Large Boulder", description = "After a long walk, you come across a very familiar-looking boulder. You haven't changed direction this whole time, or so you thought. Have you been walking in circles?" },
+    { preposition = "south", to = "hubbleton forest entrance" },
+    { preposition = "east", to = "hubbleton forest entrance" },
+    { preposition = "west", to = "big tree"}
+]

@@ -1,0 +1,8 @@
+names = ["Apartment Drainage"]
+tags = ["underground"]
+description = "The entrance to the mysterious storm drain system of Hubbleton. Pipes line the walls in every direction."
+appearance = "Dark and damp entryway to a city sewer system, manhole overhead, pipes along walls.."
+exits = [
+    { preposition = "up", to = "apartment complex" },
+    { noun = "twisted corridor", to = "twisted corridor" },
+]

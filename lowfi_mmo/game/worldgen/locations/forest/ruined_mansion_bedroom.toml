@@ -1,0 +1,6 @@
+names = ["ruined mansion bedroom"]
+tags = ["inside", "ruined mansion"]
+description = "A mansion bedroom with a king-size bed in the corner of the room. There is a dusty chest of drawers beside the wall"
+exits = [
+    { noun = "living room", to = "ruined mansion living room" },
+]

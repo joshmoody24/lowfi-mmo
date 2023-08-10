@@ -1,0 +1,8 @@
+names = ["apartment complex", "apartments"]
+tags = ["outside"]
+description = "A run-down apartment complex situated in a less glamorous part of town. People move in and out frequently, leaving behind echoes of their stories. The buildings show signs of wear, with peeling paint and creaking stairs. A sense of transience hangs in the air, and the people you see seem burdened with the weight of everyday struggles. You, however, have always found it to be a pretty chill place to live."
+appearance = "Run-down suburban apartment complex"
+exits = [
+    {  noun = "center street", to = "center street" },
+    { noun = "main street", to = "main street" },
+]

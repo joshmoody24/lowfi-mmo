@@ -1,0 +1,13 @@
+names = ["Curiosity Corner", "pawn shop"]
+tags = ["inside"]
+description = "A dusty old pawn shop filled with strange oddities. Shelves are crammed with everything from antiques to trinkets, and the air is heavy with the scent of history. The shopkeeper's eyes twinkle with secrets. Every item has a story, and you can hardly wait to see it all. The shop feels like a treasure trove, a collection of the quirkiest relics of humanity, waiting to be explored."
+appearance = "Dusty old fashioned pawn shop interior"
+exits = [
+    { preposition = "outside", to = "pawn shop entrance" },
+]
+
+[[items]]
+names = ["bronze key"]
+tags = ["hidden"]
+description = "An old-fashioned bronze key with a few scratches and dents."
+appearance = "An old-fashioned bronze key with scratches and dents"

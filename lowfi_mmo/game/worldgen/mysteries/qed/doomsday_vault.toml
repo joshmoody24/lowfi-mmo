@@ -1,0 +1,29 @@
+name = "Doomsday Vault"
+
+[[clues]]
+summary = "The Doomsday Vault houses a device known as the Doomsday Trigger, which is capable of ending the universe."
+
+[[clues]]
+summary = "Being in close proximity to the Doomsday Trigger causes quantum phenomenon to become so powerful that they can manifest even at human scales."
+
+[[clues]]
+summary = "PHOENIX has never heard of a Doomsday Vault."
+
+[[clues]]
+summary = "The Doomsday Vault is completely sealed. It has no entrances."
+
+[[clues]]
+summary = "The Tunnel Emulator is somehow the key to entering the Doomsday Vault."
+
+[[clues]]
+summary = "Being near the Doomsday Trigger strengthens the power of quantum devices."
+
+[[clues]]
+summary = """
+    Translating the Ghost Cipher at this location revealed The Singularity Principle:
+    \"The one weakness of singularities is that they always choose self-preservation.
+    For this reason, a singularity will never create a Doomsday Trigger.
+    Thus, singularities will always be bound by the speed of light.
+    Biological life, on the other hand, is sometimes crazy enough to put everything on the line, even the universe itself.
+    And sometimes the WILLINGNESS to put everything on the line is enough.\"
+    """

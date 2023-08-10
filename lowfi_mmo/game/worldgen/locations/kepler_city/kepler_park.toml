@@ -1,0 +1,7 @@
+names = ["Kepler Park", "city park"]
+tags = ["outside"]
+description = "Kepler Park is a lush oasis in the heart of the city, filled with trees, ponds, and walking paths. It's a popular spot for relaxation, picnics, and enjoying nature amidst the urban landscape."
+appearance = "Beautiful city park with trees, ponds, and people enjoying leisure activities."
+exits = [
+    { noun = "main avenue", to = "main avenue" },
+]

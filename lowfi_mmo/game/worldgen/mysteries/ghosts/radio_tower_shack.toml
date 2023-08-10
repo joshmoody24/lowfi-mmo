@@ -1,0 +1,13 @@
+name = "Radio Tower Shack"
+
+[[clues]]
+summary = "Cables from the radio tower feed into a black box in a nearby shack."
+
+[[clues]]
+summary = "The black box has a sticker on it that says, \"Property of HHS Astronomy Club\""
+
+[[clues]]
+summary = "The HHS Astronomy Club was disbanded in the 1980s, almost thirty years ago."
+
+[[clues]]
+summary = "According to Raul, the president of the HHS Astronomy Club was named Ross Welford."

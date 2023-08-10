@@ -1,0 +1,10 @@
+names = ["Bramble Patch"]
+tags = ["outside"]
+description = "The trees are a bit less dense here, giving way to thick clusters of thorny bushes. It's difficult to walk without acculumating dozens of tiny scratches."
+appearance = "Bramble patch in middle of thick forest."
+exits = [
+    { preposition = "north", to = "muddy pond" },
+    { preposition = "south", to = "hubbleton forest entrance" },
+    { preposition = "east", to = "small ravine" },
+    { preposition = "west", to = "dark forest" } # correct path
+]
