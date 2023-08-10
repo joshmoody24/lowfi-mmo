@@ -28,7 +28,7 @@ name = "Radio Tower Shack"
 name = "Ross Welford"
 
     [[mysteries.clues]]
-    description = "Ross was next-door neighbors with Raul growing up, but Raul hasn't seen him in more than fifteen years."
+    description = "Ross and Raul would often explore the storm drains together, just for fun."
     
     [[mysteries.clues]]
     description = """
@@ -52,7 +52,10 @@ name = "Ross Welford"
         """
     
     [[mysteries.clues]]
-    description = "Ross has a copy of the alien transmissions saved to a USB drive that he hasn't touched in years."
+    description = """
+        Ross has a copy of the alien transmissions saved to a USB drive that he hasn't touched in years.
+        He has a deep distrust of technology, and warns against putting the USB drive in a computer with an internet connection.
+        """
 
 
 [[mysteries]]

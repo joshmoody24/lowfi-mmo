@@ -35,7 +35,7 @@ name = "Cabin Basement"
     description = "The walls of the basement are covered in deep scratches, some of which form the phrase \"CLOSE EYES\""
    
     [[mysteries.clues]]
-    description = "A desk contained several decayed documents, all of which have the letters \"QED\" in an ornate font in the heading."
+    description = "A desk contained several decayed documents, all of which have the letters \"QED\" in an ornate logotype."
   
     [[mysteries.clues]]
     description = "Memo 3041 is unreadable except for the phrases \"air metal\" and \"observation-dependent density\""
@@ -50,7 +50,10 @@ name = "Cabin Basement"
 name = "Cavern Archives"
   
     [[mysteries.clues]]
-    description = "A large steel door blocks access to the tunnel.\nThe door is perfectly smooth, no sign of a handle or keyhole."
+    description = """
+        A large steel door blocks access to the tunnel.
+        The door is perfectly smooth, no sign of a handle or keyhole except for the letters \"QED\" embossed in the center.
+    """
     
     [[mysteries.clues]]
     description = "The door seems to vanish when unobserved."
