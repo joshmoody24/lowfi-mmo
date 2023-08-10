@@ -56,7 +56,7 @@ appearance = "Main street in suburban town. Commercial area."
 exits = [
     { noun = "city center", to = "city center" },
     { noun = "pawn shop", to = "pawn shop entrance" },
-    { noun = "boonies", to = "the boonies" },
+    { noun = "canyon road", to = "canyon road" },
 ]
 
 [[locations]]
@@ -104,11 +104,29 @@ appearance = "Dusty old fashioned pawn shop interior"
 exits = [
     { preposition = "outside", to = "pawn shop entrance" },
 ]
+    [[locations.keys]]
+    names = ["bronze key"]
+    tags = ["hidden"]
+    description = "An old-fashioned bronze key with a few scratches and dents."
+    appearance = "An old-fashioned bronze key with scratches and dents"
+    unlocks = "trapdoor"
+    unlock_description = "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click."
 
-[[keys]]
-names = ["bronze key"]
-description = "An old-fashioned bronze key with a few scratches and dents."
-appearance = "An old-fashioned bronze key with scratches and dents"
-position = "pawn shop"
-unlocks = "trapdoor"
-unlock_description = "The key is a bit dented, but after some fiddling, it slides into the keyhole. The padlock pops open with a satisfying click."
+[[locations]]
+names = ["canyon road"]
+tags = ["outside"]
+description = "A long, winding path that cuts through the heart of Hubbleton's breathtaking canyon. Tall rock walls tower on either side, often adorned with rugged vegetation clinging to crevices. The road is narrow and often appears forgotten, providing a serene drive or walk with the sound of a distant river echoing off the rocks. Wild animals are occasionally spotted darting across the road or peering down from high ledges."
+appearance = "Long, winding, single-lane canyon road surrounded by tall rock walls and sporadic greenery."
+exits = [
+    { noun = "center street", to = "center street" },
+    { noun = "mountain trailhead", to = "Hubbleton Peak Trailhead" },
+    { noun = "forest entrance", to = "hubbleton forest entrance"}
+]
+
+# [[blocks]]
+# names = ["long road"]
+# from = "center street"
+# to = "canyon road"
+# one_way = false
+# description = "Reaching the canyon from here would take days on foot. You need a different way to get there."
+# appearance = "Long road leading into a distant canyon."

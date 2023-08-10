@@ -1,21 +1,11 @@
 [[locations]]
-names = ["canyon road"]
-tags = ["outside"]
-description = "A long, winding path that cuts through the heart of Hubbleton's breathtaking canyon. Tall rock walls tower on either side, often adorned with rugged vegetation clinging to crevices. The road is narrow and often appears forgotten, providing a serene drive or walk with the sound of a distant river echoing off the rocks. Wild animals are occasionally spotted darting across the road or peering down from high ledges."
-appearance = "Long, winding, single-lane canyon road surrounded by tall rock walls and sporadic greenery."
-exits = [
-    { noun = "center street", to = "center street" },
-    { noun = "trailhead", to = "Hubbleton Peak Trailhead" },
-]
-
-[[locations]]
 names = ["Hubbleton Peak Trailhead", "trailhead"]
 tags = ["outside", "hiking trail"]
 description = "The starting point of a scenic mountain hiking trail. The trailhead itself is adorned with an old wooden sign indicating the distance to the peak, along with worn maps and notices from fellow hikers. The scent of pine fills the air, and the path ahead invites you with a mix of dirt, rocks, and the sounds of nature."
 appearance = "Mountain hiking trailhead with informational signs, surrounded by dense forest."
 exits = [
     { noun = "canyon road", to = "canyon road" },
-    { preposition = "up", noun = "the mountain", to = "mountain meadow"}
+    { preposition = "up", noun = "the trail", to = "mountain meadow"}
 ]
 
 [[locations]]
@@ -24,8 +14,8 @@ tags = ["outside", "hiking trail"]
 description = "A small clearing several miles beyond the trailhead. The meadow is a rich tapestry of colorful wildflowers, waving gently in the mountain breeze. Surrounded by towering trees, it's a perfect spot to rest and take in the natural splendor. It is so beautiful, in fact, that you feel a strong desire to reject humanity, cover yourself in pine needles, and live in the forest like some sort of prickly bigfoot child."
 appearance = "Mountain trail meadow filled with colorful wildflowers and surrounded by tall trees."
 exits = [
-    { preposition = "farther", noun = "up the trail", to = "rocky cliffside" },
-    { noun = "trailhead", to = "trailhead" },
+    { preposition = "up", noun = "the trail", to = "rocky cliffside" },
+    { noun = "down", to = "the trail" },
 ]
 
 [[locations]]
@@ -34,8 +24,8 @@ tags = ["outside", "hiking trail"]
 description = "A narrow, steep part of the trail facing a sharp drop-off. The peak isn't far off, but it's a treacherous journey. Loose gravel and shifting stones make every step a gamble."
 appearance = "Narrow hiking trail on top of a steep cliff with a precarious drop-off and breathtaking valley views."
 exits = [
-    { preposition = "farther", noun = "", to =  "mountain peak" },
-    { noun = "mountain meadow", to = "mountain meadow" },
+    { preposition = "up", noun = "the mountain", to =  "mountain peak" },
+    { noun = "down", to = "the mountain" },
 ]
 
 [[locations]]
@@ -65,11 +55,3 @@ appearance = "Small mountaintop wooden shack with light peering through dusty wi
 exits = [
     { preposition = "outside", to = "radio tower" },
 ]
-
-[[blocks]]
-names = ["long road"]
-from = "center street"
-to = "canyon road"
-one_way = false
-description = "Reaching the canyon from here would take days on foot. You need a different way to get there."
-appearance = "Long road leading into a distant canyon."

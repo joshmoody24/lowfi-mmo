@@ -4,6 +4,8 @@ from django.db import IntegrityError
 
 def create_locations(world, data):
     paths = []
+    keys = []
+
     for location_data in data["locations"]:
         location = models.Location.objects.create(world=world, appearance=location_data['appearance'], description=location_data['description'])
         add_names_and_tags(location, location_data)
@@ -11,7 +13,18 @@ def create_locations(world, data):
             raise Exception(f"Location \"{location_data['names'][0]}\" must have at least one exit path")
         for loc_exit in location_data['exits']:
             paths.append({'start_obj': location, 'exit': loc_exit})
-    
+        for key_data in location_data.get("blocks", []):
+            keys.append((location, key_data))
+        for item_data in location_data.get("items", []):
+            item = models.Item.objects.create(world=world, description=item_data['description'], appearance=item_data['appearance'], position=location)
+            add_names_and_tags(item, item_data)
+
+    for position, key_data in keys:
+        block = models.Block.objects.get(world=world, names__name=key_data['unlocks'])
+        position = models.Location.objects.get(world=world, names__name=key_data['position'])
+        key = models.Key.objects.create(world=world, description=key_data['description'], appearance=key_data['appearance'], unlocks=block, unlock_description=key_data['unlock_description'], position=position)
+        add_names_and_tags(key, key_data)
+
     for path in paths:
         start = path['start_obj']
         try:
@@ -21,9 +34,8 @@ def create_locations(world, data):
         preposition = path['exit'].get('preposition', 'to')
         noun = path['exit'].get('noun', '')
         if not preposition and not noun: raise Exception("Path must have a preposition or a noun")
-        if(start == end): raise Exception("Path cannot have same position for both start and end")
         try:
-            models.Path.objects.create(preposition=preposition, noun=noun, start=start, end=end) # TODO: optional travel_seconds
+            models.Path.objects.create(preposition=preposition, noun=noun, start=start, end=end, hidden=path.get('hidden', False)) # TODO: optional travel_seconds
         except IntegrityError:
             raise IntegrityError(f"{preposition if noun else '<no preposition>'}-{noun if noun else '<no noun>'} already exists for location {path['exit']['name']}")
 
@@ -38,12 +50,6 @@ def create_locations(world, data):
         if(blocked_paths.count() > 2): raise Exception(f"Block \"{block}\" is blocking too many paths: " + ", ".join([str(path) + " (" + str(path.start) + " -> " + str(path.end) + ")" for path in blocked_paths])) # possibly temporary
         for path in blocked_paths:
             block.paths.add(path)
-
-    for key_data in data["keys"]:
-        block = models.Block.objects.get(world=world, names__name=key_data['unlocks'])
-        position = models.Location.objects.get(world=world, names__name=key_data['position'])
-        key = models.Key.objects.create(world=world, description=key_data['description'], appearance=key_data['appearance'], unlocks=block, unlock_description=key_data['unlock_description'], position=position)
-        add_names_and_tags(key, key_data)
 
 def add_names_and_tags(entity, data):
     if not data.get('names', False):

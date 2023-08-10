@@ -39,7 +39,7 @@ class EntityQuerySet(models.QuerySet):
     def in_world(self, world):
         return self.filter(world=world)
     def at_location(self, location):
-        return self.filter(location=location)
+        return self.filter(position=location)
     def fuzzy_match(self, query):
         return self.filter(names__slug__iexact=slugify_spaceless(query))
 
@@ -110,14 +110,14 @@ class Path(models.Model):
     def __str__(self):
         return f"{self.preposition}{' ' + self.noun if self.noun else ''}"
     class Meta:
-        unique_together = [["start", "end"], ["start", "preposition", "noun"]]
+        unique_together = [["start", "end", "preposition"], ["start", "preposition", "noun"]]
 
 class Character(Entity):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     personality = models.TextField(max_length=200)
     carry_limit = models.PositiveIntegerField(default=10)
     position = models.ForeignKey(Location, on_delete=models.RESTRICT)
-    previous_position = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, related_name="previous_positionset")
+    path_taken = models.ForeignKey(Path, null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     @property
     def carrying_weight(self):
@@ -137,7 +137,7 @@ class CharacterLog(models.Model):
             return ""
         else: return ""
     def __str__(self):
-        return self.result
+        return self.message
 
 class Block(Entity):
     paths = models.ManyToManyField(Path)

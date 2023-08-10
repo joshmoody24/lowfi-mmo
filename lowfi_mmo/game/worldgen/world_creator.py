@@ -17,7 +17,10 @@ def compile_world_data(folder_path):
         if(file.endswith('.toml')):
             file_path = os.path.join(folder_path, file)
             with open(file_path, 'rb') as file:
-                file_data = tomllib.load(file)
+                try:
+                    file_data = tomllib.load(file)
+                except Exception as e:
+                    raise Exception(f"Error compiling toml in file: {file_path}: {e}")
                 merge_lists(world_data, file_data)
     return world_data
 

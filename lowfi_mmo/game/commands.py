@@ -12,7 +12,7 @@ class Command:
 
 COMMANDS = [
     Command('look', r"^(?:look|l)$", "", "Examine your surroundings"),
-    Command('go', r"^(?:go|g)(?: (back|to|through|inside|outside))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
+    Command('go', r"^(?:go|g)(?: (back|to|through|inside|outside|further|north|south|east|west|up|farther|down))?(?: ([a-zA-Z\ ]*))?$", "[position]", "Follow a path to a new location"),
     Command('take', r"^(?:take|t) ([a-zA-Z\ ]*)$", "[item]", "Pick up a nearby item"),
     Command('use', r"^^(?:use|u) \"?([a-zA-Z\ ]*)\"? on \"?([a-zA-Z\ ]*)\"?$", "[item] on [entity]", "Use an item on something"),
 ]

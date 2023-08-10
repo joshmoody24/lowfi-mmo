@@ -21,22 +21,27 @@ def move(character, preposition, noun) -> Result: # todo: make this a traveler
     if not preposition and not noun:
         return Result.fail("Please specify where to go. Use <code>look</code> for nearby locations.")
 
-    path: models.Path | None
+    path: models.Path | None = None
     
     nearby_paths: models.PathQuerySet = models.Path.objects.filter(start=character.position)
     if(preposition and preposition.startswith('back') and not noun and character.previous_position):
+        print("if")
         path = nearby_paths.filter(end=character.previous_position).first()
     elif noun and preposition:
+        print("elif 1")
         path = nearby_paths.fuzzy_match_noun(noun).fuzzy_match_preposition(preposition).first()
         if not path: path = nearby_paths.fuzzy_match_preposition(preposition).fuzzy_match_destinations(noun).first()
     elif noun:
+        print("elif2", noun)
         path = nearby_paths.fuzzy_match_noun(noun).first()
         if not path: path = nearby_paths.fuzzy_match_destinations(noun).first()
     elif preposition and preposition not in ["to"]:
+        print("here")
         possible_paths = nearby_paths.filter(preposition__iexact=preposition)
         if(possible_paths.count() == 1): path = possible_paths.first()
 
-    if not path: Result.fail(f"You cannot go {preposition if preposition else 'to'}{' ' + noun if noun else ''}")
+    if not path:
+        return Result.fail(f"You cannot go {preposition if preposition else 'to'}{' ' + noun if noun else ''}")
 
     # check for locks
     blocks = path.block_set.filter(active=True)
@@ -46,7 +51,7 @@ def move(character, preposition, noun) -> Result: # todo: make this a traveler
     character.previous_position = character.position
     character.position = path.end
     character.save()
-    return Result.succeed(f'<span class="success">You go {"back " if preposition == "back" else ""}{str(path)}.</span> ' + look(character, False)[0])
+    return Result.succeed(f'<span class="success">You go {"back " if preposition == "back" else ""}{str(path)}.</span> ' + look(character, False).message)
     
 def look(character, describe_position=True):
     location_description = character.position.description
@@ -54,12 +59,9 @@ def look(character, describe_position=True):
     items = character.position.item_set.all()
     colored_item = lambda item: f'<span class="item">{str(item)}</span>'
     items_description = last_comma_to_and(f"Some nearby items include {', '.join([colored_item(item.name) for item in items])}.") if items.count() > 0 else ""
-    new_paths = character.position.start_paths.exclude(end=character.previous_position)
-    followed_path = character.position.start_paths.filter(end=character.previous_position).first()
+    available_paths = character.position.start_paths.exclude(hidden=True)
     colored_path = lambda path: f'<span class="location">{str(path)}</span>'
-    paths_description = last_comma_to_and("From here you can go " + ', '.join([colored_path(path) for path in new_paths]) + ".") if new_paths.count() > 0 else ""
-    if followed_path and new_paths: paths_description += f" Or you can go back {colored_path(followed_path)}."
-    elif followed_path: paths_description += f" From here you can go back {colored_path(followed_path)}."
+    paths_description = last_comma_to_and("From here you can go " + ', '.join([colored_path(path) for path in available_paths]) + ".") if available_paths.count() > 0 else ""
     initial_message = f'<span class="success">You look around.</span> You are at {character.position.name}. ' if describe_position else ''
     return Result.succeed(f"{initial_message}You see {formatted_description} {items_description} {paths_description}")
 

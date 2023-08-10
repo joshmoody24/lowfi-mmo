@@ -27,8 +27,8 @@ def play(request, world_id, character_slug):
     most_recent_success_log = player.characterlog_set.filter(success=True).order_by('-created_at').first()
     most_recent_error_log = player.characterlog_set.filter(success=False).order_by('-created_at').first()
 
-    MAX_HISTORY = 99
-    logs = player.characterlog_set.order_by('created_at')[:MAX_HISTORY]
+    MAX_HISTORY = 1
+    logs = player.characterlog_set.order_by('-created_at')[:MAX_HISTORY]
 
     context = {
         "player": player,
@@ -156,7 +156,7 @@ def character_create(request, world_id):
             initial_log = models.CharacterLog.objects.create(
                 character=character,
                 command="start game",
-                result=INITIAL_MESSAGE.format(name=character.name, time=datetime.now().strftime("%I:%M %p").lstrip("0"), location=spawnpoint.name)
+                message=INITIAL_MESSAGE.format(name=character.name, time=datetime.now().strftime("%I:%M %p").lstrip("0"), location=spawnpoint.name)
             )
             return redirect("world_details", world_id=world_id)
     else:
