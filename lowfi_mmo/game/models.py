@@ -78,10 +78,14 @@ class Mystery(models.Model):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     connections = models.ManyToManyField("Mystery")
+    def __str__(self):
+        return self.name
 
 class Clue(models.Model):
     mystery = models.ForeignKey(Mystery, on_delete=models.CASCADE)
     summary = models.TextField()
+    def __str__(self):
+        return self.summary[:20] + "..."
 
 class Location(Entity):
     LOCATION_CATEGORIES = (("house", "house"), ("store", "store"), ("secret", "secret"), ("other", "other"))
