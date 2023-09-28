@@ -10,15 +10,15 @@ def create_mysteries(world, mystery_dicts):
         mystery = models.Mystery.objects.create(world=world, name=mystery_dict['name'])
         connections[mystery] += mystery_dict.get('connections', [])
         assert 'clues' in mystery_dict, f"{mystery} must have at least one clue"
-        for clue in mystery_dict["clues"]:
-            assert 'summary' in clue, f"{clue} must have a summary"
-            clue = models.Clue.objects.create(mystery=mystery, summary=clue['summary'])
+        for clue_dict in mystery_dict["clues"]:
+            assert 'summary' in clue_dict, f"{clue_dict} must have a summary"
+            clue = models.Clue.objects.create(mystery=mystery, summary=clue_dict['summary'])
             # TODO: wire up the ways to discover the clue
-            if('discoverable_at' in clue):
+            if('discoverable_at' in clue_dict):
                 ...
-            if('inspectable_from' in clue):
+            if('inspectable_from' in clue_dict):
                 ...
-            if('known_by' in clue):
+            if('known_by' in clue_dict):
                 ...
     
     for mystery, connections in connections.items():
